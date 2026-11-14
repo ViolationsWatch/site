@@ -111,6 +111,11 @@ select { flex: 0 1 auto; max-width: 100%; }
 .hit { fill: transparent; cursor: pointer; }
 .row-hover .hl { fill: var(--tint); }
 .mapwrap { position: relative; background: var(--sea); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.zoombtns { position: absolute; top: 8px; right: 8px; display: grid; gap: 0; background: var(--panel); border: 1px solid var(--line-strong); border-radius: 6px; overflow: hidden; box-shadow: 0 2px 8px rgba(19, 35, 58, .1); }
+.zoombtns button { width: 36px; height: 36px; border: 0; border-top: 1px solid var(--line); background: var(--panel); color: var(--ink); font: 600 18px/1 var(--sans); cursor: pointer; }
+.zoombtns button:first-child { border-top: 0; }
+.zoombtns button:hover { background: var(--tint); color: var(--accent); }
+.maphint { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: rgba(19, 35, 58, .82); color: #fff; font-size: 13px; padding: 8px 14px; border-radius: 6px; pointer-events: none; text-align: center; max-width: 80%; }
 .coords { position: absolute; left: 8px; bottom: 6px; font-family: var(--mono); font-size: 11px; color: var(--muted); background: rgba(255,255,255,.85); padding: 1px 6px; border-radius: 3px; pointer-events: none; }
 .tip { position: absolute; z-index: 30; pointer-events: none; background: var(--panel); border: 1px solid var(--line-strong); box-shadow: 0 8px 24px rgba(19, 35, 58, .14); border-radius: var(--r); padding: 8px 10px; font-size: 12px; line-height: 1.45; max-width: 300px; }
 .tip b { font-weight: 600; }
@@ -242,9 +247,9 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
   <div class="grid">
     <section class="panel w8" aria-labelledby="h-map">
       <div class="ph"><span class="no">01</span><h2 id="h-map">Where incidents were reported</h2></div>
-      <p class="cap">Circle size is the number of incidents at that point; colour is the highest priority among them. Incidents without a named town sit at the country's centre. Click or tap a circle for its incidents.</p>
+      <p class="cap">Circle size is the number of incidents at that point; colour is the highest priority among them. Incidents without a named town sit at the country's centre. Click or tap a circle for its incidents. Zoom with the + and − buttons, by scrolling after clicking the map, or by pinching with two fingers; drag to move around.</p>
       <div class="legend"><span><i class="sw Critical"></i>Critical</span><span><i class="sw High"></i>High</span><span><i class="sw Medium"></i>Medium</span><span><i class="sw Low"></i>Low</span></div>
-      <div class="mapwrap"><div id="map" class="chart" role="img" aria-label="World map of incident locations"></div><div class="coords" id="coords" aria-hidden="true">LAT — · LON —</div></div>
+      <div class="mapwrap"><div id="map" class="chart" role="img" aria-label="Zoomable world map of incident locations"></div><div class="coords" id="coords" aria-hidden="true">LAT — · LON —</div><div class="zoombtns" role="group" aria-label="Map zoom"><button type="button" id="z-in" aria-label="Zoom in">+</button><button type="button" id="z-out" aria-label="Zoom out">−</button><button type="button" id="z-reset" aria-label="Reset map view">⟲</button></div><div class="maphint" id="maphint" hidden></div></div>
     </section>
     <section class="panel w4" aria-labelledby="h-loc">
       <div class="ph"><span class="no">02</span><h2 id="h-loc">Most incidents</h2></div>
@@ -482,33 +487,66 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
   }
   function colBar(x, y, w, h, r) { r = Math.min(r, w / 2, h); return 'M' + x + ',' + (y + h) + 'v' + (r - h) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + (-r) + 'h' + (w - 2 * r) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + r + 'v' + (h - r) + 'Z'; }
 
+  // Zoomable map: drag or two-finger pan, scroll (after clicking the map) or pinch to zoom, +/− buttons.
+  // Circles keep their size on screen so clusters separate as you zoom in; finer borders load on first zoom.
+  let mapT = d3.zoomIdentity, mapW = 0, world50 = null, world50Loading = false, mapActive = false;
   function drawMap(fr) {
     const box = $('map'); if (!world || !window.topojson) { box.replaceChildren(el('div', 'empty', 'The map could not be drawn.')); return; }
-    const W = box.clientWidth || 800, H = Math.round(W * 0.52);
-    const land = topojson.feature(world, world.objects.countries); land.features = land.features.filter((f) => f.id !== '010');
+    const W = box.clientWidth || 800, H = Math.round(W * (W < 600 ? 0.62 : 0.52));
+    if (W !== mapW) { mapT = d3.zoomIdentity; mapW = W; }
+    const feat = (wd) => { const f = topojson.feature(wd, wd.objects.countries); f.features = f.features.filter((x) => x.id !== '010'); return f; };
+    const land = feat(world);
     const proj = d3.geoNaturalEarth1().fitExtent([[2, 4], [W - 2, H - 4]], land);
     const path = d3.geoPath(proj);
-    const svg = d3.create('svg').attr('viewBox', [0, 0, W, H]);
-    svg.append('path').attr('d', path(d3.geoGraticule10())).attr('fill', 'none').attr('stroke', 'var(--grat)').attr('stroke-width', 0.6);
-    svg.append('path').attr('d', path(land)).attr('fill', 'var(--land)').attr('stroke', 'var(--land-line)').attr('stroke-width', 0.5);
-    const groups = d3.rollups(fr.filter((r) => r.lat != null), (v) => v, (r) => r.lat.toFixed(1) + ',' + r.lon.toFixed(1));
-    const rad = d3.scaleSqrt().domain([1, d3.max(groups, (g) => g[1].length) || 1]).range([4, Math.max(11, W / 42)]);
-    svg.append('g').selectAll('circle').data(groups.sort((a, b) => b[1].length - a[1].length)).join('circle')
-      .attr('transform', (g) => 'translate(' + proj([g[1][0].lon, g[1][0].lat]) + ')')
+    const svg = d3.create('svg').attr('viewBox', [0, 0, W, H]).style('touch-action', 'pan-y').style('cursor', 'grab');
+    const base = svg.append('g');
+    base.append('path').attr('d', path(d3.geoGraticule10())).attr('fill', 'none').attr('stroke', 'var(--grat)').attr('stroke-width', 0.6).attr('vector-effect', 'non-scaling-stroke');
+    const landPath = base.append('path').attr('d', path(world50 ? feat(world50) : land)).attr('fill', 'var(--land)').attr('stroke', 'var(--land-line)').attr('stroke-width', 0.6).attr('vector-effect', 'non-scaling-stroke');
+    const groups = d3.rollups(fr.filter((r) => r.lat != null), (v) => v, (r) => r.lat.toFixed(2) + ',' + r.lon.toFixed(2)).sort((a, b) => b[1].length - a[1].length);
+    const rad = d3.scaleSqrt().domain([1, d3.max(groups, (g) => g[1].length) || 1]).range([W < 600 ? 5 : 4, Math.max(11, W / 42)]);
+    const xy = (g) => proj([g[1][0].lon, g[1][0].lat]);
+    const build = (t, g, p) => { const f = g[1][0]; t.append(el('b', null, (f.place && f.precision === 'town' ? f.place + ', ' : '') + f.location)); t.append(el('div', 'mono', f.lat.toFixed(2) + ', ' + f.lon.toFixed(2) + (f.precision !== 'town' ? ' · country centre' : ''))); t.append(el('div', 'm', g[1].length + (g[1].length === 1 ? ' incident' : ' incidents'))); incList(t, g[1], p ? 6 : 5, p); if (!p) t.append(el('div', 'm', 'Click to filter to ' + f.location)); };
+    const act = (g) => ({label: 'Filter to ' + short(g[1][0].location), fn: () => setFilter('fl', g[1][0].location)});
+    const dots = svg.append('g').selectAll('circle').data(groups).join('circle')
       .attr('r', (g) => rad(g[1].length))
       .attr('fill', (g) => PCOL[PRIS[d3.min(g[1], (x) => PRI[x.priority])]]).attr('fill-opacity', 0.85)
       .attr('stroke', '#fff').attr('stroke-width', 1.5).style('cursor', 'pointer')
-      .call((s) => bindTip(s, (t, g, p) => { const f = g[1][0]; t.append(el('b', null, (f.place && f.precision === 'town' ? f.place + ', ' : '') + f.location)); t.append(el('div', 'mono', f.lat.toFixed(2) + ', ' + f.lon.toFixed(2) + (f.precision !== 'town' ? ' · country centre' : ''))); t.append(el('div', 'm', g[1].length + (g[1].length === 1 ? ' incident' : ' incidents'))); incList(t, g[1], p ? 6 : 5, p); if (!p) t.append(el('div', 'm', 'Click to filter to ' + f.location)); },
-        (g) => ({label: 'Filter to ' + short(g[1][0].location), fn: () => setFilter('fl', g[1][0].location)})));
-    // on touch screens small circles are hard to hit: a tap anywhere opens the nearest point within ~28px
-    const pts = groups.map((g) => ({g, p: proj([g[1][0].lon, g[1][0].lat])}));
-    svg.on('click.near', (ev) => { if (lastPointer === 'mouse' || !pts.length) return; const [mx, my] = d3.pointer(ev); const sc = W / (box.clientWidth || W);
-      let best = null, bd = 28 * sc; pts.forEach((q) => { const dd = Math.hypot(q.p[0] - mx, q.p[1] - my) - rad(q.g[1].length); if (dd < bd) { bd = dd; best = q; } });
-      if (best) { const f = best.g[1][0]; pinTip(ev, (t) => { t.append(el('b', null, (f.place && f.precision === 'town' ? f.place + ', ' : '') + f.location)); t.append(el('div', 'mono', f.lat.toFixed(2) + ', ' + f.lon.toFixed(2) + (f.precision !== 'town' ? ' · country centre' : ''))); t.append(el('div', 'm', best.g[1].length + (best.g[1].length === 1 ? ' incident' : ' incidents'))); incList(t, best.g[1], 6, true); }, {label: 'Filter to ' + short(f.location), fn: () => setFilter('fl', f.location)}); } });
-    svg.on('mousemove.coords', (ev) => { const p = proj.invert(d3.pointer(ev)); if (p && isFinite(p[0])) $('coords').textContent = 'LAT ' + p[1].toFixed(2) + ' · LON ' + p[0].toFixed(2); });
-    box.replaceChildren(svg.node());
+      .call((s) => bindTip(s, build, act));
+    // country names appear once zoomed in, sized for the screen, largest countries first
+    const names = land.features.map((f) => ({n: f.properties && f.properties.name, c: path.centroid(f), a: path.area(f)})).filter((d) => d.n && isFinite(d.c[0]));
+    const lab = svg.insert('g', 'g:last-of-type').attr('pointer-events', 'none');
+    const labs = lab.selectAll('text').data(names).join('text').text((d) => d.n).attr('text-anchor', 'middle')
+      .style('font-family', 'var(--mono)').style('font-size', '10px').style('letter-spacing', '.06em').style('text-transform', 'uppercase').style('fill', 'var(--faint)');
+    const place = () => { base.attr('transform', mapT); dots.attr('transform', (g) => 'translate(' + mapT.apply(xy(g)) + ')');
+      labs.attr('transform', (d) => 'translate(' + mapT.apply(d.c) + ')').attr('display', (d) => mapT.k >= 2.5 && d.a * mapT.k * mapT.k > 3500 ? null : 'none'); };
+    // tap near a small circle on touch screens opens the nearest one
+    svg.on('click.near', (ev) => { if (lastPointer === 'mouse' || !groups.length) return; const [mx, my] = d3.pointer(ev); const sc = W / (box.clientWidth || W);
+      let best = null, bd = 28 * sc; groups.forEach((g) => { const q = mapT.apply(xy(g)); const dd = Math.hypot(q[0] - mx, q[1] - my) - rad(g[1].length); if (dd < bd) { bd = dd; best = g; } });
+      if (best) pinTip(ev, (t) => build(t, best, true), act(best)); });
+    svg.on('mousemove.coords', (ev) => { const p = proj.invert(mapT.invert(d3.pointer(ev))); if (p && isFinite(p[0])) $('coords').textContent = 'LAT ' + p[1].toFixed(2) + ' · LON ' + p[0].toFixed(2); });
+    const zoom = d3.zoom().scaleExtent([1, 24]).translateExtent([[0, 0], [W, H]]).extent([[0, 0], [W, H]])
+      .filter((ev) => {
+        if (ev.type === 'wheel') return mapActive || ev.ctrlKey || ev.metaKey;           // don't hijack page scrolling
+        if (ev.type.startsWith('touch')) return ev.touches.length >= 2;                    // one finger scrolls the page
+        return !ev.button;
+      })
+      .on('start', () => svg.style('cursor', 'grabbing'))
+      .on('zoom', (ev) => { mapT = ev.transform; place(); hideTip();
+        if (mapT.k > 2 && !world50 && !world50Loading) { world50Loading = true; fetch('world-50m.json').then((r) => r.json()).then((w) => { world50 = w; landPath.attr('d', path(feat(w))); }).catch(() => {}); } })
+      .on('end', () => svg.style('cursor', 'grab'));
+    svg.call(zoom).on('dblclick.zoom', null).call(zoom.transform, mapT);
+    svg.on('wheel.hint', (ev) => { if (!mapActive && !ev.ctrlKey && !ev.metaKey) flashHint('Click the map first, then scroll to zoom'); });
+    svg.on('touchstart.hint', (ev) => { if (ev.touches.length === 1 && mapT.k === 1) flashHint('Use two fingers to move or zoom the map'); }, {passive: true});
+    svg.on('pointerdown.act', () => { mapActive = true; });
+    const zb = (k) => svg.transition().duration(250).call(zoom.scaleBy, k);
+    $('z-in').onclick = () => { mapActive = true; zb(2); };
+    $('z-out').onclick = () => zb(0.5);
+    $('z-reset').onclick = () => svg.transition().duration(300).call(zoom.transform, d3.zoomIdentity);
+    box.replaceChildren(svg.node()); place();
   }
-
+  let hintT;
+  function flashHint(msg) { const h = $('maphint'); h.textContent = msg; h.hidden = false; clearTimeout(hintT); hintT = setTimeout(() => { h.hidden = true; }, 1600); }
+  document.addEventListener('pointerdown', (ev) => { if (!$('map').contains(ev.target) && !ev.target.closest('.zoombtns')) mapActive = false; });
   function drawSub(fr) {
     const sel = $('fsub'); const country = sel.value; const box = $('c-sub');
     const list = fr.filter((r) => r.location === country);
