@@ -399,11 +399,15 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
   document.addEventListener('click', (ev) => { if (pinned && !tip.contains(ev.target)) closeTip(); });
   document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeTip(); });
   // hover + click on desktop; tap opens a card with the details and the action on phones
+  // A tap opens a card with the details (and the filter action); a mouse gets hover details and click-to-filter.
+  // Decided per tap from the pointer type, so it works on any phone or tablet whatever the browser reports.
+  let lastPointer = TOUCH ? 'touch' : 'mouse';
+  addEventListener('pointerdown', (ev) => { lastPointer = ev.pointerType || 'mouse'; }, true);
   function bindTip(sel, build, action, onEnter, onLeave) {
-    sel.on('mousemove', (ev, d) => { if (TOUCH) return; onEnter && onEnter(ev, d); showTip(ev, (t, p) => build(t, d, p)); })
-      .on('mouseleave', (ev, d) => { if (TOUCH) return; onLeave && onLeave(ev, d); hideTip(); })
-      .on('click', (ev, d) => { const a = action ? action(d) : null;
-        if (TOUCH) { pinTip(ev, (t, p) => build(t, d, p), a); return; }
+    sel.on('pointermove', (ev, d) => { if (ev.pointerType !== 'mouse') return; onEnter && onEnter(ev, d); showTip(ev, (t, p) => build(t, d, p)); })
+      .on('pointerleave', (ev, d) => { if (ev.pointerType !== 'mouse') return; onLeave && onLeave(ev, d); hideTip(); })
+      .on('click', (ev, d) => { const a = action ? action(d) : null; const touch = lastPointer !== 'mouse';
+        if (touch) { pinTip(ev, (t, p) => build(t, d, p), a); return; }
         if (a) { closeTip(); a.fn(); } else pinTip(ev, (t, p) => build(t, d, p), null); });
   }
   function openIncident(id) {
@@ -496,6 +500,11 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
       .attr('stroke', '#fff').attr('stroke-width', 1.5).style('cursor', 'pointer')
       .call((s) => bindTip(s, (t, g, p) => { const f = g[1][0]; t.append(el('b', null, (f.place && f.precision === 'town' ? f.place + ', ' : '') + f.location)); t.append(el('div', 'mono', f.lat.toFixed(2) + ', ' + f.lon.toFixed(2) + (f.precision !== 'town' ? ' · country centre' : ''))); t.append(el('div', 'm', g[1].length + (g[1].length === 1 ? ' incident' : ' incidents'))); incList(t, g[1], p ? 6 : 5, p); if (!p) t.append(el('div', 'm', 'Click to filter to ' + f.location)); },
         (g) => ({label: 'Filter to ' + short(g[1][0].location), fn: () => setFilter('fl', g[1][0].location)})));
+    // on touch screens small circles are hard to hit: a tap anywhere opens the nearest point within ~28px
+    const pts = groups.map((g) => ({g, p: proj([g[1][0].lon, g[1][0].lat])}));
+    svg.on('click.near', (ev) => { if (lastPointer === 'mouse' || !pts.length) return; const [mx, my] = d3.pointer(ev); const sc = W / (box.clientWidth || W);
+      let best = null, bd = 28 * sc; pts.forEach((q) => { const dd = Math.hypot(q.p[0] - mx, q.p[1] - my) - rad(q.g[1].length); if (dd < bd) { bd = dd; best = q; } });
+      if (best) { const f = best.g[1][0]; pinTip(ev, (t) => { t.append(el('b', null, (f.place && f.precision === 'town' ? f.place + ', ' : '') + f.location)); t.append(el('div', 'mono', f.lat.toFixed(2) + ', ' + f.lon.toFixed(2) + (f.precision !== 'town' ? ' · country centre' : ''))); t.append(el('div', 'm', best.g[1].length + (best.g[1].length === 1 ? ' incident' : ' incidents'))); incList(t, best.g[1], 6, true); }, {label: 'Filter to ' + short(f.location), fn: () => setFilter('fl', f.location)}); } });
     svg.on('mousemove.coords', (ev) => { const p = proj.invert(d3.pointer(ev)); if (p && isFinite(p[0])) $('coords').textContent = 'LAT ' + p[1].toFixed(2) + ' · LON ' + p[0].toFixed(2); });
     box.replaceChildren(svg.node());
   }
