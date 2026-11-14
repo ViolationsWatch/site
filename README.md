@@ -18,7 +18,7 @@ There is no build step: Cloudflare Pages serves the files as they are.
 
 ## How the data is updated
 
-The data files are regenerated from the project's incident register twice a week (Monday and Friday mornings, UK time) and committed here, so the commit history is a public, dated record of every change. Incidents keep a permanent ID (`VW-YYYY-NNNN`); corrections update the entry rather than removing it silently.
+The data files are regenerated from the project's incident register every morning (about 05:40 UK time) and committed here, so the commit history is a public, dated record of every change. Incidents keep a permanent ID (`VW-YYYY-NNNN`); corrections update the entry rather than removing it silently.
 
 ## Citing
 

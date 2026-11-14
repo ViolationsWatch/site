@@ -213,7 +213,7 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
 <div class="wrap">
   <header class="mast">
     <h1>OSINT for Human Rights</h1>
-    <p class="period"><span class="k">Time period</span> <b id="p-win">Loading…</b> <span class="d" id="p-note">Incidents reported in the 28 days up to the last update. Updated every Monday and Friday morning (UK time).</span></p>
+    <p class="period"><span class="k">Time period</span> <b id="p-win">Loading…</b> <span class="d" id="p-note">Incidents reported in the 28 days up to the last update. Updated every morning at about 05:40 UK time.</span></p>
     <p class="tag">An open log of reported violations of international humanitarian and human rights law, collected from news and social media and shared as leads for investigators, journalists and researchers. Every entry links to its original reports and, where possible, to archived copies.</p>
     <div class="warn" role="note"><b>Most entries are unverified leads, not findings.</b> Each one records what was reported, by whom and when. Check the sources before relying on it.</div>
   </header>
@@ -638,11 +638,14 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
     catch (e) { $('loading').textContent = 'The incident log could not be loaded. Reload the page to try again.'; return; }
     rows = data.incidents || [];
     $('s-upd').textContent = fd(data.updated).toUpperCase(); $('s-n').textContent = rows.length;
-    const nx = new Date(data.updated); do { nx.setUTCDate(nx.getUTCDate() + 1); } while (![1, 5].includes(nx.getUTCDay())); $('s-next').textContent = fds(nx).toUpperCase();
+    // next daily refresh: 05:40 UK time, today if it hasn't happened yet, otherwise tomorrow
+    { const now = new Date(); const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'}).formatToParts(now).map((x) => [x.type, x.value]));
+      const day = new Date(Date.UTC(+p.year, +p.month - 1, +p.day)); if (+p.hour * 60 + +p.minute >= 5 * 60 + 40) day.setUTCDate(day.getUTCDate() + 1);
+      $('s-next').textContent = fds(day).toUpperCase() + ', 05:40 UK'; }
     if (data.window) $('foot').textContent = 'Data covers reports from ' + data.window + '.';
     $('p-win').textContent = data.window || 'Not available';
     const ds = rows.map((r) => r.first_reported).filter(Boolean).sort(); const days = ds.length && data.updated ? (new Date(data.updated) - new Date(ds[0])) / 864e5 : 28;
-    $('p-note').textContent = days < 27 ? 'Incidents reported since this log began, building up to a rolling 28-day window. Last updated ' + fd(data.updated) + '; updated every Monday and Friday morning (UK time).' : 'Incidents reported in the 28 days up to ' + fd(data.updated) + '. Updated every Monday and Friday morning (UK time).';
+    $('p-note').textContent = days < 27 ? 'Incidents reported since this log began, building up to a rolling 28-day window. Last updated ' + fd(data.updated) + '; updated every morning at about 05:40 UK time.' : 'Incidents reported in the 28 days up to ' + fd(data.updated) + '. Updated every morning at about 05:40 UK time.';
     $('fl').append(...[...new Set(rows.map((r) => r.location))].sort().map((x) => new Option(short(x), x)));
     $('ft').append(...[...new Set(rows.flatMap((r) => r.types))].sort().map((x) => new Option(x)));
     const subC = d3.rollups(rows.filter((r) => r.subregion), (v) => new Set(v.map((r) => r.subregion)).size, (r) => r.location).filter((x) => x[1] > 1).map((x) => x[0]).sort((a, b) => rows.filter((r) => r.location === b).length - rows.filter((r) => r.location === a).length);
