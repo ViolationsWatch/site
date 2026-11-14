@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Violations Watch</title>
+<meta name="description" content="An open log of reported violations of international humanitarian and human rights law, shared as leads for investigators, journalists and researchers.">
+<link rel="canonical" href="https://violationswatch.org/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Violations Watch">
+<meta property="og:description" content="An open log of reported violations of international humanitarian and human rights law, shared as leads for investigators.">
+<meta property="og:url" content="https://violationswatch.org/">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#14202b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img, svg { max-width: 100%; }
+[hidden] { display: none !important; }
+/* Layout: an open incident log. Masthead + purpose, figures, map, filterable ledger of leads, then method and corrections. */
+:root {
+  --bg: #f3f5f7; --panel: #ffffff; --ink: #14202b; --muted: #556270; --line: #d6dde3; --soft: #e9eef2;
+  --accent: #0e5a8a; --accent-ink: #ffffff; --land: #dfe5ea; --land-line: #c5cfd8;
+  --crit: #b42318; --high: #c4570c; --med: #8a6d00; --low: #5d6b78;
+  --lead: #8a5a00; --lead-bg: #fbf1dc; --conf: #1d6b43; --conf-bg: #e2f2e8; --ver: #0e5a8a; --ver-bg: #e1eef7;
+  --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f151b; --panel: #161e26; --ink: #e5ebf0; --muted: #9aa8b5; --line: #2a3540; --soft: #1d2731;
+  --accent: #6fb4e3; --accent-ink: #0b1117; --land: #24303b; --land-line: #33414e;
+  --crit: #f28b82; --high: #f2a46b; --med: #e2c35a; --low: #a3b1be;
+  --lead: #f0c46b; --lead-bg: #3a2e14; --conf: #7fd3a4; --conf-bg: #17331f; --ver: #8cc8f0; --ver-bg: #15304a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f151b; --panel: #161e26; --ink: #e5ebf0; --muted: #9aa8b5; --line: #2a3540; --soft: #1d2731;
+  --accent: #6fb4e3; --accent-ink: #0b1117; --land: #24303b; --land-line: #33414e;
+  --crit: #f28b82; --high: #f2a46b; --med: #e2c35a; --low: #a3b1be;
+  --lead: #f0c46b; --lead-bg: #3a2e14; --conf: #7fd3a4; --conf-bg: #17331f; --ver: #8cc8f0; --ver-bg: #15304a; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1160px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 28px; }
+.mast { display: grid; gap: 10px; border-bottom: 3px solid var(--ink); padding-bottom: 18px; }
+.mast h1 { font-weight: 800; font-size: clamp(30px, 5vw, 46px); letter-spacing: -0.02em; margin: 0; line-height: 1.05; }
+.mast .period { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 16px; }
+.mast .period .k { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.mast .period b { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.mast .period .d { flex-basis: 100%; font-size: 14px; color: var(--muted); }
+.mast .tag { font-size: 18px; max-width: 62ch; margin: 0; text-wrap: pretty; }
+.warn { display: flex; gap: 10px; align-items: flex-start; background: var(--lead-bg); color: var(--ink); border-left: 4px solid var(--lead); padding: 10px 14px; border-radius: 4px; max-width: 80ch; font-size: 14px; }
+.warn b { color: var(--ink); }
+h2 { font-size: 20px; font-weight: 700; margin: 0 0 10px; text-wrap: balance; }
+.mono { font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; border: 1px solid var(--line); background: var(--panel); border-radius: 6px; }
+.fig { padding: 14px 16px; border-left: 1px solid var(--line); display: grid; gap: 2px; }
+.fig:first-child { border-left: 0; }
+.fig b { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.fig span { font-size: 13px; color: var(--muted); }
+@media (max-width: 560px) { .fig { border-left: 0; border-top: 1px solid var(--line); } .fig:first-child { border-top: 0; } }
+.mapbox { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 12px; position: relative; }
+#map svg { display: block; width: 100%; height: auto; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); margin-top: 6px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; font-size: 13px; box-shadow: 0 4px 16px rgb(0 0 0 / .15); max-width: 280px; z-index: 5; }
+.bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.bar input, .bar select { font: inherit; font-size: 14px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--panel); color: var(--ink); min-width: 0; }
+.bar input[type=search] { flex: 1 1 240px; }
+.count { color: var(--muted); font-size: 13px; margin-left: auto; }
+.btn { font: inherit; font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 5px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); cursor: pointer; text-decoration: none; display: inline-block; }
+.btn.ghost { background: transparent; color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ledger { display: grid; gap: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+details.inc { border-top: 1px solid var(--line); }
+details.inc:first-child { border-top: 0; }
+details.inc > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 6px minmax(0, 1fr); gap: 0 14px; padding: 14px 16px 14px 0; }
+details.inc > summary::-webkit-details-marker { display: none; }
+details.inc > summary:hover { background: var(--soft); }
+details.inc[open] > summary { background: var(--soft); }
+.stripe { border-radius: 0 3px 3px 0; }
+.bg-Critical { background: var(--crit); } .bg-High { background: var(--high); } .bg-Medium { background: var(--med); } .bg-Low { background: var(--low); }
+.hl { font-weight: 600; font-size: 15.5px; overflow-wrap: anywhere; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13px; color: var(--muted); margin-top: 4px; align-items: center; }
+.st { font-size: 11.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; }
+.st-lead { background: var(--lead-bg); color: var(--lead); } .st-confirmed { background: var(--conf-bg); color: var(--conf); } .st-verified { background: var(--ver-bg); color: var(--ver); }
+.pr { font-weight: 600; } .p-Critical { color: var(--crit); } .p-High { color: var(--high); } .p-Medium { color: var(--med); } .p-Low { color: var(--low); }
+.body { padding: 4px 18px 18px 20px; display: grid; gap: 14px; background: var(--soft); }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px 20px; margin: 0; }
+.facts div { min-width: 0; } .facts dt { font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; } .facts dd { margin: 2px 0 0; overflow-wrap: anywhere; }
+.links { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 13.5px; }
+.links a { color: var(--accent); overflow-wrap: anywhere; }
+.legal { font-size: 13.5px; display: grid; gap: 6px; } .legal b { font-weight: 600; } .legal ul.refs { margin: 2px 0 0; padding-left: 18px; } .legal ul.refs li { margin: 1px 0; } .legal .why p { margin: 2px 0 0; max-width: 70ch; line-height: 1.5; }
+.sub { font-size: 12.5px; color: var(--muted); }
+.more { padding: 14px; text-align: center; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+.cols section { min-width: 0; }
+.cols p, .cols li { color: var(--ink); max-width: 68ch; }
+.cols ul { padding-left: 18px; margin: 0; display: grid; gap: 6px; }
+.key { display: grid; gap: 8px; }
+.key div { display: flex; gap: 10px; align-items: baseline; }
+footer { border-top: 1px solid var(--line); padding-top: 14px; font-size: 13px; color: var(--muted); }
+.empty { padding: 28px 16px; color: var(--muted); text-align: center; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <h1>Violations Watch</h1>
+    <p class="period" id="period"><span class="k">Time period</span> <b id="p-win">Loading…</b> <span class="d" id="p-note">Incidents reported in the 28 days up to the last update. Updated every Monday and Friday morning (UK time).</span></p>
+    <p class="tag">An open log of reported violations of international humanitarian and human rights law, collected from news and social media and shared as leads for investigators, journalists and researchers.</p>
+    <div class="warn" role="note"><span><b>Most entries are unverified leads, not findings.</b> Each one summarises what was reported, by whom and when, with links to the original sources. Check them before relying on them.</span></div>
+  </header>
+
+  <section class="figs" aria-label="Summary">
+    <div class="fig"><b id="f-n">—</b><span>incidents in this period</span></div>
+    <div class="fig"><b id="f-loc">—</b><span>countries and territories</span></div>
+    <div class="fig"><b id="f-ch">—</b><span>Critical or High priority</span></div>
+    <div class="fig"><b id="f-conf">—</b><span>confirmed by an analyst</span></div>
+    <div class="fig"><b id="f-upd">—</b><span>last updated</span></div>
+  </section>
+
+  <section>
+    <h2>Where incidents were reported</h2>
+    <div class="mapbox"><div id="map" role="img" aria-label="World map of incident locations"></div><div class="tip" id="tip" hidden></div>
+      <div class="legend"><span><i class="bg-Critical"></i>Critical</span><span><i class="bg-High"></i>High</span><span><i class="bg-Medium"></i>Medium</span><span><i class="bg-Low"></i>Low</span><span>Circle size: number of incidents. Country-level points sit at the country's centre.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Incident log</h2>
+    <div class="bar">
+      <input type="search" id="q" placeholder="Search place, perpetrator, ID or keyword" aria-label="Search">
+      <select id="fs" aria-label="Status"><option value="">All statuses</option><option value="lead">Unverified leads</option><option value="confirmed">Confirmed by an analyst</option><option value="verified">Verified</option></select>
+      <select id="fp" aria-label="Priority"><option value="">All priorities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
+      <select id="fl" aria-label="Country or territory"><option value="">All countries</option></select>
+      <select id="ft" aria-label="Violation type"><option value="">All violation types</option></select>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="bar" style="margin-top:8px"><a class="btn" id="csv" href="incidents.csv" download="violations-watch-incidents.csv">Download data (CSV)</a><a class="btn ghost" id="json" href="data.json" target="_blank" rel="noopener">Open as JSON</a><span class="sub" id="dlmsg"></span></div>
+    <div class="ledger" id="ledger" style="margin-top:12px"><div class="empty" id="loading">Loading the incident log…</div></div>
+  </section>
+
+  <div class="cols">
+    <section>
+      <h2>Status labels</h2>
+      <div class="key">
+        <div><span class="st st-lead">Lead</span><span>Reported in the media or on social media and screened for relevance, but not independently checked. Treat as a starting point.</span></div>
+        <div><span class="st st-confirmed">Confirmed</span><span>Reviewed by an analyst: the report describes a real event that falls within scope, with the details as given.</span></div>
+        <div><span class="st st-verified">Verified</span><span>Independently checked by an analyst, for example by geolocating footage or corroborating with independent sources.</span></div>
+      </div>
+      <p class="sub" style="margin-top:10px">Priority (Critical to Low) reflects the reported severity, scale, harm to children and number of sources. It is not a judgement of legal responsibility.</p>
+    </section>
+    <section>
+      <h2>How this is compiled</h2>
+      <ul>
+        <li>News and social media feeds are monitored daily across several conflicts. Reports in Arabic and Persian are machine-translated before screening.</li>
+        <li>Each report is screened for violations of international humanitarian, human rights or criminal law. Ordinary crime, politics and military operations against combatants are excluded.</li>
+        <li>Reports of the same event are merged into one incident with a permanent ID (VW-year-number), so later reports and corrections attach to the same entry.</li>
+        <li>Claims from parties to a conflict and from state media are labelled as such and never raise an incident's priority on their own.</li>
+        <li>Legal frameworks shown are indicative only: the provisions a reported act of that type commonly engages in that country's context. They are not legal findings.</li>
+        <li>IHL references cite the source in full, then the rule or article: the four Geneva Conventions of 1949 (I: wounded and sick; II: wounded, sick and shipwrecked at sea; III: prisoners of war; IV: civilians), Additional Protocol I (1977, international armed conflicts), Additional Protocol II (1977, non-international armed conflicts) and the rules of the ICRC Customary IHL Study, which bind all parties including armed groups (<a href="https://ihl-databases.icrc.org/en/customary-ihl/v1" target="_blank" rel="noopener">ihl-databases.icrc.org</a>). In non-international conflicts only Common Article 3 of the Conventions and Additional Protocol II apply as treaty law.</li>
+        <li>Victims' names and identifying details are not published, and nothing here is graphic.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Using and correcting the data</h2>
+      <ul>
+        <li>Cite incidents by their VW number. The CSV and JSON downloads carry every field shown here.</li>
+        <li>Where a source page has been archived, the archived copy is linked beside the original.</li>
+        <li>When an incident is later confirmed, verified, corrected or found to be unfounded, its entry is updated rather than removed silently.</li>
+      </ul>
+      <p style="margin-top:10px"><b>Corrections and contact:</b> email <a href="mailto:violationswatch@proton.me">violationswatch@proton.me</a> with the incident's VW number, what is wrong and a source if you have one. Corrections are made as quickly as possible and recorded below.</p>
+      <p class="sub" style="margin-top:6px">Corrections log: no corrections yet.</p>
+    </section>
+  </div>
+
+  <footer><span id="foot">Data covers reports from 6–13 Nov 2026.</span> Content links to third-party reporting; Violations Watch does not endorse the sources it lists.</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const PRI = {Critical: 0, High: 1, Medium: 2, Low: 3};
+  const STL = {lead: 'Lead', confirmed: 'Confirmed', verified: 'Verified'};
+  const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+  const fd = (s) => { if (!s) return ''; const d = new Date(s); return isNaN(d) ? s : d.toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'}); };
+  const rng = (r) => r[0] == null && r[1] == null ? '' : r[0] === r[1] || r[1] == null ? String(r[0]) + (r[1] == null && r[0] != null && r[0] > 0 ? '+' : '') : (r[0] ?? '?') + '–' + r[1];
+  const statusOf = (r) => r.verification === 'verified' ? 'verified' : r.status;
+  const txt = (v) => Array.isArray(v) ? v.join(', ') : (v || '');
+  let rows = [], shown = 60;
+
+  function filtered() {
+    const q = $('q').value.trim().toLowerCase(), s = $('fs').value, p = $('fp').value, l = $('fl').value, t = $('ft').value;
+    return rows.filter((r) => (!s || statusOf(r) === s) && (!p || r.priority === p) && (!l || r.location === l) && (!t || r.types.includes(t)) &&
+      (!q || [r.id, r.headline, r.location, r.subregion, r.place, r.perpetrator, txt(r.victims), r.types.join(' ')].join(' ').toLowerCase().includes(q)));
+  }
+  function link(u, label) { const a = el('a', null, label || u); a.href = u; a.target = '_blank'; a.rel = 'noopener noreferrer nofollow'; return a; }
+  function fact(dl, k, v) { if (v == null || v === '') return; const d = el('div'); d.append(el('dt', null, k), el('dd', null, v)); dl.append(d); }
+
+  function card(r) {
+    const d = el('details', 'inc'); d.id = r.id;
+    const s = el('summary'); const body = el('span');
+    const m = el('span', 'meta');
+    const st = statusOf(r);
+    m.append(el('span', 'mono', r.id), el('span', 'st st-' + st, STL[st]), el('span', 'pr p-' + r.priority, r.priority), el('span', null, [r.place, r.location].filter(Boolean).join(', ') || r.location), el('span', null, 'first reported ' + fd(r.first_reported)));
+    body.append(el('span', 'hl', r.headline), m);
+    s.append(el('span', 'stripe bg-' + r.priority), body); d.append(s);
+    d.addEventListener('toggle', () => { if (d.open && !d.dataset.built) { d.dataset.built = 1; d.append(details(r)); } });
+    return d;
+  }
+  function details(r) {
+    const b = el('div', 'body');
+    const dl = el('dl', 'facts');
+    fact(dl, 'Location', [r.place, r.subregion, r.location].filter(Boolean).filter((x, i, a) => !a.slice(0, i).some((y) => y.includes(x))).join(', ') + (r.precision && r.precision !== 'town' ? ' (' + r.precision + ' level)' : ''));
+    fact(dl, 'Date of incident', r.incident_date ? fd(r.incident_date) : 'Not stated in reports');
+    fact(dl, 'Reported', fd(r.first_reported) + (r.last_reported && r.last_reported !== r.first_reported ? ' to ' + fd(r.last_reported) : ''));
+    fact(dl, 'Alleged perpetrator', r.perpetrator ? r.perpetrator + (r.actor_type ? ' (' + r.actor_type + ' actor)' : '') : 'Not stated');
+    fact(dl, 'Victims', txt(r.victims));
+    const k = rng(r.killed), j = rng(r.injured);
+    fact(dl, 'Reported casualties', [k && k + ' killed', j && j + ' injured'].filter(Boolean).join(', ') || 'Not stated');
+    fact(dl, 'Violation types', r.types.join(', '));
+    fact(dl, 'Sources', r.sources + (r.sources === 1 ? ' outlet or account' : ' outlets or accounts') + (r.cumulative ? ' · aggregate or period report' : ''));
+    b.append(dl);
+    if (r.disputed) { const w = el('div'); w.append(el('dt', 'sub', 'DISPUTED OR CAVEATS'), el('div', null, r.disputed)); b.append(w); }
+    const L = r.legal || {};
+    if (L.ihl || L.ihrl || L.regional || L.icl) {
+      const g = el('div', 'legal'); g.append(el('div', 'sub', 'Indicative legal frameworks (not a legal finding)'));
+      [['International humanitarian law (IHL)', L.ihl || 'Not applicable (no armed conflict known)'], ['International criminal law', L.icl], ['International human rights law', L.ihrl], ['Regional human rights law', L.regional]].forEach(([a, v]) => { if (!v) return; const x = el('div'); x.append(el('b', null, a)); const u = el('ul', 'refs'); String(v).split('; ').forEach((s) => u.append(el('li', null, s))); x.append(u); g.append(x); });
+      if (L.why) { const x = el('div', 'why'); x.append(el('b', null, 'Why these frameworks')); x.append(el('p', null, L.why)); g.append(x); } else if (L.context) g.append(el('div', 'sub', L.context));
+      b.append(g);
+    }
+    const ul = el('ul', 'links'); const arch = new Map((r.archives || []).map((a) => [a.url, a]));
+    r.links.forEach((u) => { const li = el('li'); li.append(link(u)); const a = arch.get(u); if (a) { li.append(document.createTextNode(' · ')); li.append(link(a.archived_url, 'archived ' + fd(a.at))); } ul.append(li); });
+    const w = el('div'); w.append(el('div', 'sub', 'Original reports'), ul); b.append(w);
+    return b;
+  }
+
+  function render() {
+    const fr = filtered().sort((a, b) => PRI[a.priority] - PRI[b.priority] || b.last_reported.localeCompare(a.last_reported));
+    $('count').textContent = fr.length + (fr.length === 1 ? ' incident' : ' incidents');
+    const L = $('ledger');
+    if (!fr.length) { L.replaceChildren(el('div', 'empty', 'No incidents match these filters.')); return; }
+    const frag = document.createDocumentFragment(); fr.slice(0, shown).forEach((r) => frag.append(card(r)));
+    if (fr.length > shown) { const m = el('div', 'more'); const btn = el('button', 'btn ghost', 'Show ' + Math.min(60, fr.length - shown) + ' more'); btn.type = 'button'; btn.onclick = () => { shown += 60; render(); }; m.append(btn); frag.append(m); }
+    L.replaceChildren(frag);
+  }
+
+  function drawMap(world) {
+    const box = $('map'); const W = box.clientWidth || 900, H = Math.round(W * 0.5);
+    const land = topojson.feature(world, world.objects.countries); land.features = land.features.filter((f) => f.id !== '010');
+    const proj = d3.geoNaturalEarth1().fitExtent([[0, 4], [W, H - 4]], land);
+    const path = d3.geoPath(proj);
+    const svg = d3.create('svg').attr('viewBox', [0, 0, W, H]).attr('preserveAspectRatio', 'xMidYMid meet');
+    svg.append('path').attr('d', path(land)).attr('fill', 'var(--land)').attr('stroke', 'var(--land-line)').attr('stroke-width', 0.5);
+    const groups = d3.rollups(rows.filter((r) => r.lat != null), (v) => v, (r) => r.lat.toFixed(1) + ',' + r.lon.toFixed(1));
+    const r = d3.scaleSqrt().domain([1, d3.max(groups, (g) => g[1].length) || 1]).range([4, Math.max(10, W / 45)]);
+    const tip = $('tip');
+    svg.append('g').selectAll('circle').data(groups.sort((a, b) => b[1].length - a[1].length)).join('circle')
+      .attr('transform', (g) => 'translate(' + proj([g[1][0].lon, g[1][0].lat]) + ')')
+      .attr('r', (g) => r(g[1].length))
+      .attr('fill', (g) => 'var(--' + ['crit', 'high', 'med', 'low'][d3.min(g[1], (x) => PRI[x.priority])] + ')').attr('fill-opacity', 0.75)
+      .attr('stroke', 'var(--panel)').attr('stroke-width', 1).style('cursor', 'pointer')
+      .on('mousemove', (ev, g) => {
+        const pl = g[1][0].place || g[1][0].location; tip.replaceChildren(el('b', null, pl + ' · ' + g[1].length + (g[1].length === 1 ? ' incident' : ' incidents')));
+        g[1].slice(0, 5).forEach((x) => tip.append(el('div', 'sub', x.id + ' · ' + x.headline.slice(0, 80))));
+        const bb = box.parentElement.getBoundingClientRect(); tip.hidden = false;
+        tip.style.left = Math.min(ev.clientX - bb.left + 12, bb.width - 290) + 'px'; tip.style.top = (ev.clientY - bb.top + 12) + 'px';
+      })
+      .on('mouseleave', () => { tip.hidden = true; })
+      .on('click', (ev, g) => { $('fl').value = g[1][0].location; shown = 60; render(); document.getElementById('ledger').scrollIntoView({behavior: 'smooth', block: 'start'}); });
+    box.replaceChildren(svg.node());
+  }
+
+  async function init() {
+    let data, world;
+    try { [data, world] = await Promise.all([fetch('data.json').then((r) => r.json()), fetch('world.json').then((r) => r.json()).catch(() => null)]); }
+    catch (e) { $('loading').textContent = 'The incident log could not be loaded. Reload the page to try again.'; return; }
+    rows = data.incidents || [];
+    $('f-n').textContent = rows.length; $('f-loc').textContent = new Set(rows.filter((r) => r.location !== 'Unlocated').map((r) => r.location)).size;
+    $('f-ch').textContent = rows.filter((r) => r.priority === 'Critical' || r.priority === 'High').length;
+    $('f-conf').textContent = rows.filter((r) => r.status === 'confirmed' || r.verification === 'verified').length;
+    $('f-upd').textContent = fd(data.updated);
+    if (data.window) $('foot').textContent = 'Data covers reports from ' + data.window + '.';
+    $('p-win').textContent = data.window || 'Not available'; if (data.updated) $('p-win').title = 'Last updated ' + fd(data.updated); { const ds = (data.incidents || []).map((r) => r.first_reported).filter(Boolean).sort(); const days = ds.length && data.updated ? (new Date(data.updated) - new Date(ds[0])) / 864e5 : 28; if (days < 27) $('p-note').textContent = 'Incidents reported since this log began, building up to a rolling 28-day window. Last updated ' + fd(data.updated) + '; updated every Monday and Friday morning (UK time).'; else $('p-note').textContent = 'Incidents reported in the 28 days up to ' + fd(data.updated) + '. Updated every Monday and Friday morning (UK time).'; }
+    $('fl').append(...[...new Set(rows.map((r) => r.location))].sort().map((x) => new Option(x)));
+    $('ft').append(...[...new Set(rows.flatMap((r) => r.types))].sort().map((x) => new Option(x)));
+    render();
+    if (world && window.d3 && window.topojson) { drawMap(world); let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => drawMap(world), 200); }); }
+    else $('map').replaceChildren(el('div', 'empty', 'The map could not be drawn.'));
+    if (location.hash && document.getElementById(location.hash.slice(1))) { const d = document.getElementById(location.hash.slice(1)); d.open = true; d.scrollIntoView(); }
+  }
+  for (const id of ['q', 'fs', 'fp', 'fl', 'ft']) $(id).addEventListener('input', () => { shown = 60; render(); });
+
+
+  init();
+})();
+</script>
+</body>
+</html>
