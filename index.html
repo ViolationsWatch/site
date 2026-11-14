@@ -11,7 +11,7 @@
 <meta property="og:description" content="An open log of reported violations of international humanitarian and human rights law, shared as leads for investigators.">
 <meta property="og:url" content="https://violationswatch.org/">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#eaf2f9">
+<meta name="theme-color" content="#0b1d33">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,600..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
@@ -171,12 +171,32 @@ details.inc[open] > summary { background: var(--accent-soft); }
 .band h2 { font-family: var(--display); font-stretch: 112%; font-size: 26px; font-weight: 800; margin: 0; }
 .band .no { font-family: var(--mono); font-size: 12px; color: var(--faint); }
 footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16px 32px; font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+
+/* Dark navy bands: the masthead and the incident log */
+.dark { --ink: #eaf2fb; --muted: #a9bdd3; --faint: #7d93ad; --line: rgba(255, 255, 255, .14); --line-strong: rgba(255, 255, 255, .3);
+  --panel: rgba(255, 255, 255, .05); --tint: rgba(255, 255, 255, .08); --accent: #8cc4f2; --accent-soft: rgba(140, 196, 242, .16); --accent-ink: #0b1d33;
+  color: var(--ink); background-color: #0b1d33;
+  background-image: linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px);
+  background-size: 32px 32px; }
+.dark .sysbar { background: rgba(4, 13, 26, .55); border-bottom-color: rgba(255, 255, 255, .1); }
+.dark .brand svg rect { fill: #2a74b8; }
+.dark .warn { background: rgba(232, 196, 106, .1); border-color: rgba(232, 196, 106, .45); border-left-color: #e8c46a; color: var(--ink); }
+.dark .warn b { color: #f6dc97; }
+.top { padding-bottom: 26px; }
+.top .kpis { margin-bottom: 0; }
+.top .kpi { backdrop-filter: blur(2px); }
+.logband { margin-top: 28px; padding-block: 26px 30px; }
+.logband .band { margin-top: 0; padding-top: 0; border-top: 0; }
+.dark .ledger { --ink: #13233a; --muted: #4f6075; --faint: #8395aa; --line: #d3e1ee; --line-strong: #b9cde0; --panel: #ffffff; --tint: #f1f6fb;
+  --accent: #1b5c96; --accent-soft: #dce9f6; --accent-ink: #ffffff; color: var(--ink); background: #ffffff; border-color: transparent; box-shadow: 0 10px 30px rgba(0, 0, 0, .25); }
+.filters { margin-top: 0; }
 @media (min-width: 760px) { .filters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(234, 242, 249, .95); backdrop-filter: blur(6px); } }
 @media (max-width: 560px) { .sysbar nav { margin-left: 0; } .kpi .num { font-size: 26px; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
 </head>
 <body>
+<div class="dark top">
 <div class="sysbar">
   <div class="wrap">
     <a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#1f5e8c"/><circle cx="16" cy="16" r="8.5" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="16" cy="16" r="2.8" fill="#fff"/></svg>VIOLATIONS WATCH</a>
@@ -200,6 +220,10 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
     <div class="kpi"><span class="lab">State actors alleged</span><span class="num" id="k-state">—</span><span class="note" id="k-state-note">of incidents with a named perpetrator</span></div>
     <div class="kpi"><span class="lab">Confirmed by an analyst</span><span class="num" id="k-conf">—</span><span class="note">the rest are leads</span></div>
   </section>
+</div>
+</div>
+
+<div class="wrap">
 
   <div class="filters" id="filters">
     <div class="row" role="search">
@@ -252,6 +276,10 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
     </section>
   </div>
 
+</div>
+
+<div class="dark logband">
+<div class="wrap">
   <div class="band" id="log"><span class="no">07</span><h2>Incident log</h2></div>
   <div class="loghead">
     <span class="count" id="count2" style="margin-left:0"></span>
@@ -259,6 +287,10 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
     <a class="btn ghost" href="data.json" target="_blank" rel="noopener">Open as JSON</a>
   </div>
   <div class="ledger" id="ledger"><div class="empty" id="loading">Loading the incident log…</div></div>
+</div>
+</div>
+
+<div class="wrap">
 
   <div class="band" id="method"><span class="no">08</span><h2>Method and status labels</h2></div>
   <div class="cols">
