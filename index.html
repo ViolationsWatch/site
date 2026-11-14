@@ -11,211 +11,453 @@
 <meta property="og:description" content="An open log of reported violations of international humanitarian and human rights law, shared as leads for investigators.">
 <meta property="og:url" content="https://violationswatch.org/">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#14202b">
+<meta name="theme-color" content="#f7f6f2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
+/* Violations Watch: a light, human-rights register with an OSINT dashboard's density.
+   Paper ground, ink text, one civic blue for single-series marks, and a single red ramp for priority
+   (Low -> Critical, lighter -> darker), always with labels, a legend and the incident log as the table view. */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; }
 img, svg { max-width: 100%; }
 [hidden] { display: none !important; }
-/* Layout: an open incident log. Masthead + purpose, figures, map, filterable ledger of leads, then method and corrections. */
 :root {
-  --bg: #f3f5f7; --panel: #ffffff; --ink: #14202b; --muted: #556270; --line: #d6dde3; --soft: #e9eef2;
-  --accent: #0e5a8a; --accent-ink: #ffffff; --land: #dfe5ea; --land-line: #c5cfd8;
-  --crit: #b42318; --high: #c4570c; --med: #8a6d00; --low: #5d6b78;
-  --lead: #8a5a00; --lead-bg: #fbf1dc; --conf: #1d6b43; --conf-bg: #e2f2e8; --ver: #0e5a8a; --ver-bg: #e1eef7;
+  color-scheme: light;
+  --paper: #f7f6f2; --panel: #ffffff; --tint: #eef3f7; --ink: #1b2430; --muted: #5a6470; --faint: #8a939c;
+  --line: #e3e1d9; --line-strong: #cfccc1; --accent: #1f5e8c; --accent-soft: #dbe8f2; --accent-ink: #ffffff;
+  --land: #e9e7e0; --land-line: #d6d3c8; --grat: #efede7;
+  --p-critical: #7f1d16; --p-high: #c2412a; --p-medium: #e5896b; --p-low: #eeb7a3;
+  --lead: #8a5a00; --lead-bg: #fbf0d9; --conf: #1d6b43; --conf-bg: #e3f2e9; --ver: #1f5e8c; --ver-bg: #e1edf6;
+  --warn-bg: #fff6e0; --warn-line: #e8c46a;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --r: 6px;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #0f151b; --panel: #161e26; --ink: #e5ebf0; --muted: #9aa8b5; --line: #2a3540; --soft: #1d2731;
-  --accent: #6fb4e3; --accent-ink: #0b1117; --land: #24303b; --land-line: #33414e;
-  --crit: #f28b82; --high: #f2a46b; --med: #e2c35a; --low: #a3b1be;
-  --lead: #f0c46b; --lead-bg: #3a2e14; --conf: #7fd3a4; --conf-bg: #17331f; --ver: #8cc8f0; --ver-bg: #15304a; color-scheme: dark } }
-:root[data-theme="dark"] {
-  --bg: #0f151b; --panel: #161e26; --ink: #e5ebf0; --muted: #9aa8b5; --line: #2a3540; --soft: #1d2731;
-  --accent: #6fb4e3; --accent-ink: #0b1117; --land: #24303b; --land-line: #33414e;
-  --crit: #f28b82; --high: #f2a46b; --med: #e2c35a; --low: #a3b1be;
-  --lead: #f0c46b; --lead-bg: #3a2e14; --conf: #7fd3a4; --conf-bg: #17331f; --ver: #8cc8f0; --ver-bg: #15304a; color-scheme: dark }
-body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
-.wrap { max-width: 1160px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 28px; }
-.mast { display: grid; gap: 10px; border-bottom: 3px solid var(--ink); padding-bottom: 18px; }
-.mast h1 { font-weight: 800; font-size: clamp(30px, 5vw, 46px); letter-spacing: -0.02em; margin: 0; line-height: 1.05; }
-.mast .period { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 16px; }
-.mast .period .k { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.mast .period b { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.mast .period .d { flex-basis: 100%; font-size: 14px; color: var(--muted); }
-.mast .tag { font-size: 18px; max-width: 62ch; margin: 0; text-wrap: pretty; }
-.warn { display: flex; gap: 10px; align-items: flex-start; background: var(--lead-bg); color: var(--ink); border-left: 4px solid var(--lead); padding: 10px 14px; border-radius: 4px; max-width: 80ch; font-size: 14px; }
-.warn b { color: var(--ink); }
-h2 { font-size: 20px; font-weight: 700; margin: 0 0 10px; text-wrap: balance; }
-.mono { font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; }
-.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; border: 1px solid var(--line); background: var(--panel); border-radius: 6px; }
-.fig { padding: 14px 16px; border-left: 1px solid var(--line); display: grid; gap: 2px; }
-.fig:first-child { border-left: 0; }
-.fig b { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
-.fig span { font-size: 13px; color: var(--muted); }
-@media (max-width: 560px) { .fig { border-left: 0; border-top: 1px solid var(--line); } .fig:first-child { border-top: 0; } }
-.mapbox { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 12px; position: relative; }
-#map svg { display: block; width: 100%; height: auto; }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); margin-top: 6px; }
-.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
-.tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; font-size: 13px; box-shadow: 0 4px 16px rgb(0 0 0 / .15); max-width: 280px; z-index: 5; }
-.bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.bar input, .bar select { font: inherit; font-size: 14px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--panel); color: var(--ink); min-width: 0; }
-.bar input[type=search] { flex: 1 1 240px; }
-.count { color: var(--muted); font-size: 13px; margin-left: auto; }
-.btn { font: inherit; font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 5px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); cursor: pointer; text-decoration: none; display: inline-block; }
-.btn.ghost { background: transparent; color: var(--accent); }
+body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
+a { color: var(--accent); }
+a:hover { text-decoration-thickness: 2px; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.ledger { display: grid; gap: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+.wrap { max-width: 1280px; margin: 0 auto; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
+
+/* System bar */
+.sysbar { background: var(--panel); border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.sysbar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; padding-block: 8px; }
+.brand { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 600; text-decoration: none; letter-spacing: .02em; }
+.brand svg { width: 20px; height: 20px; }
+.sysbar .meta { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.sysbar .meta span b { color: var(--ink); font-weight: 500; }
+.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #2e8b57; margin-right: 6px; vertical-align: 1px; }
+.sysbar nav { margin-left: auto; display: flex; gap: 14px; }
+.sysbar nav a { color: var(--muted); text-decoration: none; }
+.sysbar nav a:hover { color: var(--ink); }
+
+/* Masthead */
+.mast { padding-block: 28px 18px; display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
+.mast h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(30px, 4.6vw, 46px); line-height: 1.08; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+.mast .tag { font-size: 17px; max-width: 70ch; margin: 0; color: var(--ink); text-wrap: pretty; }
+.period { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 0; }
+.period .k { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.period b { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.period .d { flex-basis: 100%; font-size: 14px; color: var(--muted); }
+.warn { background: var(--warn-bg); border: 1px solid var(--warn-line); border-left-width: 4px; border-radius: var(--r); padding: 10px 14px; font-size: 14px; max-width: 80ch; }
+
+/* KPI tiles */
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 18px; }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; display: grid; gap: 2px; min-width: 0; }
+.kpi .lab { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.kpi .num { font-size: 30px; font-weight: 600; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.kpi .note { font-size: 12px; color: var(--muted); }
+
+/* Filter bar */
+.filters { background: var(--paper); border-block: 1px solid var(--line); padding-block: 10px; margin-bottom: 16px; }
+.filters .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.filters .lab { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: 2px; }
+input[type=search], select { font: inherit; font-size: 14px; color: var(--ink); background: var(--panel); border: 1px solid var(--line-strong); border-radius: var(--r); padding: 6px 10px; min-width: 0; }
+input[type=search] { flex: 1 1 220px; }
+select { flex: 0 1 auto; max-width: 100%; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.chips:empty { display: none; }
+.chip { font: inherit; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; background: var(--accent-soft); color: var(--ink); border: 1px solid #c3d7e7; border-radius: 999px; padding: 2px 6px 2px 10px; cursor: pointer; }
+.chip span { font-family: var(--mono); color: var(--muted); }
+.chip:hover { border-color: var(--accent); }
+.btn { font: inherit; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; border-radius: var(--r); padding: 6px 12px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); cursor: pointer; text-decoration: none; }
+.btn.ghost { background: var(--panel); color: var(--accent); }
+.count { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-left: auto; }
+
+/* Panels */
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 14px; }
+.panel { grid-column: span 6; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px 16px; min-width: 0; position: relative; }
+.panel.w8 { grid-column: span 8; } .panel.w4 { grid-column: span 4; } .panel.w12 { grid-column: span 12; }
+@media (max-width: 960px) { .panel, .panel.w8, .panel.w4 { grid-column: span 12; } }
+.ph { display: flex; align-items: baseline; gap: 10px; margin-bottom: 2px; }
+.ph .no { font-family: var(--mono); font-size: 11px; color: var(--faint); }
+.ph h2 { font-size: 16px; font-weight: 600; margin: 0; }
+.cap { font-size: 13px; color: var(--muted); margin: 0 0 10px; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.sw.Critical, .bg-Critical { background: var(--p-critical); } .sw.High, .bg-High { background: var(--p-high); }
+.sw.Medium, .bg-Medium { background: var(--p-medium); } .sw.Low, .bg-Low { background: var(--p-low); }
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart text { font-family: var(--sans); font-size: 11px; fill: var(--muted); }
+.chart .val { font-family: var(--mono); fill: var(--ink); }
+.chart .axis path, .chart .axis line { stroke: var(--line-strong); }
+.chart .grid line { stroke: var(--line); }
+.hit { fill: transparent; cursor: pointer; }
+.row-hover .hl { fill: var(--tint); }
+.mapwrap { position: relative; background: #fbfaf7; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.coords { position: absolute; left: 8px; bottom: 6px; font-family: var(--mono); font-size: 11px; color: var(--muted); background: rgba(255,255,255,.85); padding: 1px 6px; border-radius: 3px; pointer-events: none; }
+.tip { position: absolute; z-index: 30; pointer-events: none; background: var(--panel); border: 1px solid var(--line-strong); box-shadow: 0 6px 20px rgba(27, 36, 48, .12); border-radius: var(--r); padding: 8px 10px; font-size: 12px; line-height: 1.45; max-width: 300px; }
+.tip b { font-weight: 600; }
+.tip .m { color: var(--muted); }
+.tip .li { margin-top: 3px; }
+.tip .mono { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.empty { padding: 28px 16px; color: var(--muted); text-align: center; font-size: 14px; }
+
+/* Incident log */
+.loghead { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 10px; }
+.ledger { border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); overflow: hidden; }
 details.inc { border-top: 1px solid var(--line); }
 details.inc:first-child { border-top: 0; }
-details.inc > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 6px minmax(0, 1fr); gap: 0 14px; padding: 14px 16px 14px 0; }
+details.inc > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 4px minmax(0, 1fr); gap: 12px; padding: 12px 14px 12px 0; }
 details.inc > summary::-webkit-details-marker { display: none; }
-details.inc > summary:hover { background: var(--soft); }
-details.inc[open] > summary { background: var(--soft); }
-.stripe { border-radius: 0 3px 3px 0; }
-.bg-Critical { background: var(--crit); } .bg-High { background: var(--high); } .bg-Medium { background: var(--med); } .bg-Low { background: var(--low); }
-.hl { font-weight: 600; font-size: 15.5px; overflow-wrap: anywhere; }
-.meta { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13px; color: var(--muted); margin-top: 4px; align-items: center; }
-.st { font-size: 11.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; }
+details.inc > summary:hover { background: #fbfaf7; }
+details.inc[open] > summary { background: var(--tint); }
+.stripe { border-radius: 0 2px 2px 0; }
+.hl { font-weight: 600; font-size: 15px; display: block; text-wrap: pretty; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; color: var(--muted); margin-top: 4px; align-items: center; }
+.mono { font-family: var(--mono); }
+.st, .pr { font-size: 11px; font-weight: 600; border-radius: 999px; padding: 0 8px; line-height: 18px; white-space: nowrap; }
 .st-lead { background: var(--lead-bg); color: var(--lead); } .st-confirmed { background: var(--conf-bg); color: var(--conf); } .st-verified { background: var(--ver-bg); color: var(--ver); }
-.pr { font-weight: 600; } .p-Critical { color: var(--crit); } .p-High { color: var(--high); } .p-Medium { color: var(--med); } .p-Low { color: var(--low); }
-.body { padding: 4px 18px 18px 20px; display: grid; gap: 14px; background: var(--soft); }
-.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px 20px; margin: 0; }
-.facts div { min-width: 0; } .facts dt { font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; } .facts dd { margin: 2px 0 0; overflow-wrap: anywhere; }
-.links { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 13.5px; }
-.links a { color: var(--accent); overflow-wrap: anywhere; }
-.legal { font-size: 13.5px; display: grid; gap: 6px; } .legal b { font-weight: 600; } .legal ul.refs { margin: 2px 0 0; padding-left: 18px; } .legal ul.refs li { margin: 1px 0; } .legal .why p { margin: 2px 0 0; max-width: 70ch; line-height: 1.5; }
-.sub { font-size: 12.5px; color: var(--muted); }
-.more { padding: 14px; text-align: center; }
-.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-.cols section { min-width: 0; }
-.cols p, .cols li { color: var(--ink); max-width: 68ch; }
-.cols ul { padding-left: 18px; margin: 0; display: grid; gap: 6px; }
-.key { display: grid; gap: 8px; }
-.key div { display: flex; gap: 10px; align-items: baseline; }
-footer { border-top: 1px solid var(--line); padding-top: 14px; font-size: 13px; color: var(--muted); }
-.empty { padding: 28px 16px; color: var(--muted); text-align: center; }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+.pr { border: 1px solid var(--line-strong); color: var(--ink); background: var(--panel); display: inline-flex; align-items: center; gap: 5px; }
+.pr::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--pc); }
+.pr.Critical { --pc: var(--p-critical); } .pr.High { --pc: var(--p-high); } .pr.Medium { --pc: var(--p-medium); } .pr.Low { --pc: var(--p-low); }
+.body { padding: 4px 16px 18px 16px; display: grid; gap: 14px; background: var(--tint); border-top: 1px solid var(--line); }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 18px; margin: 12px 0 0; }
+.facts dt { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: 2px 0 0; font-size: 14px; }
+.sub { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.legal { font-size: 13.5px; display: grid; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; }
+.legal b { font-weight: 600; }
+.legal ul.refs { margin: 2px 0 0; padding-left: 18px; }
+.legal ul.refs li { margin: 1px 0; }
+.legal .why p { margin: 2px 0 0; max-width: 75ch; line-height: 1.55; }
+.links { margin: 4px 0 0; padding-left: 18px; font-size: 13px; overflow-wrap: anywhere; }
+.links li { margin: 2px 0; }
+.more { padding: 14px; text-align: center; border-top: 1px solid var(--line); }
+.permalink { font-family: var(--mono); font-size: 12px; }
+
+/* Method */
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin-top: 14px; }
+.cols section { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; min-width: 0; }
+.cols h2 { font-family: var(--serif); font-size: 20px; font-weight: 600; margin: 0 0 8px; }
+.cols ul { padding-left: 18px; margin: 0; display: grid; gap: 6px; font-size: 14px; }
+.cols p { font-size: 14px; margin: 8px 0 0; }
+.key { display: grid; gap: 8px; font-size: 14px; }
+.key div { display: grid; grid-template-columns: 86px 1fr; gap: 10px; align-items: baseline; }
+.key .st { justify-self: start; }
+.band { margin-top: 28px; padding-top: 16px; border-top: 2px solid var(--ink); display: flex; align-items: baseline; gap: 12px; }
+.band h2 { font-family: var(--serif); font-size: 24px; font-weight: 600; margin: 0; }
+.band .no { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16px 32px; font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+@media (min-width: 760px) { .filters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(247, 246, 242, .95); backdrop-filter: blur(6px); } }
+@media (max-width: 560px) { .sysbar nav { margin-left: 0; } .kpi .num { font-size: 26px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
 </head>
 <body>
+<div class="sysbar">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#1f5e8c"/><circle cx="16" cy="16" r="8.5" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="16" cy="16" r="2.8" fill="#fff"/></svg>VIOLATIONS WATCH</a>
+    <div class="meta"><span><i class="dot" aria-hidden="true"></i>UPDATED <b id="s-upd">—</b></span><span>RECORDS <b id="s-n">—</b></span><span>NEXT UPDATE <b id="s-next">—</b></span></div>
+    <nav aria-label="Sections"><a href="#log">Incident log</a><a href="#method">Method</a><a href="#corrections">Corrections</a><a href="data.json">Data</a></nav>
+  </div>
+</div>
+
 <div class="wrap">
   <header class="mast">
-    <h1>Violations Watch</h1>
-    <p class="period" id="period"><span class="k">Time period</span> <b id="p-win">Loading…</b> <span class="d" id="p-note">Incidents reported in the 28 days up to the last update. Updated every Monday and Friday morning (UK time).</span></p>
-    <p class="tag">An open log of reported violations of international humanitarian and human rights law, collected from news and social media and shared as leads for investigators, journalists and researchers.</p>
-    <div class="warn" role="note"><span><b>Most entries are unverified leads, not findings.</b> Each one summarises what was reported, by whom and when, with links to the original sources. Check them before relying on them.</span></div>
+    <h1>Reported violations of international humanitarian and human rights law</h1>
+    <p class="period"><span class="k">Time period</span> <b id="p-win">Loading…</b> <span class="d" id="p-note">Incidents reported in the 28 days up to the last update. Updated every Monday and Friday morning (UK time).</span></p>
+    <p class="tag">An open log collected from news and social media and shared as leads for investigators, journalists and researchers. Every entry links to its original reports and, where possible, to archived copies.</p>
+    <div class="warn" role="note"><b>Most entries are unverified leads, not findings.</b> Each one records what was reported, by whom and when. Check the sources before relying on it.</div>
   </header>
 
-  <section class="figs" aria-label="Summary">
-    <div class="fig"><b id="f-n">—</b><span>incidents in this period</span></div>
-    <div class="fig"><b id="f-loc">—</b><span>countries and territories</span></div>
-    <div class="fig"><b id="f-ch">—</b><span>Critical or High priority</span></div>
-    <div class="fig"><b id="f-conf">—</b><span>confirmed by an analyst</span></div>
-    <div class="fig"><b id="f-upd">—</b><span>last updated</span></div>
+  <section class="kpis" aria-label="Summary figures">
+    <div class="kpi"><span class="lab">Incidents</span><span class="num" id="k-n">—</span><span class="note" id="k-n-note">in this period</span></div>
+    <div class="kpi"><span class="lab">Countries &amp; territories</span><span class="num" id="k-loc">—</span><span class="note">with at least one incident</span></div>
+    <div class="kpi"><span class="lab">Critical or High</span><span class="num" id="k-ch">—</span><span class="note" id="k-ch-note">priority</span></div>
+    <div class="kpi"><span class="lab">State actors alleged</span><span class="num" id="k-state">—</span><span class="note" id="k-state-note">of incidents with a named perpetrator</span></div>
+    <div class="kpi"><span class="lab">Confirmed by an analyst</span><span class="num" id="k-conf">—</span><span class="note">the rest are leads</span></div>
   </section>
 
-  <section>
-    <h2>Where incidents were reported</h2>
-    <div class="mapbox"><div id="map" role="img" aria-label="World map of incident locations"></div><div class="tip" id="tip" hidden></div>
-      <div class="legend"><span><i class="bg-Critical"></i>Critical</span><span><i class="bg-High"></i>High</span><span><i class="bg-Medium"></i>Medium</span><span><i class="bg-Low"></i>Low</span><span>Circle size: number of incidents. Country-level points sit at the country's centre.</span></div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Incident log</h2>
-    <div class="bar">
-      <input type="search" id="q" placeholder="Search place, perpetrator, ID or keyword" aria-label="Search">
-      <select id="fs" aria-label="Status"><option value="">All statuses</option><option value="lead">Unverified leads</option><option value="confirmed">Confirmed by an analyst</option><option value="verified">Verified</option></select>
-      <select id="fp" aria-label="Priority"><option value="">All priorities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
+  <div class="filters" id="filters">
+    <div class="row" role="search">
+      <span class="lab">Filter</span>
+      <input type="search" id="q" placeholder="Search place, perpetrator, VW number or keyword" aria-label="Search incidents">
       <select id="fl" aria-label="Country or territory"><option value="">All countries</option></select>
+      <select id="fp" aria-label="Priority"><option value="">All priorities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
       <select id="ft" aria-label="Violation type"><option value="">All violation types</option></select>
+      <select id="fa" aria-label="Alleged perpetrator"><option value="">All perpetrators</option><option value="state">State actors</option><option value="non-state">Non-state actors</option><option value="unknown">Unidentified</option></select>
+      <select id="fs" aria-label="Status"><option value="">All statuses</option><option value="lead">Leads</option><option value="confirmed">Confirmed</option><option value="verified">Verified</option></select>
       <span class="count" id="count"></span>
     </div>
-    <div class="bar" style="margin-top:8px"><a class="btn" id="csv" href="incidents.csv" download="violations-watch-incidents.csv">Download data (CSV)</a><a class="btn ghost" id="json" href="data.json" target="_blank" rel="noopener">Open as JSON</a><span class="sub" id="dlmsg"></span></div>
-    <div class="ledger" id="ledger" style="margin-top:12px"><div class="empty" id="loading">Loading the incident log…</div></div>
-  </section>
+    <div class="chips" id="chips" aria-live="polite"></div>
+  </div>
 
+  <div class="grid">
+    <section class="panel w8" aria-labelledby="h-map">
+      <div class="ph"><span class="no">01</span><h2 id="h-map">Where incidents were reported</h2></div>
+      <p class="cap">Circle size is the number of incidents at that point; colour is the highest priority among them. Incidents without a named town sit at the country's centre. Click a circle to filter.</p>
+      <div class="legend"><span><i class="sw Critical"></i>Critical</span><span><i class="sw High"></i>High</span><span><i class="sw Medium"></i>Medium</span><span><i class="sw Low"></i>Low</span></div>
+      <div class="mapwrap"><div id="map" class="chart" role="img" aria-label="World map of incident locations"></div><div class="coords" id="coords" aria-hidden="true">LAT — · LON —</div></div>
+    </section>
+    <section class="panel w4" aria-labelledby="h-loc">
+      <div class="ph"><span class="no">02</span><h2 id="h-loc">Most incidents</h2></div>
+      <p class="cap">By country or territory, split by priority. Click a bar to filter.</p>
+      <div class="legend"><span><i class="sw Critical"></i>Critical</span><span><i class="sw High"></i>High</span><span><i class="sw Medium"></i>Medium</span><span><i class="sw Low"></i>Low</span></div>
+      <div id="c-loc" class="chart"></div>
+    </section>
+    <section class="panel w8" aria-labelledby="h-day">
+      <div class="ph"><span class="no">03</span><h2 id="h-day">Incidents by day and priority</h2></div>
+      <p class="cap">By the day an incident was first reported (UTC). Hover a day for its incidents.</p>
+      <div class="legend"><span><i class="sw Critical"></i>Critical</span><span><i class="sw High"></i>High</span><span><i class="sw Medium"></i>Medium</span><span><i class="sw Low"></i>Low</span></div>
+      <div id="c-day" class="chart"></div>
+    </section>
+    <section class="panel w4" aria-labelledby="h-actor">
+      <div class="ph"><span class="no">04</span><h2 id="h-actor">Alleged perpetrator</h2></div>
+      <p class="cap">Who reports say carried out the act. An allegation, not a finding of responsibility. Click to filter.</p>
+      <div id="c-actor" class="chart"></div>
+    </section>
+    <section class="panel" aria-labelledby="h-type">
+      <div class="ph"><span class="no">05</span><h2 id="h-type">What kind of violation</h2></div>
+      <p class="cap">Incidents by type of reported violation. One incident can have several types. Click to filter.</p>
+      <div id="c-type" class="chart"></div>
+    </section>
+    <section class="panel" aria-labelledby="h-sub">
+      <div class="ph"><span class="no">06</span><h2 id="h-sub">Within a country</h2></div>
+      <p class="cap" id="sub-cap">By state, province or region named in the reports.</p>
+      <div class="row" style="margin-bottom:8px"><select id="fsub" aria-label="Country to break down"></select></div>
+      <div id="c-sub" class="chart"></div>
+    </section>
+  </div>
+
+  <div class="band" id="log"><span class="no">07</span><h2>Incident log</h2></div>
+  <div class="loghead">
+    <span class="count" id="count2" style="margin-left:0"></span>
+    <a class="btn" href="incidents.csv" download="violations-watch-incidents.csv">Download CSV</a>
+    <a class="btn ghost" href="data.json" target="_blank" rel="noopener">Open as JSON</a>
+  </div>
+  <div class="ledger" id="ledger"><div class="empty" id="loading">Loading the incident log…</div></div>
+
+  <div class="band" id="method"><span class="no">08</span><h2>Method and status labels</h2></div>
   <div class="cols">
     <section>
       <h2>Status labels</h2>
       <div class="key">
         <div><span class="st st-lead">Lead</span><span>Reported in the media or on social media and screened for relevance, but not independently checked. Treat as a starting point.</span></div>
-        <div><span class="st st-confirmed">Confirmed</span><span>Reviewed by an analyst: the report describes a real event that falls within scope, with the details as given.</span></div>
+        <div><span class="st st-confirmed">Confirmed</span><span>Reviewed by an analyst: the report describes a real event within scope, with the details as given.</span></div>
         <div><span class="st st-verified">Verified</span><span>Independently checked by an analyst, for example by geolocating footage or corroborating with independent sources.</span></div>
       </div>
-      <p class="sub" style="margin-top:10px">Priority (Critical to Low) reflects the reported severity, scale, harm to children and number of sources. It is not a judgement of legal responsibility.</p>
+      <p class="sub" style="margin-top:12px;text-transform:none;letter-spacing:0;font-family:var(--sans);font-size:13px">Priority (Critical to Low) reflects the reported severity, scale, harm to children and number of sources. It is not a judgement of legal responsibility.</p>
     </section>
     <section>
       <h2>How this is compiled</h2>
       <ul>
-        <li>News and social media feeds are monitored daily across several conflicts. Reports in Arabic and Persian are machine-translated before screening.</li>
+        <li>News and social media feeds are monitored daily across several conflicts. Reports in Arabic and Persian are translated before screening.</li>
         <li>Each report is screened for violations of international humanitarian, human rights or criminal law. Ordinary crime, politics and military operations against combatants are excluded.</li>
         <li>Reports of the same event are merged into one incident with a permanent ID (VW-year-number), so later reports and corrections attach to the same entry.</li>
         <li>Claims from parties to a conflict and from state media are labelled as such and never raise an incident's priority on their own.</li>
-        <li>Legal frameworks shown are indicative only: the provisions a reported act of that type commonly engages in that country's context. They are not legal findings.</li>
-        <li>IHL references cite the source in full, then the rule or article: the four Geneva Conventions of 1949 (I: wounded and sick; II: wounded, sick and shipwrecked at sea; III: prisoners of war; IV: civilians), Additional Protocol I (1977, international armed conflicts), Additional Protocol II (1977, non-international armed conflicts) and the rules of the ICRC Customary IHL Study, which bind all parties including armed groups (<a href="https://ihl-databases.icrc.org/en/customary-ihl/v1" target="_blank" rel="noopener">ihl-databases.icrc.org</a>). In non-international conflicts only Common Article 3 of the Conventions and Additional Protocol II apply as treaty law.</li>
         <li>Victims' names and identifying details are not published, and nothing here is graphic.</li>
       </ul>
     </section>
     <section>
+      <h2>Legal frameworks</h2>
+      <ul>
+        <li>Frameworks shown are indicative only: the provisions a reported act of that type commonly engages in that country's context, with a short explanation of why. They are not legal findings.</li>
+        <li>IHL references name the source in full, then the rule or article: the four Geneva Conventions of 1949 (I: wounded and sick; II: wounded, sick and shipwrecked at sea; III: prisoners of war; IV: civilians), Additional Protocol I (1977, international armed conflicts), Additional Protocol II (1977, non-international armed conflicts) and the rules of the ICRC Customary IHL Study, which bind all parties including armed groups (<a href="https://ihl-databases.icrc.org/en/customary-ihl/v1" target="_blank" rel="noopener">ihl-databases.icrc.org</a>).</li>
+        <li>In non-international conflicts only Common Article 3 of the Conventions and Additional Protocol II apply as treaty law, alongside customary rules.</li>
+      </ul>
+    </section>
+    <section id="corrections">
       <h2>Using and correcting the data</h2>
       <ul>
-        <li>Cite incidents by their VW number. The CSV and JSON downloads carry every field shown here.</li>
+        <li>Cite incidents by their VW number, for example <span class="mono">violationswatch.org/#VW-2026-0041</span>. The CSV and JSON downloads carry every field shown here.</li>
         <li>Where a source page has been archived, the archived copy is linked beside the original.</li>
-        <li>When an incident is later confirmed, verified, corrected or found to be unfounded, its entry is updated rather than removed silently.</li>
+        <li>When an incident is later confirmed, verified, corrected or found to be unfounded, its entry is updated rather than removed silently. Every change is public in the <a href="https://github.com/ViolationsWatch/site/commits/main" target="_blank" rel="noopener">version history</a>.</li>
       </ul>
-      <p style="margin-top:10px"><b>Corrections and contact:</b> email <a href="mailto:violationswatch@proton.me">violationswatch@proton.me</a> with the incident's VW number, what is wrong and a source if you have one. Corrections are made as quickly as possible and recorded below.</p>
-      <p class="sub" style="margin-top:6px">Corrections log: no corrections yet.</p>
+      <p><b>Corrections and contact:</b> email <a href="mailto:violationswatch@proton.me">violationswatch@proton.me</a> with the incident's VW number, what is wrong and a source if you have one.</p>
+      <p class="sub" style="margin-top:8px">Corrections log: no corrections yet.</p>
     </section>
   </div>
 
-  <footer><span id="foot">Data covers reports from 6–13 Nov 2026.</span> Content links to third-party reporting; Violations Watch does not endorse the sources it lists.</footer>
+  <footer><span id="foot">Data covers reports from —.</span><span>Violations Watch links to third-party reporting and does not endorse the sources it lists.</span></footer>
 </div>
+<div class="tip" id="tip" hidden></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
+  const PRIS = ['Critical', 'High', 'Medium', 'Low'];
   const PRI = {Critical: 0, High: 1, Medium: 2, Low: 3};
+  const PCOL = {Critical: 'var(--p-critical)', High: 'var(--p-high)', Medium: 'var(--p-medium)', Low: 'var(--p-low)'};
   const STL = {lead: 'Lead', confirmed: 'Confirmed', verified: 'Verified'};
+  const ACT = {state: 'State actors', 'non-state': 'Non-state actors', unknown: 'Unidentified'};
   const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
   const fd = (s) => { if (!s) return ''; const d = new Date(s); return isNaN(d) ? s : d.toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'}); };
+  const fds = (s) => new Date(s).toLocaleDateString('en-GB', {day: 'numeric', month: 'short', timeZone: 'UTC'});
   const rng = (r) => r[0] == null && r[1] == null ? '' : r[0] === r[1] || r[1] == null ? String(r[0]) + (r[1] == null && r[0] != null && r[0] > 0 ? '+' : '') : (r[0] ?? '?') + '–' + r[1];
   const statusOf = (r) => r.verification === 'verified' ? 'verified' : r.status;
+  const actorOf = (r) => r.actor_type === 'state' || r.actor_type === 'non-state' ? r.actor_type : 'unknown';
   const txt = (v) => Array.isArray(v) ? v.join(', ') : (v || '');
-  let rows = [], shown = 60;
+  const short = (s) => String(s).replace(/^Palestine \((.+)\)$/, 'Palestine: $1');
+  let rows = [], shown = 50, world = null;
+  const F = ['q', 'fl', 'fp', 'ft', 'fa', 'fs'];
+  const FL = {fl: 'Country', fp: 'Priority', ft: 'Type', fa: 'Perpetrator', fs: 'Status', q: 'Search'};
 
+  /* ---------- filtering ---------- */
   function filtered() {
-    const q = $('q').value.trim().toLowerCase(), s = $('fs').value, p = $('fp').value, l = $('fl').value, t = $('ft').value;
-    return rows.filter((r) => (!s || statusOf(r) === s) && (!p || r.priority === p) && (!l || r.location === l) && (!t || r.types.includes(t)) &&
+    const q = $('q').value.trim().toLowerCase(), s = $('fs').value, p = $('fp').value, l = $('fl').value, t = $('ft').value, a = $('fa').value;
+    return rows.filter((r) => (!s || statusOf(r) === s) && (!p || r.priority === p) && (!l || r.location === l) && (!t || r.types.includes(t)) && (!a || actorOf(r) === a) &&
       (!q || [r.id, r.headline, r.location, r.subregion, r.place, r.perpetrator, txt(r.victims), r.types.join(' ')].join(' ').toLowerCase().includes(q)));
   }
+  function setFilter(id, v) { const s = $(id); s.value = s.value === v ? '' : v; shown = 50; update(); }
+  function chips() {
+    const c = $('chips'); c.replaceChildren();
+    F.forEach((id) => { const v = $(id).value.trim(); if (!v) return; const label = id === 'fa' ? ACT[v] : id === 'fs' ? STL[v] : v;
+      const b = el('button', 'chip'); b.type = 'button'; b.setAttribute('aria-label', 'Remove filter ' + FL[id] + ': ' + label);
+      b.append(el('span', null, FL[id]), document.createTextNode(label + ' ✕')); b.onclick = () => { $(id).value = ''; shown = 50; update(); }; c.append(b); });
+    if (c.children.length > 1) { const b = el('button', 'chip', 'Clear all'); b.type = 'button'; b.onclick = () => { F.forEach((id) => { $(id).value = ''; }); shown = 50; update(); }; c.append(b); }
+  }
+
+  /* ---------- tooltip ---------- */
+  const tip = $('tip');
+  function showTip(ev, build) {
+    tip.replaceChildren(); build(tip); tip.hidden = false;
+    const w = tip.offsetWidth, h = tip.offsetHeight, x = ev.pageX + 14, y = ev.pageY + 14;
+    tip.style.left = Math.min(x, scrollX + innerWidth - w - 12) + 'px';
+    tip.style.top = (y + h > scrollY + innerHeight - 8 ? ev.pageY - h - 10 : y) + 'px';
+  }
+  const hideTip = () => { tip.hidden = true; };
+  function incList(t, list, n) {
+    list.slice().sort((a, b) => PRI[a.priority] - PRI[b.priority]).slice(0, n || 5).forEach((x) => { const d = el('div', 'li'); d.append(el('span', 'mono', x.id + ' '), document.createTextNode(x.headline.length > 90 ? x.headline.slice(0, 88) + '…' : x.headline)); t.append(d); });
+    if (list.length > (n || 5)) t.append(el('div', 'm', '+ ' + (list.length - (n || 5)) + ' more'));
+  }
+
+  /* ---------- charts ---------- */
+  // Horizontal bars, optionally stacked by priority. rows: [{key, label, items}]
+  function hbars(box, data, opts) {
+    box.replaceChildren();
+    if (!data.length) { box.append(el('div', 'empty', 'No incidents match these filters.')); return; }
+    const W = Math.max(260, box.clientWidth || 400), LW = Math.min(opts.lw || 170, Math.round(W * 0.45)), RH = 24, PADR = 34, MAXC = Math.floor((LW - 10) / 6.1);
+    const H = data.length * RH + 4;
+    const x = d3.scaleLinear().domain([0, d3.max(data, (d) => d.items.length) || 1]).range([0, W - LW - PADR]);
+    const svg = d3.create('svg').attr('viewBox', [0, 0, W, H]).attr('role', 'img').attr('aria-label', opts.aria);
+    const g = svg.selectAll('g').data(data).join('g').attr('transform', (d, i) => 'translate(0,' + i * RH + ')');
+    g.append('rect').attr('class', 'hlr').attr('x', 0).attr('width', W).attr('height', RH).attr('fill', 'transparent');
+    g.append('text').attr('x', LW - 8).attr('y', RH / 2).attr('dy', '0.35em').attr('text-anchor', 'end')
+      .text((d) => d.label.length > MAXC ? d.label.slice(0, MAXC - 1) + '…' : d.label).style('fill', (d) => d.active ? 'var(--accent)' : null).style('font-weight', (d) => d.active ? 600 : null);
+    g.each(function (d) {
+      const sel = d3.select(this); const bh = RH - 10;
+      if (opts.stack) {
+        let x0 = 0; const segs = PRIS.map((p) => ({p, n: d.items.filter((r) => r.priority === p).length})).filter((s) => s.n);
+        segs.forEach((s, i) => { const w = x(s.n); const last = i === segs.length - 1;
+          sel.append('path').attr('d', roundedBar(LW + x0, 5, Math.max(1, w - (last ? 0 : 2)), bh, last ? 3 : 0)).attr('fill', PCOL[s.p]); x0 += w; });
+      } else sel.append('path').attr('d', roundedBar(LW, 5, Math.max(1, x(d.items.length)), bh, 3)).attr('fill', d.active ? 'var(--ink)' : 'var(--accent)');
+      sel.append('text').attr('class', 'val').attr('x', LW + x(d.items.length) + 6).attr('y', RH / 2).attr('dy', '0.35em').text(d.items.length);
+    });
+    g.append('rect').attr('class', 'hit').attr('width', W).attr('height', RH)
+      .on('mousemove', (ev, d) => { d3.select(ev.currentTarget.parentNode).select('.hlr').attr('fill', 'var(--tint)'); showTip(ev, (t) => { t.append(el('b', null, d.label)); t.append(el('div', 'm', d.items.length + (d.items.length === 1 ? ' incident' : ' incidents') + (opts.stack ? ' · ' + PRIS.map((p) => [p, d.items.filter((r) => r.priority === p).length]).filter((x) => x[1]).map((x) => x[1] + ' ' + x[0]).join(', ') : ''))); incList(t, d.items, 4); t.append(el('div', 'm', d.active ? 'Click to clear this filter' : 'Click to filter')); }); })
+      .on('mouseleave', (ev) => { d3.select(ev.currentTarget.parentNode).select('.hlr').attr('fill', 'transparent'); hideTip(); })
+      .on('click', (ev, d) => { hideTip(); opts.click && opts.click(d); });
+    box.append(svg.node());
+  }
+  // bar with rounded data-end only (right side)
+  function roundedBar(x, y, w, h, r) { r = Math.min(r, w, h / 2); return 'M' + x + ',' + y + 'h' + (w - r) + (r ? 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + r : '') + 'v' + (h - 2 * r) + (r ? 'a' + r + ',' + r + ' 0 0 1 ' + (-r) + ',' + r : '') + 'h' + (r - w) + 'Z'; }
+
+  function drawDays(fr) {
+    const box = $('c-day'); box.replaceChildren();
+    if (!fr.length) { box.append(el('div', 'empty', 'No incidents match these filters.')); return; }
+    const days = d3.utcDays(d3.utcDay.floor(new Date(d3.min(rows, (r) => r.first_reported))), d3.utcDay.offset(d3.utcDay.floor(new Date(d3.max(rows, (r) => r.last_reported))), 1));
+    const by = d3.group(fr, (r) => r.first_reported.slice(0, 10));
+    const data = days.map((d) => { const k = d.toISOString().slice(0, 10); return {d, k, items: by.get(k) || []}; });
+    const W = Math.max(280, box.clientWidth || 600), H = 220, m = {t: 8, r: 8, b: 26, l: 30};
+    const x = d3.scaleBand().domain(data.map((d) => d.k)).range([m.l, W - m.r]).paddingInner(0.25).paddingOuter(0.1);
+    const y = d3.scaleLinear().domain([0, d3.max(data, (d) => d.items.length) || 1]).nice().range([H - m.b, m.t]);
+    const svg = d3.create('svg').attr('viewBox', [0, 0, W, H]).attr('role', 'img').attr('aria-label', 'Stacked bar chart of incidents by day first reported, split by priority');
+    svg.append('g').attr('class', 'grid').selectAll('line').data(y.ticks(4)).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y);
+    svg.append('g').attr('transform', 'translate(' + (m.l - 6) + ',0)').selectAll('text').data(y.ticks(4)).join('text').attr('y', y).attr('dy', '0.35em').attr('text-anchor', 'end').text((d) => d);
+    const every = Math.ceil(data.length / Math.max(2, Math.floor(W / 70)));
+    svg.append('g').selectAll('text').data(data.filter((d, i) => i % every === 0)).join('text').attr('x', (d) => x(d.k) + x.bandwidth() / 2).attr('y', H - 8).attr('text-anchor', 'middle').text((d) => fds(d.d));
+    svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(0)).attr('y2', y(0)).attr('stroke', 'var(--line-strong)');
+    const g = svg.append('g').selectAll('g').data(data).join('g');
+    g.each(function (d) {
+      const sel = d3.select(this); let y0 = 0;
+      const segs = PRIS.slice().reverse().map((p) => ({p, n: d.items.filter((r) => r.priority === p).length})).filter((s) => s.n);
+      segs.forEach((s, i) => { const top = i === segs.length - 1; const y1 = y0 + s.n; const yy = y(y1), hh = y(y0) - y(y1) - (y0 > 0 ? 2 : 0);
+        sel.append('path').attr('d', top ? colBar(x(d.k), yy, x.bandwidth(), Math.max(1, hh), 3) : 'M' + x(d.k) + ',' + yy + 'h' + x.bandwidth() + 'v' + Math.max(1, hh) + 'h' + (-x.bandwidth()) + 'Z').attr('fill', PCOL[s.p]); y0 = y1; });
+    });
+    g.append('rect').attr('class', 'hit').attr('x', (d) => x(d.k) - x.step() * x.paddingInner() / 2).attr('width', x.step()).attr('y', m.t).attr('height', H - m.t - m.b)
+      .on('mousemove', (ev, d) => showTip(ev, (t) => { t.append(el('b', null, fd(d.d))); t.append(el('div', 'm', d.items.length + (d.items.length === 1 ? ' incident' : ' incidents') + (d.items.length ? ' · ' + PRIS.map((p) => [p, d.items.filter((r) => r.priority === p).length]).filter((x) => x[1]).map((x) => x[1] + ' ' + x[0]).join(', ') : ''))); incList(t, d.items, 5); }))
+      .on('mouseleave', hideTip);
+    box.append(svg.node());
+  }
+  function colBar(x, y, w, h, r) { r = Math.min(r, w / 2, h); return 'M' + x + ',' + (y + h) + 'v' + (r - h) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + (-r) + 'h' + (w - 2 * r) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + r + 'v' + (h - r) + 'Z'; }
+
+  function drawMap(fr) {
+    const box = $('map'); if (!world || !window.topojson) { box.replaceChildren(el('div', 'empty', 'The map could not be drawn.')); return; }
+    const W = box.clientWidth || 800, H = Math.round(W * 0.52);
+    const land = topojson.feature(world, world.objects.countries); land.features = land.features.filter((f) => f.id !== '010');
+    const proj = d3.geoNaturalEarth1().fitExtent([[2, 4], [W - 2, H - 4]], land);
+    const path = d3.geoPath(proj);
+    const svg = d3.create('svg').attr('viewBox', [0, 0, W, H]);
+    svg.append('path').attr('d', path(d3.geoGraticule10())).attr('fill', 'none').attr('stroke', 'var(--grat)').attr('stroke-width', 0.6);
+    svg.append('path').attr('d', path(land)).attr('fill', 'var(--land)').attr('stroke', 'var(--land-line)').attr('stroke-width', 0.5);
+    const groups = d3.rollups(fr.filter((r) => r.lat != null), (v) => v, (r) => r.lat.toFixed(1) + ',' + r.lon.toFixed(1));
+    const rad = d3.scaleSqrt().domain([1, d3.max(groups, (g) => g[1].length) || 1]).range([4, Math.max(11, W / 42)]);
+    svg.append('g').selectAll('circle').data(groups.sort((a, b) => b[1].length - a[1].length)).join('circle')
+      .attr('transform', (g) => 'translate(' + proj([g[1][0].lon, g[1][0].lat]) + ')')
+      .attr('r', (g) => rad(g[1].length))
+      .attr('fill', (g) => PCOL[PRIS[d3.min(g[1], (x) => PRI[x.priority])]]).attr('fill-opacity', 0.85)
+      .attr('stroke', '#fff').attr('stroke-width', 1.5).style('cursor', 'pointer')
+      .on('mousemove', (ev, g) => { const f = g[1][0]; showTip(ev, (t) => { t.append(el('b', null, (f.place && f.precision === 'town' ? f.place + ', ' : '') + f.location)); t.append(el('div', 'mono', f.lat.toFixed(2) + ', ' + f.lon.toFixed(2) + (f.precision !== 'town' ? ' · country centre' : ''))); t.append(el('div', 'm', g[1].length + (g[1].length === 1 ? ' incident' : ' incidents'))); incList(t, g[1], 5); }); })
+      .on('mouseleave', hideTip)
+      .on('click', (ev, g) => { hideTip(); setFilter('fl', g[1][0].location); });
+    svg.on('mousemove.coords', (ev) => { const p = proj.invert(d3.pointer(ev)); if (p && isFinite(p[0])) $('coords').textContent = 'LAT ' + p[1].toFixed(2) + ' · LON ' + p[0].toFixed(2); });
+    box.replaceChildren(svg.node());
+  }
+
+  function drawSub(fr) {
+    const sel = $('fsub'); const country = sel.value; const box = $('c-sub');
+    const list = fr.filter((r) => r.location === country);
+    $('sub-cap').textContent = 'Incidents in ' + short(country) + ' by state, province or region named in the reports.';
+    const data = d3.rollups(list, (v) => v, (r) => r.subregion || 'Not named').map(([k, items]) => ({key: k, label: k, items}))
+      .sort((a, b) => (a.key === 'Not named') - (b.key === 'Not named') || b.items.length - a.items.length).slice(0, 12);
+    hbars(box, data, {aria: 'Bar chart of incidents in ' + country + ' by subregion', stack: true});
+  }
+
+  /* ---------- incident log ---------- */
   function link(u, label) { const a = el('a', null, label || u); a.href = u; a.target = '_blank'; a.rel = 'noopener noreferrer nofollow'; return a; }
   function fact(dl, k, v) { if (v == null || v === '') return; const d = el('div'); d.append(el('dt', null, k), el('dd', null, v)); dl.append(d); }
-
   function card(r) {
     const d = el('details', 'inc'); d.id = r.id;
-    const s = el('summary'); const body = el('span');
-    const m = el('span', 'meta');
-    const st = statusOf(r);
-    m.append(el('span', 'mono', r.id), el('span', 'st st-' + st, STL[st]), el('span', 'pr p-' + r.priority, r.priority), el('span', null, [r.place, r.location].filter(Boolean).join(', ') || r.location), el('span', null, 'first reported ' + fd(r.first_reported)));
+    const s = el('summary'); const body = el('span'); const m = el('span', 'meta'); const st = statusOf(r);
+    m.append(el('span', 'mono', r.id), el('span', 'st st-' + st, STL[st]), el('span', 'pr ' + r.priority, r.priority), el('span', null, [r.place, short(r.location)].filter(Boolean).join(', ')), el('span', null, 'first reported ' + fd(r.first_reported)));
     body.append(el('span', 'hl', r.headline), m);
-    s.append(el('span', 'stripe bg-' + r.priority), body); d.append(s);
-    d.addEventListener('toggle', () => { if (d.open && !d.dataset.built) { d.dataset.built = 1; d.append(details(r)); } });
+    const stripe = el('span', 'stripe'); stripe.style.background = PCOL[r.priority];
+    s.append(stripe, body); d.append(s);
+    d.addEventListener('toggle', () => { if (d.open && !d.dataset.built) { d.dataset.built = 1; d.append(details(r)); } if (d.open) history.replaceState(null, '', '#' + r.id); });
     return d;
   }
   function details(r) {
-    const b = el('div', 'body');
-    const dl = el('dl', 'facts');
-    fact(dl, 'Location', [r.place, r.subregion, r.location].filter(Boolean).filter((x, i, a) => !a.slice(0, i).some((y) => y.includes(x))).join(', ') + (r.precision && r.precision !== 'town' ? ' (' + r.precision + ' level)' : ''));
+    const b = el('div', 'body'); const dl = el('dl', 'facts');
+    fact(dl, 'Location', [r.place, r.subregion, r.location].filter(Boolean).filter((x, i, a) => !a.slice(0, i).some((y) => y.includes(x))).join(', ') + (r.lat != null ? ' · ' + r.lat.toFixed(2) + ', ' + r.lon.toFixed(2) : '') + (r.precision && r.precision !== 'town' ? ' (' + r.precision + ' level)' : ''));
     fact(dl, 'Date of incident', r.incident_date ? fd(r.incident_date) : 'Not stated in reports');
     fact(dl, 'Reported', fd(r.first_reported) + (r.last_reported && r.last_reported !== r.first_reported ? ' to ' + fd(r.last_reported) : ''));
     fact(dl, 'Alleged perpetrator', r.perpetrator ? r.perpetrator + (r.actor_type ? ' (' + r.actor_type + ' actor)' : '') : 'Not stated');
@@ -225,7 +467,7 @@ footer { border-top: 1px solid var(--line); padding-top: 14px; font-size: 13px; 
     fact(dl, 'Violation types', r.types.join(', '));
     fact(dl, 'Sources', r.sources + (r.sources === 1 ? ' outlet or account' : ' outlets or accounts') + (r.cumulative ? ' · aggregate or period report' : ''));
     b.append(dl);
-    if (r.disputed) { const w = el('div'); w.append(el('dt', 'sub', 'DISPUTED OR CAVEATS'), el('div', null, r.disputed)); b.append(w); }
+    if (r.disputed) { const w = el('div'); w.append(el('div', 'sub', 'Disputed or caveats'), el('div', null, r.disputed)); b.append(w); }
     const L = r.legal || {};
     if (L.ihl || L.ihrl || L.regional || L.icl) {
       const g = el('div', 'legal'); g.append(el('div', 'sub', 'Indicative legal frameworks (not a legal finding)'));
@@ -236,66 +478,68 @@ footer { border-top: 1px solid var(--line); padding-top: 14px; font-size: 13px; 
     const ul = el('ul', 'links'); const arch = new Map((r.archives || []).map((a) => [a.url, a]));
     r.links.forEach((u) => { const li = el('li'); li.append(link(u)); const a = arch.get(u); if (a) { li.append(document.createTextNode(' · ')); li.append(link(a.archived_url, 'archived ' + fd(a.at))); } ul.append(li); });
     const w = el('div'); w.append(el('div', 'sub', 'Original reports'), ul); b.append(w);
+    const pl = el('div', 'permalink'); pl.append(document.createTextNode('Cite as: '), link(location.origin + location.pathname + '#' + r.id, 'violationswatch.org/#' + r.id)); b.append(pl);
     return b;
   }
-
-  function render() {
-    const fr = filtered().sort((a, b) => PRI[a.priority] - PRI[b.priority] || b.last_reported.localeCompare(a.last_reported));
-    $('count').textContent = fr.length + (fr.length === 1 ? ' incident' : ' incidents');
+  function drawLog(fr) {
+    const sorted = fr.slice().sort((a, b) => PRI[a.priority] - PRI[b.priority] || b.last_reported.localeCompare(a.last_reported));
     const L = $('ledger');
-    if (!fr.length) { L.replaceChildren(el('div', 'empty', 'No incidents match these filters.')); return; }
-    const frag = document.createDocumentFragment(); fr.slice(0, shown).forEach((r) => frag.append(card(r)));
-    if (fr.length > shown) { const m = el('div', 'more'); const btn = el('button', 'btn ghost', 'Show ' + Math.min(60, fr.length - shown) + ' more'); btn.type = 'button'; btn.onclick = () => { shown += 60; render(); }; m.append(btn); frag.append(m); }
+    if (!sorted.length) { L.replaceChildren(el('div', 'empty', 'No incidents match these filters.')); return; }
+    const frag = document.createDocumentFragment(); sorted.slice(0, shown).forEach((r) => frag.append(card(r)));
+    if (sorted.length > shown) { const m = el('div', 'more'); const btn = el('button', 'btn ghost', 'Show ' + Math.min(50, sorted.length - shown) + ' more'); btn.type = 'button'; btn.onclick = () => { shown += 50; drawLog(filtered()); }; m.append(btn); frag.append(m); }
     L.replaceChildren(frag);
   }
 
-  function drawMap(world) {
-    const box = $('map'); const W = box.clientWidth || 900, H = Math.round(W * 0.5);
-    const land = topojson.feature(world, world.objects.countries); land.features = land.features.filter((f) => f.id !== '010');
-    const proj = d3.geoNaturalEarth1().fitExtent([[0, 4], [W, H - 4]], land);
-    const path = d3.geoPath(proj);
-    const svg = d3.create('svg').attr('viewBox', [0, 0, W, H]).attr('preserveAspectRatio', 'xMidYMid meet');
-    svg.append('path').attr('d', path(land)).attr('fill', 'var(--land)').attr('stroke', 'var(--land-line)').attr('stroke-width', 0.5);
-    const groups = d3.rollups(rows.filter((r) => r.lat != null), (v) => v, (r) => r.lat.toFixed(1) + ',' + r.lon.toFixed(1));
-    const r = d3.scaleSqrt().domain([1, d3.max(groups, (g) => g[1].length) || 1]).range([4, Math.max(10, W / 45)]);
-    const tip = $('tip');
-    svg.append('g').selectAll('circle').data(groups.sort((a, b) => b[1].length - a[1].length)).join('circle')
-      .attr('transform', (g) => 'translate(' + proj([g[1][0].lon, g[1][0].lat]) + ')')
-      .attr('r', (g) => r(g[1].length))
-      .attr('fill', (g) => 'var(--' + ['crit', 'high', 'med', 'low'][d3.min(g[1], (x) => PRI[x.priority])] + ')').attr('fill-opacity', 0.75)
-      .attr('stroke', 'var(--panel)').attr('stroke-width', 1).style('cursor', 'pointer')
-      .on('mousemove', (ev, g) => {
-        const pl = g[1][0].place || g[1][0].location; tip.replaceChildren(el('b', null, pl + ' · ' + g[1].length + (g[1].length === 1 ? ' incident' : ' incidents')));
-        g[1].slice(0, 5).forEach((x) => tip.append(el('div', 'sub', x.id + ' · ' + x.headline.slice(0, 80))));
-        const bb = box.parentElement.getBoundingClientRect(); tip.hidden = false;
-        tip.style.left = Math.min(ev.clientX - bb.left + 12, bb.width - 290) + 'px'; tip.style.top = (ev.clientY - bb.top + 12) + 'px';
-      })
-      .on('mouseleave', () => { tip.hidden = true; })
-      .on('click', (ev, g) => { $('fl').value = g[1][0].location; shown = 60; render(); document.getElementById('ledger').scrollIntoView({behavior: 'smooth', block: 'start'}); });
-    box.replaceChildren(svg.node());
+  /* ---------- update everything ---------- */
+  function update() {
+    const fr = filtered(); chips();
+    const lab = fr.length + (fr.length === 1 ? ' incident' : ' incidents') + (fr.length !== rows.length ? ' of ' + rows.length : '');
+    $('count').textContent = lab; $('count2').textContent = lab.toUpperCase();
+    const named = fr.filter((r) => actorOf(r) !== 'unknown');
+    $('k-n').textContent = fr.length; $('k-n-note').textContent = fr.length !== rows.length ? 'matching the filters' : 'in this period';
+    $('k-loc').textContent = new Set(fr.filter((r) => r.location !== 'Unlocated').map((r) => r.location)).size;
+    $('k-ch').textContent = fr.filter((r) => r.priority === 'Critical' || r.priority === 'High').length;
+    $('k-state').textContent = named.length ? Math.round(100 * named.filter((r) => r.actor_type === 'state').length / named.length) + '%' : '—';
+    $('k-state-note').textContent = named.length ? 'of ' + named.length + ' incidents with an identified perpetrator' : 'no identified perpetrators';
+    $('k-conf').textContent = fr.filter((r) => statusOf(r) !== 'lead').length;
+    drawMap(fr);
+    const loc = $('fl').value;
+    hbars($('c-loc'), d3.rollups(fr, (v) => v, (r) => r.location).map(([k, items]) => ({key: k, label: short(k), items, active: k === loc})).sort((a, b) => b.items.length - a.items.length).slice(0, 12),
+      {aria: 'Bar chart of incidents by country, split by priority', stack: true, click: (d) => setFilter('fl', d.key)});
+    const act = $('fa').value;
+    hbars($('c-actor'), ['state', 'non-state', 'unknown'].map((k) => ({key: k, label: ACT[k], items: fr.filter((r) => actorOf(r) === k), active: k === act})).filter((d) => d.items.length),
+      {aria: 'Bar chart of incidents by type of alleged perpetrator', click: (d) => setFilter('fa', d.key)});
+    const ty = $('ft').value;
+    hbars($('c-type'), [...new Set(fr.flatMap((r) => r.types))].map((k) => ({key: k, label: k, items: fr.filter((r) => r.types.includes(k)), active: k === ty})).sort((a, b) => b.items.length - a.items.length),
+      {aria: 'Bar chart of incidents by violation type', lw: 240, click: (d) => setFilter('ft', d.key)});
+    drawDays(fr);
+    if (loc && [...$('fsub').options].some((o) => o.value === loc)) $('fsub').value = loc;
+    drawSub(fr);
+    drawLog(fr);
   }
 
   async function init() {
-    let data, world;
+    let data;
     try { [data, world] = await Promise.all([fetch('data.json').then((r) => r.json()), fetch('world.json').then((r) => r.json()).catch(() => null)]); }
     catch (e) { $('loading').textContent = 'The incident log could not be loaded. Reload the page to try again.'; return; }
     rows = data.incidents || [];
-    $('f-n').textContent = rows.length; $('f-loc').textContent = new Set(rows.filter((r) => r.location !== 'Unlocated').map((r) => r.location)).size;
-    $('f-ch').textContent = rows.filter((r) => r.priority === 'Critical' || r.priority === 'High').length;
-    $('f-conf').textContent = rows.filter((r) => r.status === 'confirmed' || r.verification === 'verified').length;
-    $('f-upd').textContent = fd(data.updated);
+    $('s-upd').textContent = fd(data.updated).toUpperCase(); $('s-n').textContent = rows.length;
+    const nx = new Date(data.updated); do { nx.setUTCDate(nx.getUTCDate() + 1); } while (![1, 5].includes(nx.getUTCDay())); $('s-next').textContent = fds(nx).toUpperCase();
     if (data.window) $('foot').textContent = 'Data covers reports from ' + data.window + '.';
-    $('p-win').textContent = data.window || 'Not available'; if (data.updated) $('p-win').title = 'Last updated ' + fd(data.updated); { const ds = (data.incidents || []).map((r) => r.first_reported).filter(Boolean).sort(); const days = ds.length && data.updated ? (new Date(data.updated) - new Date(ds[0])) / 864e5 : 28; if (days < 27) $('p-note').textContent = 'Incidents reported since this log began, building up to a rolling 28-day window. Last updated ' + fd(data.updated) + '; updated every Monday and Friday morning (UK time).'; else $('p-note').textContent = 'Incidents reported in the 28 days up to ' + fd(data.updated) + '. Updated every Monday and Friday morning (UK time).'; }
-    $('fl').append(...[...new Set(rows.map((r) => r.location))].sort().map((x) => new Option(x)));
+    $('p-win').textContent = data.window || 'Not available';
+    const ds = rows.map((r) => r.first_reported).filter(Boolean).sort(); const days = ds.length && data.updated ? (new Date(data.updated) - new Date(ds[0])) / 864e5 : 28;
+    $('p-note').textContent = days < 27 ? 'Incidents reported since this log began, building up to a rolling 28-day window. Last updated ' + fd(data.updated) + '; updated every Monday and Friday morning (UK time).' : 'Incidents reported in the 28 days up to ' + fd(data.updated) + '. Updated every Monday and Friday morning (UK time).';
+    $('fl').append(...[...new Set(rows.map((r) => r.location))].sort().map((x) => new Option(short(x), x)));
     $('ft').append(...[...new Set(rows.flatMap((r) => r.types))].sort().map((x) => new Option(x)));
-    render();
-    if (world && window.d3 && window.topojson) { drawMap(world); let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => drawMap(world), 200); }); }
-    else $('map').replaceChildren(el('div', 'empty', 'The map could not be drawn.'));
-    if (location.hash && document.getElementById(location.hash.slice(1))) { const d = document.getElementById(location.hash.slice(1)); d.open = true; d.scrollIntoView(); }
+    const subC = d3.rollups(rows.filter((r) => r.subregion), (v) => new Set(v.map((r) => r.subregion)).size, (r) => r.location).filter((x) => x[1] > 1).map((x) => x[0]).sort((a, b) => rows.filter((r) => r.location === b).length - rows.filter((r) => r.location === a).length);
+    $('fsub').append(...subC.map((x) => new Option(short(x), x)));
+    $('fsub').addEventListener('input', () => drawSub(filtered()));
+    F.forEach((id) => $(id).addEventListener('input', () => { shown = 50; update(); }));
+    update();
+    let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(update, 200); });
+    const h = decodeURIComponent(location.hash.slice(1));
+    if (/^VW-/.test(h)) { const r = rows.find((x) => x.id === h); if (r) { if (!document.getElementById(h)) { shown = rows.length; drawLog(filtered()); } const d = document.getElementById(h); if (d) { d.open = true; d.scrollIntoView({block: 'start'}); } } }
   }
-  for (const id of ['q', 'fs', 'fp', 'fl', 'ft']) $(id).addEventListener('input', () => { shown = 60; render(); });
-
-
   init();
 })();
 </script>
