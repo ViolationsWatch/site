@@ -11,10 +11,10 @@
 <meta property="og:description" content="An open log of reported violations of international humanitarian and human rights law, shared as leads for investigators.">
 <meta property="og:url" content="https://violationswatch.org/">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#f7f6f2">
+<meta name="theme-color" content="#eaf2f9">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,600..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 /* Violations Watch: a light, human-rights register with an OSINT dashboard's density.
    Paper ground, ink text, one civic blue for single-series marks, and a single red ramp for priority
@@ -26,14 +26,14 @@ img, svg { max-width: 100%; }
 [hidden] { display: none !important; }
 :root {
   color-scheme: light;
-  --paper: #f7f6f2; --panel: #ffffff; --tint: #eef3f7; --ink: #1b2430; --muted: #5a6470; --faint: #8a939c;
-  --line: #e3e1d9; --line-strong: #cfccc1; --accent: #1f5e8c; --accent-soft: #dbe8f2; --accent-ink: #ffffff;
-  --land: #e9e7e0; --land-line: #d6d3c8; --grat: #efede7;
+  --paper: #eaf2f9; --panel: #ffffff; --tint: #f1f6fb; --ink: #13233a; --muted: #4f6075; --faint: #8395aa;
+  --line: #d3e1ee; --line-strong: #b9cde0; --accent: #1b5c96; --accent-soft: #dce9f6; --accent-ink: #ffffff;
+  --land: #dbe6f0; --land-line: #c3d3e3; --grat: #e9f0f7; --sea: #f7fafd;
   --p-critical: #7f1d16; --p-high: #c2412a; --p-medium: #e5896b; --p-low: #eeb7a3;
   --lead: #8a5a00; --lead-bg: #fbf0d9; --conf: #1d6b43; --conf-bg: #e3f2e9; --ver: #1f5e8c; --ver-bg: #e1edf6;
   --warn-bg: #fff6e0; --warn-line: #e8c46a;
-  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --r: 6px;
 }
@@ -46,7 +46,7 @@ a:hover { text-decoration-thickness: 2px; }
 /* System bar */
 .sysbar { background: var(--panel); border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 12px; color: var(--muted); }
 .sysbar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; padding-block: 8px; }
-.brand { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 600; text-decoration: none; letter-spacing: .02em; }
+.brand { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-family: var(--display); font-stretch: 115%; font-weight: 800; font-size: 14px; text-decoration: none; letter-spacing: .03em; }
 .brand svg { width: 20px; height: 20px; }
 .sysbar .meta { display: flex; flex-wrap: wrap; gap: 4px 16px; }
 .sysbar .meta span b { color: var(--ink); font-weight: 500; }
@@ -57,7 +57,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* Masthead */
 .mast { padding-block: 28px 18px; display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
-.mast h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(30px, 4.6vw, 46px); line-height: 1.08; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+.mast h1 { font-family: var(--display); font-weight: 800; font-stretch: 112%; font-size: clamp(28px, 4.4vw, 46px); line-height: 1.04; margin: 0; letter-spacing: -0.015em; text-wrap: balance; max-width: 22ch; }
 .mast .tag { font-size: 17px; max-width: 70ch; margin: 0; color: var(--ink); text-wrap: pretty; }
 .period { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 0; }
 .period .k { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
@@ -69,7 +69,7 @@ a:hover { text-decoration-thickness: 2px; }
 .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 18px; }
 .kpi { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; display: grid; gap: 2px; min-width: 0; }
 .kpi .lab { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.kpi .num { font-size: 30px; font-weight: 600; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.kpi .num { font-family: var(--display); font-stretch: 105%; font-size: 32px; font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; }
 .kpi .note { font-size: 12px; color: var(--muted); }
 
 /* Filter bar */
@@ -95,7 +95,7 @@ select { flex: 0 1 auto; max-width: 100%; }
 @media (max-width: 960px) { .panel, .panel.w8, .panel.w4 { grid-column: span 12; } }
 .ph { display: flex; align-items: baseline; gap: 10px; margin-bottom: 2px; }
 .ph .no { font-family: var(--mono); font-size: 11px; color: var(--faint); }
-.ph h2 { font-size: 16px; font-weight: 600; margin: 0; }
+.ph h2 { font-family: var(--display); font-stretch: 108%; font-size: 16px; font-weight: 700; margin: 0; }
 .cap { font-size: 13px; color: var(--muted); margin: 0 0 10px; }
 .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
 .legend span { display: inline-flex; align-items: center; gap: 6px; }
@@ -110,13 +110,19 @@ select { flex: 0 1 auto; max-width: 100%; }
 .chart .grid line { stroke: var(--line); }
 .hit { fill: transparent; cursor: pointer; }
 .row-hover .hl { fill: var(--tint); }
-.mapwrap { position: relative; background: #fbfaf7; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.mapwrap { position: relative; background: var(--sea); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
 .coords { position: absolute; left: 8px; bottom: 6px; font-family: var(--mono); font-size: 11px; color: var(--muted); background: rgba(255,255,255,.85); padding: 1px 6px; border-radius: 3px; pointer-events: none; }
-.tip { position: absolute; z-index: 30; pointer-events: none; background: var(--panel); border: 1px solid var(--line-strong); box-shadow: 0 6px 20px rgba(27, 36, 48, .12); border-radius: var(--r); padding: 8px 10px; font-size: 12px; line-height: 1.45; max-width: 300px; }
+.tip { position: absolute; z-index: 30; pointer-events: none; background: var(--panel); border: 1px solid var(--line-strong); box-shadow: 0 8px 24px rgba(19, 35, 58, .14); border-radius: var(--r); padding: 8px 10px; font-size: 12px; line-height: 1.45; max-width: 300px; }
 .tip b { font-weight: 600; }
 .tip .m { color: var(--muted); }
 .tip .li { margin-top: 3px; }
 .tip .mono { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.tip.pinned { pointer-events: auto; padding: 12px 14px; font-size: 13px; max-width: min(340px, calc(100vw - 24px)); }
+.tip .tipx { position: absolute; top: 4px; right: 4px; width: 32px; height: 32px; border: 0; background: none; font-size: 18px; color: var(--muted); cursor: pointer; border-radius: 4px; }
+.tip .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.tip .acts .btn { font-size: 13px; padding: 6px 10px; }
+.tip button.li { display: block; width: 100%; text-align: left; font: inherit; color: var(--ink); background: none; border: 0; border-top: 1px solid var(--line); padding: 6px 0; cursor: pointer; }
+.tip button.li:hover { color: var(--accent); }
 .empty { padding: 28px 16px; color: var(--muted); text-align: center; font-size: 14px; }
 
 /* Incident log */
@@ -126,8 +132,8 @@ details.inc { border-top: 1px solid var(--line); }
 details.inc:first-child { border-top: 0; }
 details.inc > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 4px minmax(0, 1fr); gap: 12px; padding: 12px 14px 12px 0; }
 details.inc > summary::-webkit-details-marker { display: none; }
-details.inc > summary:hover { background: #fbfaf7; }
-details.inc[open] > summary { background: var(--tint); }
+details.inc > summary:hover { background: var(--tint); }
+details.inc[open] > summary { background: var(--accent-soft); }
 .stripe { border-radius: 0 2px 2px 0; }
 .hl { font-weight: 600; font-size: 15px; display: block; text-wrap: pretty; }
 .meta { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; color: var(--muted); margin-top: 4px; align-items: center; }
@@ -155,17 +161,17 @@ details.inc[open] > summary { background: var(--tint); }
 /* Method */
 .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin-top: 14px; }
 .cols section { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; min-width: 0; }
-.cols h2 { font-family: var(--serif); font-size: 20px; font-weight: 600; margin: 0 0 8px; }
+.cols h2 { font-family: var(--display); font-stretch: 108%; font-size: 19px; font-weight: 700; margin: 0 0 8px; }
 .cols ul { padding-left: 18px; margin: 0; display: grid; gap: 6px; font-size: 14px; }
 .cols p { font-size: 14px; margin: 8px 0 0; }
 .key { display: grid; gap: 8px; font-size: 14px; }
 .key div { display: grid; grid-template-columns: 86px 1fr; gap: 10px; align-items: baseline; }
 .key .st { justify-self: start; }
 .band { margin-top: 28px; padding-top: 16px; border-top: 2px solid var(--ink); display: flex; align-items: baseline; gap: 12px; }
-.band h2 { font-family: var(--serif); font-size: 24px; font-weight: 600; margin: 0; }
+.band h2 { font-family: var(--display); font-stretch: 112%; font-size: 26px; font-weight: 800; margin: 0; }
 .band .no { font-family: var(--mono); font-size: 12px; color: var(--faint); }
 footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16px 32px; font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
-@media (min-width: 760px) { .filters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(247, 246, 242, .95); backdrop-filter: blur(6px); } }
+@media (min-width: 760px) { .filters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(234, 242, 249, .95); backdrop-filter: blur(6px); } }
 @media (max-width: 560px) { .sysbar nav { margin-left: 0; } .kpi .num { font-size: 26px; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
@@ -212,30 +218,30 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
   <div class="grid">
     <section class="panel w8" aria-labelledby="h-map">
       <div class="ph"><span class="no">01</span><h2 id="h-map">Where incidents were reported</h2></div>
-      <p class="cap">Circle size is the number of incidents at that point; colour is the highest priority among them. Incidents without a named town sit at the country's centre. Click a circle to filter.</p>
+      <p class="cap">Circle size is the number of incidents at that point; colour is the highest priority among them. Incidents without a named town sit at the country's centre. Click or tap a circle for its incidents.</p>
       <div class="legend"><span><i class="sw Critical"></i>Critical</span><span><i class="sw High"></i>High</span><span><i class="sw Medium"></i>Medium</span><span><i class="sw Low"></i>Low</span></div>
       <div class="mapwrap"><div id="map" class="chart" role="img" aria-label="World map of incident locations"></div><div class="coords" id="coords" aria-hidden="true">LAT — · LON —</div></div>
     </section>
     <section class="panel w4" aria-labelledby="h-loc">
       <div class="ph"><span class="no">02</span><h2 id="h-loc">Most incidents</h2></div>
-      <p class="cap">By country or territory, split by priority. Click a bar to filter.</p>
+      <p class="cap">By country or territory, split by priority. Click or tap a bar for details and to filter.</p>
       <div class="legend"><span><i class="sw Critical"></i>Critical</span><span><i class="sw High"></i>High</span><span><i class="sw Medium"></i>Medium</span><span><i class="sw Low"></i>Low</span></div>
       <div id="c-loc" class="chart"></div>
     </section>
     <section class="panel w8" aria-labelledby="h-day">
       <div class="ph"><span class="no">03</span><h2 id="h-day">Incidents by day and priority</h2></div>
-      <p class="cap">By the day an incident was first reported (UTC). Hover a day for its incidents.</p>
+      <p class="cap">By the day an incident was first reported (UTC). Hover over or tap a day for its incidents.</p>
       <div class="legend"><span><i class="sw Critical"></i>Critical</span><span><i class="sw High"></i>High</span><span><i class="sw Medium"></i>Medium</span><span><i class="sw Low"></i>Low</span></div>
       <div id="c-day" class="chart"></div>
     </section>
     <section class="panel w4" aria-labelledby="h-actor">
       <div class="ph"><span class="no">04</span><h2 id="h-actor">Alleged perpetrator</h2></div>
-      <p class="cap">Who reports say carried out the act. An allegation, not a finding of responsibility. Click to filter.</p>
+      <p class="cap">Who reports say carried out the act. An allegation, not a finding of responsibility. Click or tap to filter.</p>
       <div id="c-actor" class="chart"></div>
     </section>
     <section class="panel" aria-labelledby="h-type">
       <div class="ph"><span class="no">05</span><h2 id="h-type">What kind of violation</h2></div>
-      <p class="cap">Incidents by type of reported violation. One incident can have several types. Click to filter.</p>
+      <p class="cap">Incidents by type of reported violation. One incident can have several types. Click or tap to filter.</p>
       <div id="c-type" class="chart"></div>
     </section>
     <section class="panel" aria-labelledby="h-sub">
@@ -338,18 +344,48 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
 
   /* ---------- tooltip ---------- */
   const tip = $('tip');
-  function showTip(ev, build) {
-    tip.replaceChildren(); build(tip); tip.hidden = false;
-    const w = tip.offsetWidth, h = tip.offsetHeight, x = ev.pageX + 14, y = ev.pageY + 14;
-    tip.style.left = Math.min(x, scrollX + innerWidth - w - 12) + 'px';
-    tip.style.top = (y + h > scrollY + innerHeight - 8 ? ev.pageY - h - 10 : y) + 'px';
+  const TOUCH = matchMedia('(hover: none)').matches;
+  let pinned = false;
+  function place(ev) {
+    const w = tip.offsetWidth, hgt = tip.offsetHeight;
+    let x = ev.pageX + 14, y = ev.pageY + 14;
+    if (pinned) { x = Math.max(scrollX + 12, Math.min(ev.pageX - w / 2, scrollX + innerWidth - w - 12)); y = ev.pageY + 16; }
+    tip.style.left = Math.max(scrollX + 8, Math.min(x, scrollX + innerWidth - w - 12)) + 'px';
+    tip.style.top = (y + hgt > scrollY + innerHeight - 8 ? Math.max(scrollY + 8, ev.pageY - hgt - 12) : y) + 'px';
   }
-  const hideTip = () => { tip.hidden = true; };
-  function incList(t, list, n) {
-    list.slice().sort((a, b) => PRI[a.priority] - PRI[b.priority]).slice(0, n || 5).forEach((x) => { const d = el('div', 'li'); d.append(el('span', 'mono', x.id + ' '), document.createTextNode(x.headline.length > 90 ? x.headline.slice(0, 88) + '…' : x.headline)); t.append(d); });
-    if (list.length > (n || 5)) t.append(el('div', 'm', '+ ' + (list.length - (n || 5)) + ' more'));
+  function showTip(ev, build) { if (pinned) return; tip.classList.remove('pinned'); tip.replaceChildren(); build(tip, false); tip.hidden = false; place(ev); }
+  function pinTip(ev, build, act) {
+    pinned = true; tip.classList.add('pinned'); tip.replaceChildren(); build(tip, true);
+    const acts = el('div', 'acts');
+    if (act) { const b = el('button', 'btn', act.label); b.type = 'button'; b.onclick = () => { closeTip(); act.fn(); }; acts.append(b); }
+    const c = el('button', 'btn ghost', 'Close'); c.type = 'button'; c.onclick = closeTip; acts.append(c); tip.append(acts);
+    const x = el('button', 'tipx', '×'); x.type = 'button'; x.setAttribute('aria-label', 'Close'); x.onclick = closeTip; tip.append(x);
+    tip.hidden = false; place(ev); ev.stopPropagation();
   }
-
+  function closeTip() { pinned = false; tip.hidden = true; tip.classList.remove('pinned'); }
+  const hideTip = () => { if (!pinned) tip.hidden = true; };
+  document.addEventListener('click', (ev) => { if (pinned && !tip.contains(ev.target)) closeTip(); });
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeTip(); });
+  // hover + click on desktop; tap opens a card with the details and the action on phones
+  function bindTip(sel, build, action, onEnter, onLeave) {
+    sel.on('mousemove', (ev, d) => { if (TOUCH) return; onEnter && onEnter(ev, d); showTip(ev, (t, p) => build(t, d, p)); })
+      .on('mouseleave', (ev, d) => { if (TOUCH) return; onLeave && onLeave(ev, d); hideTip(); })
+      .on('click', (ev, d) => { const a = action ? action(d) : null;
+        if (TOUCH) { pinTip(ev, (t, p) => build(t, d, p), a); return; }
+        if (a) { closeTip(); a.fn(); } else pinTip(ev, (t, p) => build(t, d, p), null); });
+  }
+  function openIncident(id) {
+    let d = document.getElementById(id);
+    if (!d) { F.forEach((k) => { $(k).value = ''; }); shown = rows.length; update(); d = document.getElementById(id); }
+    if (d) { d.open = true; d.scrollIntoView({behavior: 'smooth', block: 'start'}); }
+  }
+  function incList(t, list, n, p) {
+    n = n || 5;
+    list.slice().sort((a, b) => PRI[a.priority] - PRI[b.priority]).slice(0, n).forEach((x) => {
+      const d = el(p ? 'button' : 'div', 'li'); if (p) { d.type = 'button'; d.onclick = () => { closeTip(); openIncident(x.id); }; }
+      d.append(el('span', 'mono', x.id + ' '), document.createTextNode(x.headline.length > 90 ? x.headline.slice(0, 88) + '…' : x.headline)); t.append(d); });
+    if (list.length > n) t.append(el('div', 'm', '+ ' + (list.length - n) + ' more'));
+  }
   /* ---------- charts ---------- */
   // Horizontal bars, optionally stacked by priority. rows: [{key, label, items}]
   function hbars(box, data, opts) {
@@ -372,10 +408,11 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
       } else sel.append('path').attr('d', roundedBar(LW, 5, Math.max(1, x(d.items.length)), bh, 3)).attr('fill', d.active ? 'var(--ink)' : 'var(--accent)');
       sel.append('text').attr('class', 'val').attr('x', LW + x(d.items.length) + 6).attr('y', RH / 2).attr('dy', '0.35em').text(d.items.length);
     });
-    g.append('rect').attr('class', 'hit').attr('width', W).attr('height', RH)
-      .on('mousemove', (ev, d) => { d3.select(ev.currentTarget.parentNode).select('.hlr').attr('fill', 'var(--tint)'); showTip(ev, (t) => { t.append(el('b', null, d.label)); t.append(el('div', 'm', d.items.length + (d.items.length === 1 ? ' incident' : ' incidents') + (opts.stack ? ' · ' + PRIS.map((p) => [p, d.items.filter((r) => r.priority === p).length]).filter((x) => x[1]).map((x) => x[1] + ' ' + x[0]).join(', ') : ''))); incList(t, d.items, 4); t.append(el('div', 'm', d.active ? 'Click to clear this filter' : 'Click to filter')); }); })
-      .on('mouseleave', (ev) => { d3.select(ev.currentTarget.parentNode).select('.hlr').attr('fill', 'transparent'); hideTip(); })
-      .on('click', (ev, d) => { hideTip(); opts.click && opts.click(d); });
+    bindTip(g.append('rect').attr('class', 'hit').attr('width', W).attr('height', RH),
+      (t, d, p) => { t.append(el('b', null, d.label)); t.append(el('div', 'm', d.items.length + (d.items.length === 1 ? ' incident' : ' incidents') + (opts.stack ? ' · ' + PRIS.map((q) => [q, d.items.filter((r) => r.priority === q).length]).filter((x) => x[1]).map((x) => x[1] + ' ' + x[0]).join(', ') : ''))); incList(t, d.items, p ? 5 : 4, p); if (!p && opts.click) t.append(el('div', 'm', d.active ? 'Click to clear this filter' : 'Click to filter')); },
+      opts.click ? (d) => ({label: d.active ? 'Clear this filter' : 'Filter to ' + d.label, fn: () => opts.click(d)}) : null,
+      (ev) => d3.select(ev.currentTarget.parentNode).select('.hlr').attr('fill', 'var(--tint)'),
+      (ev) => d3.select(ev.currentTarget.parentNode).select('.hlr').attr('fill', 'transparent'));
     box.append(svg.node());
   }
   // bar with rounded data-end only (right side)
@@ -404,8 +441,7 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
         sel.append('path').attr('d', top ? colBar(x(d.k), yy, x.bandwidth(), Math.max(1, hh), 3) : 'M' + x(d.k) + ',' + yy + 'h' + x.bandwidth() + 'v' + Math.max(1, hh) + 'h' + (-x.bandwidth()) + 'Z').attr('fill', PCOL[s.p]); y0 = y1; });
     });
     g.append('rect').attr('class', 'hit').attr('x', (d) => x(d.k) - x.step() * x.paddingInner() / 2).attr('width', x.step()).attr('y', m.t).attr('height', H - m.t - m.b)
-      .on('mousemove', (ev, d) => showTip(ev, (t) => { t.append(el('b', null, fd(d.d))); t.append(el('div', 'm', d.items.length + (d.items.length === 1 ? ' incident' : ' incidents') + (d.items.length ? ' · ' + PRIS.map((p) => [p, d.items.filter((r) => r.priority === p).length]).filter((x) => x[1]).map((x) => x[1] + ' ' + x[0]).join(', ') : ''))); incList(t, d.items, 5); }))
-      .on('mouseleave', hideTip);
+    ; bindTip(g.selectAll('rect.hit'), (t, d, p) => { t.append(el('b', null, fd(d.d))); t.append(el('div', 'm', d.items.length + (d.items.length === 1 ? ' incident' : ' incidents') + (d.items.length ? ' · ' + PRIS.map((q) => [q, d.items.filter((r) => r.priority === q).length]).filter((x) => x[1]).map((x) => x[1] + ' ' + x[0]).join(', ') : ''))); incList(t, d.items, p ? 6 : 5, p); }, null);
     box.append(svg.node());
   }
   function colBar(x, y, w, h, r) { r = Math.min(r, w / 2, h); return 'M' + x + ',' + (y + h) + 'v' + (r - h) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + (-r) + 'h' + (w - 2 * r) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + r + 'v' + (h - r) + 'Z'; }
@@ -426,9 +462,8 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
       .attr('r', (g) => rad(g[1].length))
       .attr('fill', (g) => PCOL[PRIS[d3.min(g[1], (x) => PRI[x.priority])]]).attr('fill-opacity', 0.85)
       .attr('stroke', '#fff').attr('stroke-width', 1.5).style('cursor', 'pointer')
-      .on('mousemove', (ev, g) => { const f = g[1][0]; showTip(ev, (t) => { t.append(el('b', null, (f.place && f.precision === 'town' ? f.place + ', ' : '') + f.location)); t.append(el('div', 'mono', f.lat.toFixed(2) + ', ' + f.lon.toFixed(2) + (f.precision !== 'town' ? ' · country centre' : ''))); t.append(el('div', 'm', g[1].length + (g[1].length === 1 ? ' incident' : ' incidents'))); incList(t, g[1], 5); }); })
-      .on('mouseleave', hideTip)
-      .on('click', (ev, g) => { hideTip(); setFilter('fl', g[1][0].location); });
+      .call((s) => bindTip(s, (t, g, p) => { const f = g[1][0]; t.append(el('b', null, (f.place && f.precision === 'town' ? f.place + ', ' : '') + f.location)); t.append(el('div', 'mono', f.lat.toFixed(2) + ', ' + f.lon.toFixed(2) + (f.precision !== 'town' ? ' · country centre' : ''))); t.append(el('div', 'm', g[1].length + (g[1].length === 1 ? ' incident' : ' incidents'))); incList(t, g[1], p ? 6 : 5, p); if (!p) t.append(el('div', 'm', 'Click to filter to ' + f.location)); },
+        (g) => ({label: 'Filter to ' + short(g[1][0].location), fn: () => setFilter('fl', g[1][0].location)})));
     svg.on('mousemove.coords', (ev) => { const p = proj.invert(d3.pointer(ev)); if (p && isFinite(p[0])) $('coords').textContent = 'LAT ' + p[1].toFixed(2) + ' · LON ' + p[0].toFixed(2); });
     box.replaceChildren(svg.node());
   }
