@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Blog · Violations Watch</title>
+<meta name="description" content="Analysis, methods and updates from Violations Watch: OSINT for human rights.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0b1d33">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,600..800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/blog/blog.css">
+</head>
+<body>
+<div class="dark">
+  <div class="sysbar"><div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#2a74b8"/><circle cx="16" cy="16" r="8.5" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="16" cy="16" r="2.8" fill="#fff"/></svg>VIOLATIONS WATCH</a>
+    <nav aria-label="Site"><a href="/">Incident log</a><a href="/blog/" aria-current="page">Blog</a><a href="/#method">Method</a><a href="/#corrections">Corrections</a></nav>
+  </div></div>
+  <header class="wrap narrow hero">
+    <p class="kicker" id="kicker">Blog</p>
+    <h1 id="title">Loading…</h1>
+    <p class="dek" id="dek" hidden></p>
+    <div class="byline" id="byline"></div>
+    <div class="tags" id="tags"></div>
+  </header>
+</div>
+<main class="wrap narrow">
+  <article><div class="prose" id="body"></div></article>
+  <a class="back" href="/blog/" id="back">← All posts</a>
+</main>
+<footer class="wrap narrow">Violations Watch · <a href="/">Incident log</a> · Corrections: <a href="mailto:violationswatch@proton.me">violationswatch@proton.me</a></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+<script>
+(async () => {
+  const $ = (id) => document.getElementById(id);
+  const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+  const fd = (s) => new Date(s + 'T00:00:00Z').toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'});
+  const q = new URLSearchParams(location.search), slug = q.get('p') || '', preview = q.has('drafts');
+  if (preview) $('back').href = '/blog/?drafts';
+  const fail = (m) => { $('title').textContent = 'Post not found'; $('body').replaceChildren(el('p', null, m)); };
+  try {
+    const meta = (await fetch('/blog/posts.json', {cache: 'no-cache'}).then((r) => r.json())).posts.find((p) => p.slug === slug);
+    if (!meta || (meta.draft && !preview)) return fail('This post does not exist or has not been published yet.');
+    const src = await fetch('/blog/posts/' + encodeURIComponent(meta.file)).then((r) => { if (!r.ok) throw 0; return r.text(); });
+    const md = src.replace(/^---[\s\S]*?\n---\s*\n/, '');
+    document.title = meta.title + ' · Violations Watch';
+    $('title').textContent = meta.title;
+    if (meta.summary) { $('dek').textContent = meta.summary; $('dek').hidden = false; }
+    const by = $('byline'); const t = el('time', null, fd(meta.date)); t.dateTime = meta.date; by.append(t);
+    if (meta.author) by.append(el('span', null, 'By ' + meta.author));
+    if (meta.draft) by.append(el('span', 'draft', 'DRAFT · not public'));
+    (meta.tags || []).forEach((x) => $('tags').append(el('span', 'tag', x)));
+    let html = window.marked ? marked.parse(md) : md.replace(/[<&]/g, (c) => ({'<': '&lt;', '&': '&amp;'}[c])).replace(/\n\n/g, '<br><br>');
+    // VW-2026-0041 in a post becomes a link to that incident
+    html = html.replace(/(^|[^\/#\w-])(VW-\d{4}-\d{4})\b/g, '$1<a class="vw-ref" href="/#$2">$2</a>');
+    $('body').innerHTML = window.DOMPurify ? DOMPurify.sanitize(html) : html;
+    $('body').querySelectorAll('a[href^="http"]').forEach((a) => { a.target = '_blank'; a.rel = 'noopener noreferrer'; });
+  } catch (e) { fail('This post could not be loaded. Reload the page to try again.'); }
+})();
+</script>
+</body>
+</html>

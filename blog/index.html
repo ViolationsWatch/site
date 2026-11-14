@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Blog · Violations Watch</title>
+<meta name="description" content="Analysis, methods and updates from Violations Watch: OSINT for human rights.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0b1d33">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,600..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/blog/blog.css">
+</head>
+<body>
+<div class="dark">
+  <div class="sysbar"><div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#2a74b8"/><circle cx="16" cy="16" r="8.5" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="16" cy="16" r="2.8" fill="#fff"/></svg>VIOLATIONS WATCH</a>
+    <nav aria-label="Site"><a href="/">Incident log</a><a href="/blog/" aria-current="page">Blog</a><a href="/#method">Method</a><a href="/#corrections">Corrections</a></nav>
+  </div></div>
+  <header class="wrap hero">
+    <p class="kicker">Blog</p>
+    <h1>Analysis, methods and notes from the field</h1>
+    <p class="dek">Longer pieces on patterns in the incident log, how open-source evidence is found and checked, and the law that applies.</p>
+  </header>
+</div>
+<main class="wrap narrow">
+  <div class="posts" id="posts"><div class="empty">Loading posts…</div></div>
+</main>
+<footer class="wrap narrow">Violations Watch · <a href="/">Incident log</a> · <a href="mailto:violationswatch@proton.me">violationswatch@proton.me</a></footer>
+<script>
+(async () => {
+  const box = document.getElementById('posts');
+  const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+  const fd = (s) => new Date(s + 'T00:00:00Z').toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'});
+  const preview = new URLSearchParams(location.search).has('drafts');
+  try {
+    const list = (await fetch('/blog/posts.json', {cache: 'no-cache'}).then((r) => r.json())).posts.filter((p) => preview || !p.draft);
+    if (!list.length) { box.replaceChildren(el('div', 'empty', 'No posts yet.')); return; }
+    box.replaceChildren(...list.map((p) => {
+      const a = el('a', 'post-card'); a.href = '/blog/post.html?p=' + encodeURIComponent(p.slug) + (preview ? '&drafts' : '');
+      const t = el('time', null, fd(p.date)); t.dateTime = p.date;
+      const d = el('div'); const h = el('h2', null, p.title); if (p.draft) h.append(el('span', 'draft', 'DRAFT'));
+      d.append(h); if (p.summary) d.append(el('p', null, p.summary));
+      if (p.tags && p.tags.length) { const g = el('div', 'tags'); p.tags.forEach((x) => g.append(el('span', 'tag', x))); d.append(g); }
+      a.append(t, d); return a;
+    }));
+  } catch (e) { box.replaceChildren(el('div', 'empty', 'Posts could not be loaded. Reload the page to try again.')); }
+})();
+</script>
+</body>
+</html>

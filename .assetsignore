@@ -2,3 +2,7 @@ wrangler.jsonc
 README.md
 .assetsignore
 .git
+scripts
+blog/posts/_template.md
+# Blog is not public yet: remove the next line to publish it
+blog
