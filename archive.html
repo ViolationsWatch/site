@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Archive · Violations Watch</title>
+<meta name="description" content="Every confirmed incident that has passed out of Violations Watch's rolling 28-day log: searchable and downloadable.">
+<link rel="canonical" href="https://violationswatch.org/archive">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Violations Watch archive">
+<meta property="og:description" content="Older incidents from Violations Watch's open log of reported IHL and IHRL violations.">
+<meta property="og:url" content="https://violationswatch.org/archive">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0b1d33">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,600..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+<div class="dark top">
+<div class="sysbar">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#1f5e8c"/><circle cx="16" cy="16" r="8.5" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="16" cy="16" r="2.8" fill="#fff"/></svg>VIOLATIONS WATCH</a>
+    <div class="meta"><span><i class="dot" aria-hidden="true"></i>ARCHIVE UPDATED <b id="s-upd">—</b></span><span>RECORDS <b id="s-n">—</b></span></div>
+    <nav aria-label="Sections"><a href="/">Latest 28 days</a><a href="#log">Archive log</a><a href="/#method">Method</a><a href="archive.json">Data</a></nav>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="mast">
+    <h1>Archive</h1>
+    <p class="period"><span class="k">Time period</span> <b id="p-win">Loading…</b> <span class="d">Incidents last reported more than 28 days before the latest update. They move here from <a href="/" style="color:inherit">the main log</a> automatically and stay permanently.</span></p>
+    <p class="tag">The full record of older incidents in Violations Watch's open log of reported violations of international humanitarian and human rights law. Each entry keeps its VW number, its original reports and archived copies, so links and citations keep working.</p>
+    <div class="warn" role="note"><b>Most entries are unverified leads, not findings.</b> Each one records what was reported, by whom and when. Check the sources before relying on it.</div>
+  </header>
+
+  <section class="kpis" aria-label="Summary figures">
+    <div class="kpi"><span class="lab">Incidents</span><span class="num" id="k-n">—</span><span class="note" id="k-n-note">in the archive</span></div>
+    <div class="kpi"><span class="lab">Countries &amp; territories</span><span class="num" id="k-loc">—</span><span class="note">with at least one incident</span></div>
+    <div class="kpi"><span class="lab">Critical or High</span><span class="num" id="k-ch">—</span><span class="note">priority</span></div>
+    <div class="kpi"><span class="lab">State actors alleged</span><span class="num" id="k-state">—</span><span class="note" id="k-state-note">of incidents with a named perpetrator</span></div>
+    <div class="kpi"><span class="lab">Confirmed by an analyst</span><span class="num" id="k-conf">—</span><span class="note">the rest are leads</span></div>
+  </section>
+</div>
+</div>
+
+<div class="wrap">
+  <div class="filters" id="filters">
+    <div class="row" role="search">
+      <span class="lab">Filter</span>
+      <input type="search" id="q" placeholder="Search place, perpetrator, VW number or keyword" aria-label="Search incidents">
+      <select id="fm" aria-label="Month last reported"><option value="">All months</option></select>
+      <select id="fl" aria-label="Country or territory"><option value="">All countries</option></select>
+      <select id="fp" aria-label="Priority"><option value="">All priorities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
+      <select id="ft" aria-label="Violation type"><option value="">All violation types</option></select>
+      <select id="fa" aria-label="Alleged perpetrator"><option value="">All perpetrators</option><option value="state">State actors</option><option value="non-state">Non-state actors</option><option value="unknown">Unidentified</option></select>
+      <select id="fs" aria-label="Status"><option value="">All statuses</option><option value="lead">Leads</option><option value="confirmed">Confirmed</option><option value="verified">Verified</option></select>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="chips" id="chips" aria-live="polite"></div>
+  </div>
+</div>
+
+<div class="dark logband">
+<div class="wrap">
+  <div class="band" id="log"><span class="no">A</span><h2>Archive log</h2></div>
+  <div class="loghead">
+    <span class="count" id="count2" style="margin-left:0"></span>
+    <a class="btn" href="archive.csv" download="violations-watch-archive.csv">Download CSV</a>
+    <a class="btn ghost" href="archive.json" target="_blank" rel="noopener">Open as JSON</a>
+  </div>
+  <div class="ledger" id="ledger"><div class="empty" id="loading">Loading the archive…</div></div>
+</div>
+</div>
+
+<div class="wrap">
+  <footer><span id="foot">Archive of incidents reported from 6 Nov 2026.</span><span>Violations Watch links to third-party reporting and does not endorse the sources it lists. Method, status labels and corrections: <a href="/#method">see the main page</a>.</span></footer>
+</div>
+
+<script src="legal.js"></script>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const PRI = {Critical: 0, High: 1, Medium: 2, Low: 3};
+  const PCOL = {Critical: 'var(--p-critical)', High: 'var(--p-high)', Medium: 'var(--p-medium)', Low: 'var(--p-low)'};
+  const STL = {lead: 'Lead', confirmed: 'Confirmed', verified: 'Verified'};
+  const ACT = {state: 'State actors', 'non-state': 'Non-state actors', unknown: 'Unidentified'};
+  const LOG_START = Date.UTC(2026, 10, 6);
+  const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+  const fd = (s) => { if (!s) return ''; const d = new Date(s); return isNaN(d) ? s : d.toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'}); };
+  const fmo = (k) => new Date(k + '-01T00:00:00Z').toLocaleDateString('en-GB', {month: 'long', year: 'numeric', timeZone: 'UTC'});
+  const rng = (r) => { r = r || []; return r[0] == null && r[1] == null ? '' : r[0] === r[1] || r[1] == null ? String(r[0]) + (r[1] == null && r[0] != null && r[0] > 0 ? '+' : '') : (r[0] ?? '?') + '–' + r[1]; };
+  const statusOf = (r) => r.verification === 'verified' ? 'verified' : r.status;
+  const actorOf = (r) => r.actor_type === 'state' || r.actor_type === 'non-state' ? r.actor_type : 'unknown';
+  const txt = (v) => Array.isArray(v) ? v.join(', ') : (v || '');
+  const short = (s) => String(s).replace(/^Palestine \((.+)\)$/, 'Palestine: $1');
+  const month = (r) => String(r.last_reported || '').slice(0, 7);
+  let rows = [], shown = 50;
+  const F = ['q', 'fm', 'fl', 'fp', 'ft', 'fa', 'fs'];
+  const FL = {fm: 'Month', fl: 'Country', fp: 'Priority', ft: 'Type', fa: 'Perpetrator', fs: 'Status', q: 'Search'};
+
+  function filtered() {
+    const q = $('q').value.trim().toLowerCase(), m = $('fm').value, s = $('fs').value, p = $('fp').value, l = $('fl').value, t = $('ft').value, a = $('fa').value;
+    return rows.filter((r) => (!m || month(r) === m) && (!s || statusOf(r) === s) && (!p || r.priority === p) && (!l || r.location === l) && (!t || r.types.includes(t)) && (!a || actorOf(r) === a) &&
+      (!q || [r.id, r.headline, r.location, r.subregion, r.place, r.perpetrator, txt(r.victims), r.types.join(' ')].join(' ').toLowerCase().includes(q)));
+  }
+  function chips() {
+    const c = $('chips'); c.replaceChildren();
+    F.forEach((id) => { const v = $(id).value.trim(); if (!v) return; const label = id === 'fa' ? ACT[v] : id === 'fs' ? STL[v] : id === 'fm' ? fmo(v) : v;
+      const b = el('button', 'chip'); b.type = 'button'; b.setAttribute('aria-label', 'Remove filter ' + FL[id] + ': ' + label);
+      b.append(el('span', null, FL[id]), document.createTextNode(label + ' ✕')); b.onclick = () => { $(id).value = ''; shown = 50; update(); }; c.append(b); });
+    if (c.children.length > 1) { const b = el('button', 'chip', 'Clear all'); b.type = 'button'; b.onclick = () => { F.forEach((id) => { $(id).value = ''; }); shown = 50; update(); }; c.append(b); }
+  }
+
+  function link(u, label) { const a = el('a', null, label || u); a.href = u; a.target = '_blank'; a.rel = 'noopener noreferrer nofollow'; return a; }
+  function fact(dl, k, v) { if (v == null || v === '') return; const d = el('div'); d.append(el('dt', null, k), el('dd', null, v)); dl.append(d); }
+  function card(r) {
+    const d = el('details', 'inc'); d.id = r.id;
+    const s = el('summary'); const body = el('span'); const m = el('span', 'meta'); const st = statusOf(r);
+    m.append(el('span', 'mono', r.id), el('span', 'st st-' + st, STL[st]), el('span', 'pr ' + r.priority, r.priority), el('span', null, [r.place, short(r.location)].filter(Boolean).join(', ')), el('span', null, 'first reported ' + fd(r.first_reported)));
+    body.append(el('span', 'hl', r.headline), m);
+    const stripe = el('span', 'stripe'); stripe.style.background = PCOL[r.priority];
+    s.append(stripe, body); d.append(s);
+    d.addEventListener('toggle', () => { if (d.open && !d.dataset.built) { d.dataset.built = 1; d.append(details(r)); } if (d.open) history.replaceState(null, '', '#' + r.id); });
+    return d;
+  }
+  function details(r) {
+    const b = el('div', 'body'); const dl = el('dl', 'facts');
+    fact(dl, 'Location', [r.place, r.subregion, r.location].filter(Boolean).filter((x, i, a) => !a.slice(0, i).some((y) => y.includes(x))).join(', ') + (r.lat != null ? ' · ' + r.lat.toFixed(2) + ', ' + r.lon.toFixed(2) : '') + (r.precision && r.precision !== 'town' ? ' (' + r.precision + ' level)' : ''));
+    fact(dl, 'Date of incident', r.incident_date ? fd(r.incident_date) : 'Not stated in reports');
+    fact(dl, 'Reported', fd(r.first_reported) + (r.last_reported && r.last_reported !== r.first_reported ? ' to ' + fd(r.last_reported) : ''));
+    fact(dl, 'Alleged perpetrator', r.perpetrator ? r.perpetrator + (r.actor_type ? ' (' + r.actor_type + ' actor)' : '') : 'Not stated');
+    fact(dl, 'Victims', txt(r.victims));
+    const k = rng(r.killed), j = rng(r.injured);
+    fact(dl, 'Reported casualties', [k && k + ' killed', j && j + ' injured'].filter(Boolean).join(', ') || 'Not stated');
+    fact(dl, 'Violation types', r.types.join(', '));
+    fact(dl, 'Sources', r.sources + (r.sources === 1 ? ' outlet or account' : ' outlets or accounts') + (r.cumulative ? ' · aggregate or period report' : ''));
+    b.append(dl);
+    if (r.disputed) { const w = el('div'); w.append(el('div', 'sub', 'Disputed or caveats'), el('div', null, r.disputed)); b.append(w); }
+    const L = r.legal || {};
+    if (L.ihl || L.ihrl || L.regional || L.icl) {
+      const g = el('div', 'legal'); g.append(el('div', 'sub', 'Indicative legal frameworks (not a legal finding)'));
+      [['International humanitarian law (IHL)', L.ihl || 'Not applicable (no armed conflict known)'], ['International criminal law', L.icl], ['International human rights law', L.ihrl], ['Regional human rights law', L.regional]].forEach(([a, v]) => { if (!v) return; const x = el('div'); x.append(el('b', null, a)); const u = el('ul', 'refs'); String(v).split('; ').forEach((s) => u.append(el('li', null, s))); x.append(u); g.append(x); });
+      if (L.why) { const x = el('div', 'why'); x.append(el('b', null, 'Why these frameworks')); x.append(el('p', null, L.why)); g.append(x); } else if (L.context) g.append(el('div', 'sub', L.context));
+      b.append(g);
+    }
+    const ul = el('ul', 'links'); const arch = new Map((r.archives || []).map((a) => [a.url, a]));
+    (r.links || []).forEach((u) => { const li = el('li'); li.append(link(u)); const a = arch.get(u); if (a) { li.append(document.createTextNode(' · ')); li.append(link(a.archived_url, 'archived ' + fd(a.at))); } ul.append(li); });
+    const w = el('div'); w.append(el('div', 'sub', 'Original reports'), ul); b.append(w);
+    const pl = el('div', 'permalink'); pl.append(document.createTextNode('Cite as: '), link('https://violationswatch.org/#' + r.id, 'violationswatch.org/#' + r.id)); b.append(pl);
+    return b;
+  }
+  function drawLog(fr) {
+    const sorted = fr.slice().sort((a, b) => String(b.last_reported).localeCompare(String(a.last_reported)) || PRI[a.priority] - PRI[b.priority]);
+    const L = $('ledger');
+    if (!rows.length) { L.replaceChildren(el('div', 'empty', 'The archive is empty for now. Incidents move here once they were last reported more than 28 days ago; the first ones arrive in early December 2026.')); return; }
+    if (!sorted.length) { L.replaceChildren(el('div', 'empty', 'No incidents match these filters.')); return; }
+    const frag = document.createDocumentFragment(); sorted.slice(0, shown).forEach((r) => frag.append(card(r)));
+    if (sorted.length > shown) { const m = el('div', 'more'); const btn = el('button', 'btn ghost', 'Show ' + Math.min(50, sorted.length - shown) + ' more'); btn.type = 'button'; btn.onclick = () => { shown += 50; drawLog(filtered()); }; m.append(btn); frag.append(m); }
+    L.replaceChildren(frag);
+  }
+  function update() {
+    const fr = filtered(); chips();
+    const lab = fr.length + (fr.length === 1 ? ' incident' : ' incidents') + (fr.length !== rows.length ? ' of ' + rows.length : '');
+    $('count').textContent = lab; $('count2').textContent = lab.toUpperCase();
+    const named = fr.filter((r) => actorOf(r) !== 'unknown');
+    $('k-n').textContent = fr.length; $('k-n-note').textContent = fr.length !== rows.length ? 'matching the filters' : 'in the archive';
+    $('k-loc').textContent = new Set(fr.filter((r) => r.location !== 'Unlocated').map((r) => r.location)).size;
+    $('k-ch').textContent = fr.filter((r) => r.priority === 'Critical' || r.priority === 'High').length;
+    $('k-state').textContent = named.length ? Math.round(100 * named.filter((r) => r.actor_type === 'state').length / named.length) + '%' : '—';
+    $('k-state-note').textContent = named.length ? 'of ' + named.length + ' incidents with an identified perpetrator' : 'no identified perpetrators';
+    $('k-conf').textContent = fr.filter((r) => statusOf(r) !== 'lead').length;
+    drawLog(fr);
+  }
+
+  async function init() {
+    let data = {incidents: []}, lt = null, lc = null;
+    try { [data, lt, lc] = await Promise.all([
+      fetch('archive.json', {cache: 'no-cache'}).then((r) => r.ok ? r.json() : {incidents: []}),
+      fetch('legal_types.json').then((r) => r.json()).catch(() => null), fetch('legal_contexts.json').then((r) => r.json()).catch(() => null)]); }
+    catch (e) { $('loading').textContent = 'The archive could not be loaded. Reload the page to try again.'; return; }
+    rows = (data.incidents || []).map((r) => ({types: [], links: [], archives: [], ...r}));
+    if (window.VWLegal && lt && lc && rows.length) { try {
+      const out = window.VWLegal(rows.map((r) => ({...r, types: (r.types || []).join('; '), category: 'violation', killed_min: (r.killed || [])[0], killed_max: (r.killed || [])[1],
+        injured_min: (r.injured || [])[0], injured_max: (r.injured || [])[1], contested: r.disputed, town: r.place})), lt.rows || lt, lc.rows || lc);
+      const m = new Map(out.map((o) => [o.id, o]));
+      rows.forEach((r) => { const o = m.get(r.id); if (o) r.legal = {context: o.context_note || null, why: o.why, ihl: o.ihl, icl: o.icl, ihrl: o.ihrl, regional: o.regional}; });
+    } catch (e) { /* legal panel stays empty */ } }
+    $('s-upd').textContent = data.updated ? fd(data.updated).toUpperCase() : '—'; $('s-n').textContent = rows.length;
+    const firsts = rows.map((r) => r.first_reported).filter(Boolean).sort(), lasts = rows.map((r) => r.last_reported).filter(Boolean).sort();
+    const win = rows.length ? fd(firsts[0]) + ' – ' + fd(lasts[lasts.length - 1]) : 'No archived incidents yet';
+    $('p-win').textContent = win;
+    $('foot').textContent = rows.length ? 'Archive covers incidents reported ' + win + '.' : 'The log began on ' + fd(LOG_START) + '.';
+    $('fm').append(...[...new Set(rows.map(month).filter(Boolean))].sort().reverse().map((x) => new Option(fmo(x), x)));
+    $('fl').append(...[...new Set(rows.map((r) => r.location))].sort().map((x) => new Option(short(x), x)));
+    $('ft').append(...[...new Set(rows.flatMap((r) => r.types))].sort().map((x) => new Option(x)));
+    F.forEach((id) => $(id).addEventListener('input', () => { shown = 50; update(); }));
+    update();
+    const h = decodeURIComponent(location.hash.slice(1));
+    if (/^VW-/.test(h)) { if (rows.some((x) => x.id === h)) { if (!document.getElementById(h)) { shown = rows.length; drawLog(filtered()); } const d = document.getElementById(h); if (d) { d.open = true; d.scrollIntoView({block: 'start'}); } }
+      else $('ledger').prepend(el('div', 'empty', h + ' is not in the archive. It may still be in the main log, or it was withdrawn after review.')); }
+  }
+  init();
+})();
+</script>
+</body>
+</html>
