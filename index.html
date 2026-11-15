@@ -344,6 +344,7 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="legal.js"></script>
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -634,9 +635,19 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
 
   async function init() {
     let data;
-    try { [data, world] = await Promise.all([fetch('data.json').then((r) => r.json()), fetch('world.json').then((r) => r.json()).catch(() => null)]); }
+    let lt = null, lc = null;
+    try { [data, world, lt, lc] = await Promise.all([fetch('data.json').then((r) => r.json()), fetch('world.json').then((r) => r.json()).catch(() => null),
+      fetch('legal_types.json').then((r) => r.json()).catch(() => null), fetch('legal_contexts.json').then((r) => r.json()).catch(() => null)]); }
     catch (e) { $('loading').textContent = 'The incident log could not be loaded. Reload the page to try again.'; return; }
     rows = data.incidents || [];
+    // indicative legal frameworks are worked out here from the lookup tables (legal.js), unless the data already carries them
+    if (window.VWLegal && lt && lc) { try {
+      const need = rows.filter((r) => !r.legal || !r.legal.why);
+      const out = window.VWLegal(need.map((r) => ({...r, types: (r.types || []).join('; '), category: 'violation', killed_min: (r.killed || [])[0], killed_max: (r.killed || [])[1],
+        injured_min: (r.injured || [])[0], injured_max: (r.injured || [])[1], contested: r.disputed, town: r.place})), lt.rows || lt, lc.rows || lc);
+      const m = new Map(out.map((o) => [o.id, o]));
+      need.forEach((r) => { const o = m.get(r.id); if (o) r.legal = {context: o.context_note || null, why: o.why, ihl: o.ihl, icl: o.icl, ihrl: o.ihrl, regional: o.regional}; });
+    } catch (e) { /* legal panel simply stays empty */ } }
     $('s-upd').textContent = fd(data.updated).toUpperCase(); $('s-n').textContent = rows.length;
     // next daily refresh: 05:40 UK time, today if it hasn't happened yet, otherwise tomorrow
     { const now = new Date(); const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'}).formatToParts(now).map((x) => [x.type, x.value]));
