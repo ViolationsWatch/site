@@ -46,6 +46,7 @@
     <div class="kpi"><span class="lab">Incidents</span><span class="num" id="k-n">—</span><span class="note" id="k-n-note">in the archive</span></div>
     <div class="kpi"><span class="lab">Countries &amp; territories</span><span class="num" id="k-loc">—</span><span class="note">with at least one incident</span></div>
     <div class="kpi"><span class="lab">Critical or High</span><span class="num" id="k-ch">—</span><span class="note">priority</span></div>
+    <div class="kpi"><span class="lab">Involving children</span><span class="num" id="k-child">—</span><span class="note">tagged with a grave violation against children</span></div>
     <div class="kpi"><span class="lab">State actors alleged</span><span class="num" id="k-state">—</span><span class="note" id="k-state-note">of incidents with a named perpetrator</span></div>
     <div class="kpi"><span class="lab">Confirmed by an analyst</span><span class="num" id="k-conf">—</span><span class="note">the rest are leads</span></div>
   </section>
@@ -183,6 +184,7 @@
     $('k-state').textContent = named.length ? Math.round(100 * named.filter((r) => r.actor_type === 'state').length / named.length) + '%' : '—';
     $('k-state-note').textContent = named.length ? 'of ' + named.length + ' incidents with an identified perpetrator' : 'no identified perpetrators';
     $('k-conf').textContent = fr.filter((r) => statusOf(r) !== 'lead').length;
+    $('k-child').textContent = fr.filter((r) => gvOf(r).length).length;
     drawLog(fr);
   }
 

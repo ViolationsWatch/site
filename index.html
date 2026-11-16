@@ -46,6 +46,7 @@
     <div class="kpi"><span class="lab">Incidents</span><span class="num" id="k-n">—</span><span class="note" id="k-n-note">in this period</span></div>
     <div class="kpi"><span class="lab">Countries &amp; territories</span><span class="num" id="k-loc">—</span><span class="note">with at least one incident</span></div>
     <div class="kpi"><span class="lab">Critical or High</span><span class="num" id="k-ch">—</span><span class="note" id="k-ch-note">priority</span></div>
+    <div class="kpi"><span class="lab">Involving children</span><span class="num" id="k-child">—</span><span class="note">tagged with a grave violation against children</span></div>
     <div class="kpi"><span class="lab">State actors alleged</span><span class="num" id="k-state">—</span><span class="note" id="k-state-note">of incidents with a named perpetrator</span></div>
     <div class="kpi"><span class="lab">Confirmed by an analyst</span><span class="num" id="k-conf">—</span><span class="note">the rest are leads</span></div>
   </section>
@@ -73,7 +74,7 @@
     <section class="panel w8" aria-labelledby="h-map">
       <div class="ph"><span class="no">01</span><h2 id="h-map">Where incidents were reported</h2></div>
       <p class="cap">Circle size is the number of incidents at that point; colour is the highest priority among them. Incidents without a named town sit at the country's centre. Click or tap a circle for its incidents. Zoom with the + and − buttons, by scrolling after clicking the map, or by pinching with two fingers; drag to move around.</p>
-      <div class="legend"><span><i class="sw Critical"></i>Critical</span><span><i class="sw High"></i>High</span><span><i class="sw Medium"></i>Medium</span><span><i class="sw Low"></i>Low</span></div>
+      <div class="legend"><span><i class="sw Critical"></i>Critical</span><span><i class="sw High"></i>High</span><span><i class="sw Medium"></i>Medium</span><span><i class="sw Low"></i>Low</span><span><i class="sw ring"></i>Purple ring: grave violation against children</span></div>
       <div class="mapwrap"><div id="map" class="chart" role="img" aria-label="Zoomable world map of incident locations"></div><div class="coords" id="coords" aria-hidden="true">LAT — · LON —</div><div class="zoombtns" role="group" aria-label="Map zoom"><button type="button" id="z-in" aria-label="Zoom in">+</button><button type="button" id="z-out" aria-label="Zoom out">−</button><button type="button" id="z-reset" aria-label="Reset map view">⟲</button></div><div class="maphint" id="maphint" hidden></div></div>
     </section>
     <section class="panel w4" aria-labelledby="h-loc">
@@ -97,6 +98,9 @@
       <div class="ph"><span class="no">05</span><h2 id="h-type">What kind of violation</h2></div>
       <p class="cap">Incidents by type of reported violation. One incident can have several types. Click or tap to filter.</p>
       <div id="c-type" class="chart"></div>
+      <h3 class="sub" id="h-gv" style="margin:18px 0 4px">Grave violations against children</h3>
+      <p class="cap">Incidents tagged with the six grave violations used by the UN Monitoring and Reporting Mechanism. These are open-source leads, not UN-verified cases. One incident can have several. Click or tap to filter.</p>
+      <div id="c-gv" class="chart" aria-labelledby="h-gv"></div>
     </section>
     <section class="panel" aria-labelledby="h-sub">
       <div class="ph"><span class="no">06</span><h2 id="h-sub">Within a country</h2></div>
@@ -275,7 +279,7 @@
         let x0 = 0; const segs = PRIS.map((p) => ({p, n: d.items.filter((r) => r.priority === p).length})).filter((s) => s.n);
         segs.forEach((s, i) => { const w = x(s.n); const last = i === segs.length - 1;
           sel.append('path').attr('d', roundedBar(LW + x0, 5, Math.max(1, w - (last ? 0 : 2)), bh, last ? 3 : 0)).attr('fill', PCOL[s.p]); x0 += w; });
-      } else sel.append('path').attr('d', roundedBar(LW, 5, Math.max(1, x(d.items.length)), bh, 3)).attr('fill', d.active ? 'var(--ink)' : 'var(--accent)');
+      } else sel.append('path').attr('d', roundedBar(LW, 5, Math.max(1, x(d.items.length)), bh, 3)).attr('fill', d.active ? 'var(--ink)' : (opts.color || 'var(--accent)'));
       sel.append('text').attr('class', 'val').attr('x', LW + x(d.items.length) + 6).attr('y', RH / 2).attr('dy', '0.35em').text(d.items.length);
     });
     bindTip(g.append('rect').attr('class', 'hit').attr('width', W).attr('height', RH),
@@ -334,12 +338,12 @@
     const groups = d3.rollups(fr.filter((r) => r.lat != null), (v) => v, (r) => r.lat.toFixed(2) + ',' + r.lon.toFixed(2)).sort((a, b) => b[1].length - a[1].length);
     const rad = d3.scaleSqrt().domain([1, d3.max(groups, (g) => g[1].length) || 1]).range([W < 600 ? 5 : 4, Math.max(11, W / 42)]);
     const xy = (g) => proj([g[1][0].lon, g[1][0].lat]);
-    const build = (t, g, p) => { const f = g[1][0]; t.append(el('b', null, (f.place && f.precision === 'town' ? f.place + ', ' : '') + f.location)); t.append(el('div', 'mono', f.lat.toFixed(2) + ', ' + f.lon.toFixed(2) + (f.precision !== 'town' ? ' · country centre' : ''))); t.append(el('div', 'm', g[1].length + (g[1].length === 1 ? ' incident' : ' incidents'))); incList(t, g[1], p ? 6 : 5, p); if (!p) t.append(el('div', 'm', 'Click to filter to ' + f.location)); };
+    const build = (t, g, p) => { const f = g[1][0]; t.append(el('b', null, (f.place && f.precision === 'town' ? f.place + ', ' : '') + f.location)); t.append(el('div', 'mono', f.lat.toFixed(2) + ', ' + f.lon.toFixed(2) + (f.precision !== 'town' ? ' · country centre' : ''))); const nc = g[1].filter((x) => gvOf(x).length).length; t.append(el('div', 'm', g[1].length + (g[1].length === 1 ? ' incident' : ' incidents') + (nc ? ' · ' + nc + ' involving children' : ''))); incList(t, g[1], p ? 6 : 5, p); if (!p) t.append(el('div', 'm', 'Click to filter to ' + f.location)); };
     const act = (g) => ({label: 'Filter to ' + short(g[1][0].location), fn: () => setFilter('fl', g[1][0].location)});
     const dots = svg.append('g').selectAll('circle').data(groups).join('circle')
       .attr('r', (g) => rad(g[1].length))
       .attr('fill', (g) => PCOL[PRIS[d3.min(g[1], (x) => PRI[x.priority])]]).attr('fill-opacity', 0.85)
-      .attr('stroke', '#fff').attr('stroke-width', 1.5).style('cursor', 'pointer')
+      .attr('stroke', (g) => g[1].some((x) => gvOf(x).length) ? 'var(--cv)' : '#fff').attr('stroke-width', (g) => g[1].some((x) => gvOf(x).length) ? 2.5 : 1.5).style('cursor', 'pointer')
       .call((s) => bindTip(s, build, act));
     // country names appear once zoomed in, sized for the screen, largest countries first
     const names = land.features.map((f) => ({n: f.properties && f.properties.name, c: path.centroid(f), a: path.area(f)})).filter((d) => d.n && isFinite(d.c[0]));
@@ -447,6 +451,7 @@
     $('k-state').textContent = named.length ? Math.round(100 * named.filter((r) => r.actor_type === 'state').length / named.length) + '%' : '—';
     $('k-state-note').textContent = named.length ? 'of ' + named.length + ' incidents with an identified perpetrator' : 'no identified perpetrators';
     $('k-conf').textContent = fr.filter((r) => statusOf(r) !== 'lead').length;
+    $('k-child').textContent = fr.filter((r) => gvOf(r).length).length;
     drawMap(fr);
     const loc = $('fl').value;
     hbars($('c-loc'), d3.rollups(fr, (v) => v, (r) => r.location).map(([k, items]) => ({key: k, label: short(k), items, active: k === loc})).sort((a, b) => b.items.length - a.items.length).slice(0, 12),
@@ -457,6 +462,10 @@
     const ty = $('ft').value;
     hbars($('c-type'), [...new Set(fr.flatMap((r) => r.types))].map((k) => ({key: k, label: k, items: fr.filter((r) => r.types.includes(k)), active: k === ty})).sort((a, b) => b.items.length - a.items.length),
       {aria: 'Bar chart of incidents by violation type', lw: 240, click: (d) => setFilter('ft', d.key)});
+    const gsel = $('fg').value === 'any' ? '' : $('fg').value;
+    const gvData = Object.keys(GV).map((k) => ({key: k, label: GV[k], items: fr.filter((r) => gvOf(r).includes(k)), active: k === gsel})).filter((d) => d.items.length);
+    if (gvData.length) hbars($('c-gv'), gvData, {aria: 'Bar chart of incidents by grave violation against children', lw: 240, color: 'var(--cv)', click: (d) => setFilter('fg', d.key)});
+    else $('c-gv').replaceChildren(el('div', 'empty', 'No incidents in this selection are tagged with a grave violation against children.'));
     drawDays(fr);
     if (loc && [...$('fsub').options].some((o) => o.value === loc)) $('fsub').value = loc;
     drawSub(fr);
