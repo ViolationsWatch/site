@@ -85,7 +85,6 @@ select { flex: 0 1 auto; max-width: 100%; }
 .sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
 .sw.Critical, .bg-Critical { background: var(--p-critical); } .sw.High, .bg-High { background: var(--p-high); }
 .sw.Medium, .bg-Medium { background: var(--p-medium); } .sw.Low, .bg-Low { background: var(--p-low); }
-.sw.ring { background: transparent; border: 2.5px solid var(--cv); border-radius: 50%; width: 11px; height: 11px; }
 .chart { position: relative; }
 .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
 .chart text { font-family: var(--sans); font-size: 11px; fill: var(--muted); }

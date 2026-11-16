@@ -74,7 +74,7 @@
     <section class="panel w8" aria-labelledby="h-map">
       <div class="ph"><span class="no">01</span><h2 id="h-map">Where incidents were reported</h2></div>
       <p class="cap">Circle size is the number of incidents at that point; colour is the highest priority among them. Incidents without a named town sit at the country's centre. Click or tap a circle for its incidents. Zoom with the + and − buttons, by scrolling after clicking the map, or by pinching with two fingers; drag to move around.</p>
-      <div class="legend"><span><i class="sw Critical"></i>Critical</span><span><i class="sw High"></i>High</span><span><i class="sw Medium"></i>Medium</span><span><i class="sw Low"></i>Low</span><span><i class="sw ring"></i>Purple ring: grave violation against children</span></div>
+      <div class="legend"><span><i class="sw Critical"></i>Critical</span><span><i class="sw High"></i>High</span><span><i class="sw Medium"></i>Medium</span><span><i class="sw Low"></i>Low</span></div>
       <div class="mapwrap"><div id="map" class="chart" role="img" aria-label="Zoomable world map of incident locations"></div><div class="coords" id="coords" aria-hidden="true">LAT — · LON —</div><div class="zoombtns" role="group" aria-label="Map zoom"><button type="button" id="z-in" aria-label="Zoom in">+</button><button type="button" id="z-out" aria-label="Zoom out">−</button><button type="button" id="z-reset" aria-label="Reset map view">⟲</button></div><div class="maphint" id="maphint" hidden></div></div>
     </section>
     <section class="panel w4" aria-labelledby="h-loc">
@@ -343,7 +343,7 @@
     const dots = svg.append('g').selectAll('circle').data(groups).join('circle')
       .attr('r', (g) => rad(g[1].length))
       .attr('fill', (g) => PCOL[PRIS[d3.min(g[1], (x) => PRI[x.priority])]]).attr('fill-opacity', 0.85)
-      .attr('stroke', (g) => g[1].some((x) => gvOf(x).length) ? 'var(--cv)' : '#fff').attr('stroke-width', (g) => g[1].some((x) => gvOf(x).length) ? 2.5 : 1.5).style('cursor', 'pointer')
+      .attr('stroke', '#fff').attr('stroke-width', 1.5).style('cursor', 'pointer')
       .call((s) => bindTip(s, build, act));
     // country names appear once zoomed in, sized for the screen, largest countries first
     const names = land.features.map((f) => ({n: f.properties && f.properties.name, c: path.centroid(f), a: path.area(f)})).filter((d) => d.n && isFinite(d.c[0]));
