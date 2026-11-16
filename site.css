@@ -34,7 +34,7 @@ a:hover { text-decoration-thickness: 2px; }
 .sysbar .meta { display: flex; flex-wrap: wrap; gap: 4px 16px; }
 .sysbar .meta span b { color: var(--ink); font-weight: 500; }
 .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #2e8b57; margin-right: 6px; vertical-align: 1px; }
-.sysbar nav { margin-left: auto; display: flex; gap: 14px; }
+.sysbar nav { margin-left: auto; display: flex; flex-wrap: wrap; gap: 4px 14px; }
 .sysbar nav a { color: var(--muted); text-decoration: none; }
 .sysbar nav a:hover { color: var(--ink); }
 
