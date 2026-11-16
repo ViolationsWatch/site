@@ -67,3 +67,5 @@ article { background: var(--panel); border: 1px solid var(--line); border-radius
 .vw-ref { font-family: var(--mono); font-size: .9em; }
 .back { font-family: var(--mono); font-size: 13px; display: inline-block; margin-top: 8px; }
 footer { border-top: 1px solid var(--line); padding-block: 16px 32px; font-size: 13px; color: var(--muted); margin-top: 20px; }
+
+@media (max-width: 359px) { .sysbar nav { flex-wrap: wrap; } }
