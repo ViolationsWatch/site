@@ -13,6 +13,7 @@ img, svg { max-width: 100%; }
   --land: #dbe6f0; --land-line: #c3d3e3; --grat: #e9f0f7; --sea: #f7fafd;
   --p-critical: #7f1d16; --p-high: #c2412a; --p-medium: #e5896b; --p-low: #eeb7a3;
   --lead: #8a5a00; --lead-bg: #fbf0d9; --conf: #1d6b43; --conf-bg: #e3f2e9; --ver: #1f5e8c; --ver-bg: #e1edf6;
+  --cv: #5b2a86; --cv-bg: #f1e7fb;
   --warn-bg: #fff6e0; --warn-line: #e8c46a;
   --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
   --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -180,3 +181,6 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
 @media (min-width: 760px) { .filters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(234, 242, 249, .95); backdrop-filter: blur(6px); } }
 @media (max-width: 560px) { .sysbar nav { margin-left: 0; } .kpi .num { font-size: 26px; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+
+/* six grave violations against children */
+.cv { font-size: 11px; font-weight: 600; border-radius: 999px; padding: 0 8px; line-height: 18px; white-space: nowrap; background: var(--cv-bg); color: var(--cv); }

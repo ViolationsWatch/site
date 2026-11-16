@@ -61,6 +61,7 @@
       <select id="fl" aria-label="Country or territory"><option value="">All countries</option></select>
       <select id="fp" aria-label="Priority"><option value="">All priorities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
       <select id="ft" aria-label="Violation type"><option value="">All violation types</option></select>
+      <select id="fg" aria-label="Grave violations against children"><option value="">All incidents</option><option value="any">Grave violations against children (any)</option><option value="killing_maiming">Children: killing and maiming</option><option value="recruitment_use">Children: recruitment and use</option><option value="sexual_violence">Children: rape and sexual violence</option><option value="attacks_schools_hospitals">Children: attacks on schools and hospitals</option><option value="abduction">Children: abduction</option><option value="denial_access">Children: denial of humanitarian access</option></select>
       <select id="fa" aria-label="Alleged perpetrator"><option value="">All perpetrators</option><option value="state">State actors</option><option value="non-state">Non-state actors</option><option value="unknown">Unidentified</option></select>
       <select id="fs" aria-label="Status"><option value="">All statuses</option><option value="lead">Leads</option><option value="confirmed">Confirmed</option><option value="verified">Verified</option></select>
       <span class="count" id="count"></span>
@@ -101,20 +102,22 @@
   const statusOf = (r) => r.verification === 'verified' ? 'verified' : r.status;
   const actorOf = (r) => r.actor_type === 'state' || r.actor_type === 'non-state' ? r.actor_type : 'unknown';
   const txt = (v) => Array.isArray(v) ? v.join(', ') : (v || '');
+  const GV = {killing_maiming: 'Killing and maiming', recruitment_use: 'Recruitment and use', sexual_violence: 'Rape and other sexual violence', attacks_schools_hospitals: 'Attacks on schools and hospitals', abduction: 'Abduction', denial_access: 'Denial of humanitarian access'};
+  const gvOf = (r) => Array.isArray(r.grave_violations) ? r.grave_violations.filter((g) => GV[g]) : [];
   const short = (s) => String(s).replace(/^Palestine \((.+)\)$/, 'Palestine: $1');
   const month = (r) => String(r.last_reported || '').slice(0, 7);
   let rows = [], shown = 50;
-  const F = ['q', 'fm', 'fl', 'fp', 'ft', 'fa', 'fs'];
-  const FL = {fm: 'Month', fl: 'Country', fp: 'Priority', ft: 'Type', fa: 'Perpetrator', fs: 'Status', q: 'Search'};
+  const F = ['q', 'fm', 'fl', 'fp', 'ft', 'fg', 'fa', 'fs'];
+  const FL = {fg: 'Children', fm: 'Month', fl: 'Country', fp: 'Priority', ft: 'Type', fa: 'Perpetrator', fs: 'Status', q: 'Search'};
 
   function filtered() {
-    const q = $('q').value.trim().toLowerCase(), m = $('fm').value, s = $('fs').value, p = $('fp').value, l = $('fl').value, t = $('ft').value, a = $('fa').value;
-    return rows.filter((r) => (!m || month(r) === m) && (!s || statusOf(r) === s) && (!p || r.priority === p) && (!l || r.location === l) && (!t || r.types.includes(t)) && (!a || actorOf(r) === a) &&
+    const q = $('q').value.trim().toLowerCase(), g = $('fg').value, m = $('fm').value, s = $('fs').value, p = $('fp').value, l = $('fl').value, t = $('ft').value, a = $('fa').value;
+    return rows.filter((r) => (!g || (g === 'any' ? gvOf(r).length > 0 : gvOf(r).includes(g))) && (!m || month(r) === m) && (!s || statusOf(r) === s) && (!p || r.priority === p) && (!l || r.location === l) && (!t || r.types.includes(t)) && (!a || actorOf(r) === a) &&
       (!q || [r.id, r.headline, r.location, r.subregion, r.place, r.perpetrator, txt(r.victims), r.types.join(' ')].join(' ').toLowerCase().includes(q)));
   }
   function chips() {
     const c = $('chips'); c.replaceChildren();
-    F.forEach((id) => { const v = $(id).value.trim(); if (!v) return; const label = id === 'fa' ? ACT[v] : id === 'fs' ? STL[v] : id === 'fm' ? fmo(v) : v;
+    F.forEach((id) => { const v = $(id).value.trim(); if (!v) return; const label = id === 'fa' ? ACT[v] : id === 'fs' ? STL[v] : id === 'fm' ? fmo(v) : id === 'fg' ? (v === 'any' ? 'Any grave violation' : GV[v]) : v;
       const b = el('button', 'chip'); b.type = 'button'; b.setAttribute('aria-label', 'Remove filter ' + FL[id] + ': ' + label);
       b.append(el('span', null, FL[id]), document.createTextNode(label + ' ✕')); b.onclick = () => { $(id).value = ''; shown = 50; update(); }; c.append(b); });
     if (c.children.length > 1) { const b = el('button', 'chip', 'Clear all'); b.type = 'button'; b.onclick = () => { F.forEach((id) => { $(id).value = ''; }); shown = 50; update(); }; c.append(b); }
@@ -125,7 +128,7 @@
   function card(r) {
     const d = el('details', 'inc'); d.id = r.id;
     const s = el('summary'); const body = el('span'); const m = el('span', 'meta'); const st = statusOf(r);
-    m.append(el('span', 'mono', r.id), el('span', 'st st-' + st, STL[st]), el('span', 'pr ' + r.priority, r.priority), el('span', null, [r.place, short(r.location)].filter(Boolean).join(', ')), el('span', null, 'first reported ' + fd(r.first_reported)));
+    m.append(el('span', 'mono', r.id), el('span', 'st st-' + st, STL[st]), el('span', 'pr ' + r.priority, r.priority), ...(gvOf(r).length ? [el('span', 'cv', 'Children')] : []), el('span', null, [r.place, short(r.location)].filter(Boolean).join(', ')), el('span', null, 'first reported ' + fd(r.first_reported)));
     body.append(el('span', 'hl', r.headline), m);
     const stripe = el('span', 'stripe'); stripe.style.background = PCOL[r.priority];
     s.append(stripe, body); d.append(s);
@@ -142,6 +145,8 @@
     const k = rng(r.killed), j = rng(r.injured);
     fact(dl, 'Reported casualties', [k && k + ' killed', j && j + ' injured'].filter(Boolean).join(', ') || 'Not stated');
     fact(dl, 'Violation types', r.types.join(', '));
+    if (gvOf(r).length) { fact(dl, 'Grave violations against children', gvOf(r).map((g) => GV[g]).join(', '));
+      const ck = rng(r.children_killed || []), cj = rng(r.children_injured || []); if (ck || cj) fact(dl, 'Children among casualties', [ck && ck + ' killed', cj && cj + ' injured'].filter(Boolean).join(', ')); }
     fact(dl, 'Sources', r.sources + (r.sources === 1 ? ' outlet or account' : ' outlets or accounts') + (r.cumulative ? ' · aggregate or period report' : ''));
     b.append(dl);
     if (r.disputed) { const w = el('div'); w.append(el('div', 'sub', 'Disputed or caveats'), el('div', null, r.disputed)); b.append(w); }
