@@ -29,7 +29,7 @@ a { color: var(--accent); }
 .sysbar nav { margin-left: auto; display: flex; flex-wrap: wrap; gap: 14px; }
 .sysbar nav a { color: var(--muted); text-decoration: none; }
 .sysbar nav a:hover, .sysbar nav a[aria-current] { color: var(--ink); }
-@media (max-width: 560px) { .sysbar nav { margin-left: 0; } }
+@media (max-width: 560px) { .sysbar nav { margin-left: 0; gap: 10px; flex-wrap: nowrap; white-space: nowrap; } }
 .hero { padding-block: 34px 30px; }
 .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
 .hero h1 { font-family: var(--display); font-weight: 800; font-stretch: 112%; font-size: clamp(30px, 4.6vw, 48px); line-height: 1.05; letter-spacing: -0.015em; margin: 0; text-wrap: balance; max-width: 24ch; }
