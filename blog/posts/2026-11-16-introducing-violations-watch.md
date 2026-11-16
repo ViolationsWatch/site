@@ -1,10 +1,10 @@
 ---
 title: Introducing Violations Watch
-date: 2026-11-14
+date: 2026-11-16
 summary: Why this open log exists, what it does and doesn't claim, and how investigators can use it.
 author: Violations Watch
 tags: About, Methods
-draft: true
+draft: false
 ---
 
 Violations Watch is an open log of reported violations of international humanitarian and human rights law, collected from news and social media and shared as leads for investigators, journalists and researchers.
