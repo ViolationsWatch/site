@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Violations Watch: Israel</title>
+<link>https://violationswatch.org/?country=Israel</link>
+<description>New incidents reported in Israel. Most entries are unverified leads, not findings.</description>
+<language>en-gb</language>
+<atom:link href="https://violationswatch.org/feeds/israel.xml" rel="self" type="application/rss+xml"/>
+<pubDate>Fri, 13 Nov 2026 00:31:07 GMT</pubDate>
+<item>
+<title>Israel arrests Palestinian journalist Abed Abu Shehadeh</title>
+<link>https://violationswatch.org/#VW-2026-0512</link>
+<guid isPermaLink="false">VW-2026-0512</guid>
+<pubDate>Fri, 13 Nov 2026 00:31:07 GMT</pubDate>
+<category>Israel</category>
+<category>Attacks on journalists</category>
+<category>Arbitrary detention &amp; disappearance</category>
+<description>Unverified lead (Low priority). Israel. Types: Attacks on journalists, Arbitrary detention &amp; disappearance. Alleged perpetrator: Israeli authorities (Shin Bet). Reported casualties: 0 killed. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0512</description>
+</item>
+<item>
+<title>Reports of torture and ill-treatment of Palestinian detainees in Israeli custody: electroshock weapons, rape threats, food denial; 9,200 held</title>
+<link>https://violationswatch.org/#VW-2026-0350</link>
+<guid isPermaLink="false">VW-2026-0350</guid>
+<pubDate>Tue, 10 Nov 2026 05:48:11 GMT</pubDate>
+<category>Israel</category>
+<category>Torture &amp; ill-treatment</category>
+<category>Sexual &amp; gender-based violence</category>
+<category>Arbitrary detention &amp; disappearance</category>
+<description>Unverified lead (Low priority). Israeli detention facilities. Types: Torture &amp; ill-treatment, Sexual &amp; gender-based violence, Arbitrary detention &amp; disappearance. Alleged perpetrator: Israeli Prison Service and military detention. Disputed or caveats: Allegations from detainees and rights groups. 2 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0350</description>
+</item>
+</channel>
+</rss>

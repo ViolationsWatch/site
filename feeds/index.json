@@ -1,0 +1,33 @@
+{
+ "all": "/feed.xml",
+ "children": "/feeds/children.xml",
+ "countries": {
+  "Afghanistan": "/feeds/afghanistan.xml",
+  "Bahrain": "/feeds/bahrain.xml",
+  "China": "/feeds/china.xml",
+  "DR Congo": "/feeds/dr-congo.xml",
+  "Ecuador": "/feeds/ecuador.xml",
+  "Ethiopia": "/feeds/ethiopia.xml",
+  "Guinea": "/feeds/guinea.xml",
+  "Haiti": "/feeds/haiti.xml",
+  "India": "/feeds/india.xml",
+  "Iran": "/feeds/iran.xml",
+  "Israel": "/feeds/israel.xml",
+  "Mexico": "/feeds/mexico.xml",
+  "Myanmar": "/feeds/myanmar.xml",
+  "Niger": "/feeds/niger.xml",
+  "Nigeria": "/feeds/nigeria.xml",
+  "Pakistan": "/feeds/pakistan.xml",
+  "Palestine (Gaza)": "/feeds/palestine-gaza.xml",
+  "Palestine (West Bank)": "/feeds/palestine-west-bank.xml",
+  "Russia": "/feeds/russia.xml",
+  "Saudi Arabia": "/feeds/saudi-arabia.xml",
+  "Somalia": "/feeds/somalia.xml",
+  "South Sudan": "/feeds/south-sudan.xml",
+  "Sudan": "/feeds/sudan.xml",
+  "Syria": "/feeds/syria.xml",
+  "Thailand": "/feeds/thailand.xml",
+  "Ukraine": "/feeds/ukraine.xml",
+  "Yemen": "/feeds/yemen.xml"
+ }
+}

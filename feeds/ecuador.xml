@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Violations Watch: Ecuador</title>
+<link>https://violationswatch.org/?country=Ecuador</link>
+<description>New incidents reported in Ecuador. Most entries are unverified leads, not findings.</description>
+<language>en-gb</language>
+<atom:link href="https://violationswatch.org/feeds/ecuador.xml" rel="self" type="application/rss+xml"/>
+<pubDate>Tue, 10 Nov 2026 11:08:26 GMT</pubDate>
+<item>
+<title>Ecuadorian journalist Tomás Beltrán Conforme, who denounced government corruption, killed</title>
+<link>https://violationswatch.org/#VW-2026-0365</link>
+<guid isPermaLink="false">VW-2026-0365</guid>
+<pubDate>Tue, 10 Nov 2026 11:08:26 GMT</pubDate>
+<category>Ecuador</category>
+<category>Attacks on journalists</category>
+<category>Killing of civilians</category>
+<description>Unverified lead (Low priority). Ecuador. Types: Attacks on journalists, Killing of civilians. Alleged perpetrator: Unknown attackers. Reported casualties: 1 killed. 2 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0365</description>
+</item>
+</channel>
+</rss>

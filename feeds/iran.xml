@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Violations Watch: Iran</title>
+<link>https://violationswatch.org/?country=Iran</link>
+<description>New incidents reported in Iran. Most entries are unverified leads, not findings.</description>
+<language>en-gb</language>
+<atom:link href="https://violationswatch.org/feeds/iran.xml" rel="self" type="application/rss+xml"/>
+<pubDate>Wed, 11 Nov 2026 22:25:39 GMT</pubDate>
+<item>
+<title>Three Baluch civilians reportedly killed by Iranian security forces</title>
+<link>https://violationswatch.org/#VW-2026-0477</link>
+<guid isPermaLink="false">VW-2026-0477</guid>
+<pubDate>Wed, 11 Nov 2026 22:25:39 GMT</pubDate>
+<category>Iran</category>
+<category>Killing of civilians</category>
+<description>Unverified lead (Medium priority). Near Zahedan, Sistan-Baluchestan, Iran. Types: Killing of civilians. Alleged perpetrator: Iranian security forces. Reported casualties: 3 killed. Disputed or caveats: Source: NCRI (opposition). 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0477</description>
+</item>
+<item>
+<title>Iran tortured a 13-year-old boy before killing him at a protest, source says</title>
+<link>https://violationswatch.org/#VW-2026-0286</link>
+<guid isPermaLink="false">VW-2026-0286</guid>
+<pubDate>Mon, 09 Nov 2026 13:07:26 GMT</pubDate>
+<category>Iran</category>
+<category>Torture &amp; ill-treatment</category>
+<category>Killing of civilians</category>
+<description>Unverified lead (Low priority). Iran. Types: Torture &amp; ill-treatment, Killing of civilians. Alleged perpetrator: Iranian security forces. Reported casualties: 1 killed. Grave violations against children: Killing and maiming. Disputed or caveats: Single source. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0286</description>
+</item>
+</channel>
+</rss>

@@ -184,3 +184,5 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
 
 /* six grave violations against children */
 .cv { font-size: 11px; font-weight: 600; border-radius: 999px; padding: 0 8px; line-height: 18px; white-space: nowrap; background: var(--cv-bg); color: var(--cv); }
+
+.chip.share { border-style: dashed; }

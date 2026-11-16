@@ -26,3 +26,12 @@
 
 /og.png
   Cache-Control: public, max-age=86400
+
+/feed.xml
+  Content-Type: application/rss+xml; charset=utf-8
+  Cache-Control: public, max-age=300
+  Access-Control-Allow-Origin: *
+
+/feeds/*
+  Cache-Control: public, max-age=300
+  Access-Control-Allow-Origin: *

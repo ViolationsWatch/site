@@ -7,6 +7,8 @@
 <meta name="description" content="Every confirmed incident that has passed out of Violations Watch's rolling 28-day log: searchable and downloadable.">
 <link rel="canonical" href="https://violationswatch.org/archive">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="Violations Watch: new incidents" href="/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="Violations Watch: grave violations against children" href="/feeds/children.xml">
 <meta property="og:title" content="Violations Watch archive">
 <meta property="og:description" content="Older incidents from Violations Watch's open log of reported IHL and IHRL violations.">
 <meta property="og:url" content="https://violationswatch.org/archive">
@@ -78,6 +80,7 @@
     <span class="count" id="count2" style="margin-left:0"></span>
     <a class="btn" href="archive.csv" download="violations-watch-archive.csv">Download CSV</a>
     <a class="btn ghost" href="archive.json" target="_blank" rel="noopener">Open as JSON</a>
+    <a class="btn ghost" href="/feed.xml" target="_blank" rel="noopener">RSS feed</a>
   </div>
   <div class="ledger" id="ledger"><div class="empty" id="loading">Loading the archive…</div></div>
 </div>
@@ -109,6 +112,7 @@
   const month = (r) => String(r.last_reported || '').slice(0, 7);
   let rows = [], shown = 50;
   const F = ['q', 'fm', 'fl', 'fp', 'ft', 'fg', 'fa', 'fs'];
+  const QP = {q: 'q', fm: 'month', fl: 'country', fp: 'priority', ft: 'type', fg: 'children', fa: 'actor', fs: 'status'};
   const FL = {fg: 'Children', fm: 'Month', fl: 'Country', fp: 'Priority', ft: 'Type', fa: 'Perpetrator', fs: 'Status', q: 'Search'};
 
   function filtered() {
@@ -116,12 +120,20 @@
     return rows.filter((r) => (!g || (g === 'any' ? gvOf(r).length > 0 : gvOf(r).includes(g))) && (!m || month(r) === m) && (!s || statusOf(r) === s) && (!p || r.priority === p) && (!l || r.location === l) && (!t || r.types.includes(t)) && (!a || actorOf(r) === a) &&
       (!q || [r.id, r.headline, r.location, r.subregion, r.place, r.perpetrator, txt(r.victims), r.types.join(' ')].join(' ').toLowerCase().includes(q)));
   }
+  // filters live in the page address, so a filtered view can be bookmarked and shared
+  function syncUrl() { const u = new URLSearchParams(); F.forEach((id) => { const v = $(id).value.trim(); if (v) u.set(QP[id], v); }); const qs = u.toString();
+    try { history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); } catch (e) { /* address stays as it was */ } }
+  function readUrl() { const u = new URLSearchParams(location.search); F.forEach((id) => { const v = u.get(QP[id]); if (v != null) $(id).value = v; }); }
+  function copyLink(b) { const done = () => { b.textContent = 'Link copied'; setTimeout(() => { b.textContent = 'Copy link to this view'; }, 2000); };
+    const fallback = () => { const t = document.createElement('textarea'); t.value = location.href; document.body.append(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) { b.textContent = 'Copy the address from your browser'; } t.remove(); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(location.href).then(done, fallback); else fallback(); }
   function chips() {
     const c = $('chips'); c.replaceChildren();
     F.forEach((id) => { const v = $(id).value.trim(); if (!v) return; const label = id === 'fa' ? ACT[v] : id === 'fs' ? STL[v] : id === 'fm' ? fmo(v) : id === 'fg' ? (v === 'any' ? 'Any grave violation' : GV[v]) : v;
       const b = el('button', 'chip'); b.type = 'button'; b.setAttribute('aria-label', 'Remove filter ' + FL[id] + ': ' + label);
       b.append(el('span', null, FL[id]), document.createTextNode(label + ' ✕')); b.onclick = () => { $(id).value = ''; shown = 50; update(); }; c.append(b); });
     if (c.children.length > 1) { const b = el('button', 'chip', 'Clear all'); b.type = 'button'; b.onclick = () => { F.forEach((id) => { $(id).value = ''; }); shown = 50; update(); }; c.append(b); }
+    if (c.children.length) { const b = el('button', 'chip share', 'Copy link to this view'); b.type = 'button'; b.onclick = () => copyLink(b); c.append(b); }
   }
 
   function link(u, label) { const a = el('a', null, label || u); a.href = u; a.target = '_blank'; a.rel = 'noopener noreferrer nofollow'; return a; }
@@ -174,6 +186,7 @@
     L.replaceChildren(frag);
   }
   function update() {
+    syncUrl();
     const fr = filtered(); chips();
     const lab = fr.length + (fr.length === 1 ? ' incident' : ' incidents') + (fr.length !== rows.length ? ' of ' + rows.length : '');
     $('count').textContent = lab; $('count2').textContent = lab.toUpperCase();
@@ -210,9 +223,10 @@
     $('fl').append(...[...new Set(rows.map((r) => r.location))].sort().map((x) => new Option(short(x), x)));
     $('ft').append(...[...new Set(rows.flatMap((r) => r.types))].sort().map((x) => new Option(x)));
     F.forEach((id) => $(id).addEventListener('input', () => { shown = 50; update(); }));
+    readUrl();
     update();
     const h = decodeURIComponent(location.hash.slice(1));
-    if (/^VW-/.test(h)) { if (rows.some((x) => x.id === h)) { if (!document.getElementById(h)) { shown = rows.length; drawLog(filtered()); } const d = document.getElementById(h); if (d) { d.open = true; d.scrollIntoView({block: 'start'}); } }
+    if (/^VW-/.test(h)) { if (rows.some((x) => x.id === h)) { if (!filtered().some((x) => x.id === h)) { F.forEach((id) => { $(id).value = ''; }); update(); } if (!document.getElementById(h)) { shown = rows.length; drawLog(filtered()); } const d = document.getElementById(h); if (d) { d.open = true; d.scrollIntoView({block: 'start'}); } }
       else $('ledger').prepend(el('div', 'empty', h + ' is not in the archive. It may still be in the main log, or it was withdrawn after review.')); }
   }
   init();

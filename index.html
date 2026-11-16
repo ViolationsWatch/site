@@ -7,6 +7,8 @@
 <meta name="description" content="An open log of reported violations of international humanitarian and human rights law, shared as leads for investigators, journalists and researchers.">
 <link rel="canonical" href="https://violationswatch.org/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="Violations Watch: new incidents" href="/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="Violations Watch: grave violations against children" href="/feeds/children.xml">
 <meta property="og:title" content="Violations Watch: OSINT for Human Rights">
 <meta property="og:description" content="An open log of reported violations of international humanitarian and human rights law, shared as leads for investigators.">
 <meta property="og:url" content="https://violationswatch.org/">
@@ -119,6 +121,7 @@
     <span class="count" id="count2" style="margin-left:0"></span>
     <a class="btn" href="incidents.csv" download="violations-watch-incidents.csv">Download CSV</a>
     <a class="btn ghost" href="data.json" target="_blank" rel="noopener">Open as JSON</a>
+    <a class="btn ghost" id="rss" href="/feed.xml" target="_blank" rel="noopener">RSS feed</a>
   </div>
   <div class="ledger" id="ledger"><div class="empty" id="loading">Loading the incident log…</div></div>
 </div>
@@ -141,6 +144,7 @@
       <h2>How this is compiled</h2>
       <ul>
         <li>News and social media feeds are monitored daily across several conflicts. Reports in Arabic, Persian and French are translated before screening.</li>
+        <li>To follow the log, subscribe to an RSS feed: <a href="/feed.xml">all new incidents</a>, <a href="/feeds/children.xml">grave violations against children</a>, or one country (choose a country in the filter, then use the RSS button above the incident log). Any filtered view can be shared with the "Copy link to this view" button.</li>
         <li>Incidents involving children are tagged with the six grave violations against children used by the UN's Monitoring and Reporting Mechanism (Security Council resolution 1612): killing and maiming; recruitment and use; rape and other sexual violence; attacks on schools and hospitals; abduction; and denial of humanitarian access. These tags mark open-source leads for follow-up, not UN-verified cases. Names of child victims are never recorded or published.</li>
         <li>Each report is screened for violations of international humanitarian, human rights or criminal law. Ordinary crime, politics and military operations against combatants are excluded.</li>
         <li>Reports of the same event are merged into one incident with a permanent ID (VW-year-number), so later reports and corrections attach to the same entry.</li>
@@ -195,6 +199,7 @@
   const short = (s) => String(s).replace(/^Palestine \((.+)\)$/, 'Palestine: $1');
   let rows = [], shown = 50, world = null;
   const F = ['q', 'fl', 'fp', 'ft', 'fg', 'fa', 'fs'];
+  const QP = {q: 'q', fm: 'month', fl: 'country', fp: 'priority', ft: 'type', fg: 'children', fa: 'actor', fs: 'status'};
   const FL = {fg: 'Children', fl: 'Country', fp: 'Priority', ft: 'Type', fa: 'Perpetrator', fs: 'Status', q: 'Search'};
 
   /* ---------- filtering ---------- */
@@ -204,12 +209,23 @@
       (!q || [r.id, r.headline, r.location, r.subregion, r.place, r.perpetrator, txt(r.victims), r.types.join(' ')].join(' ').toLowerCase().includes(q)));
   }
   function setFilter(id, v) { const s = $(id); s.value = s.value === v ? '' : v; shown = 50; update(); }
+  // filters live in the page address, so a filtered view can be bookmarked and shared
+  function syncUrl() { const u = new URLSearchParams(); F.forEach((id) => { const v = $(id).value.trim(); if (v) u.set(QP[id], v); }); const qs = u.toString();
+    try { history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); } catch (e) { /* address stays as it was */ } }
+  function readUrl() { const u = new URLSearchParams(location.search); F.forEach((id) => { const v = u.get(QP[id]); if (v != null) $(id).value = v; }); }
+  function copyLink(b) { const done = () => { b.textContent = 'Link copied'; setTimeout(() => { b.textContent = 'Copy link to this view'; }, 2000); };
+    const fallback = () => { const t = document.createElement('textarea'); t.value = location.href; document.body.append(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) { b.textContent = 'Copy the address from your browser'; } t.remove(); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(location.href).then(done, fallback); else fallback(); }
+  let feeds = null;
+  function rssLink() { const a = $('rss'), l = $('fl').value, g = $('fg').value; const c = feeds && feeds.countries && feeds.countries[l];
+    if (l && c) { a.href = c; a.textContent = 'RSS feed: ' + short(l); } else if (g) { a.href = '/feeds/children.xml'; a.textContent = 'RSS feed: children'; } else { a.href = '/feed.xml'; a.textContent = 'RSS feed'; } }
   function chips() {
     const c = $('chips'); c.replaceChildren();
     F.forEach((id) => { const v = $(id).value.trim(); if (!v) return; const label = id === 'fa' ? ACT[v] : id === 'fs' ? STL[v] : id === 'fg' ? (v === 'any' ? 'Any grave violation' : GV[v]) : v;
       const b = el('button', 'chip'); b.type = 'button'; b.setAttribute('aria-label', 'Remove filter ' + FL[id] + ': ' + label);
       b.append(el('span', null, FL[id]), document.createTextNode(label + ' ✕')); b.onclick = () => { $(id).value = ''; shown = 50; update(); }; c.append(b); });
     if (c.children.length > 1) { const b = el('button', 'chip', 'Clear all'); b.type = 'button'; b.onclick = () => { F.forEach((id) => { $(id).value = ''; }); shown = 50; update(); }; c.append(b); }
+    if (c.children.length) { const b = el('button', 'chip share', 'Copy link to this view'); b.type = 'button'; b.onclick = () => copyLink(b); c.append(b); }
   }
 
   /* ---------- tooltip ---------- */
@@ -441,6 +457,7 @@
 
   /* ---------- update everything ---------- */
   function update() {
+    syncUrl(); rssLink();
     const fr = filtered(); chips();
     const lab = fr.length + (fr.length === 1 ? ' incident' : ' incidents') + (fr.length !== rows.length ? ' of ' + rows.length : '');
     $('count').textContent = lab; $('count2').textContent = lab.toUpperCase();
@@ -504,12 +521,14 @@
     $('ft').append(...[...new Set(rows.flatMap((r) => r.types))].sort().map((x) => new Option(x)));
     const subC = d3.rollups(rows.filter((r) => r.subregion), (v) => new Set(v.map((r) => r.subregion)).size, (r) => r.location).filter((x) => x[1] > 1).map((x) => x[0]).sort((a, b) => rows.filter((r) => r.location === b).length - rows.filter((r) => r.location === a).length);
     $('fsub').append(...subC.map((x) => new Option(short(x), x)));
+    fetch('feeds/index.json').then((r) => r.ok ? r.json() : null).then((j) => { feeds = j; rssLink(); }).catch(() => {});
     $('fsub').addEventListener('input', () => drawSub(filtered()));
     F.forEach((id) => $(id).addEventListener('input', () => { shown = 50; update(); }));
+    readUrl();
     update();
     let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(update, 200); });
     const h = decodeURIComponent(location.hash.slice(1));
-    if (/^VW-/.test(h)) { const r = rows.find((x) => x.id === h); if (r) { if (!document.getElementById(h)) { shown = rows.length; drawLog(filtered()); } const d = document.getElementById(h); if (d) { d.open = true; d.scrollIntoView({block: 'start'}); } } }
+    if (/^VW-/.test(h)) { const r = rows.find((x) => x.id === h); if (r) { if (!filtered().includes(r)) { F.forEach((id) => { $(id).value = ''; }); update(); } /* a linked incident always shows, even if the link's filters exclude it */ if (!document.getElementById(h)) { shown = rows.length; drawLog(filtered()); } const d = document.getElementById(h); if (d) { d.open = true; d.scrollIntoView({block: 'start'}); } } }
   }
   init();
 })();
