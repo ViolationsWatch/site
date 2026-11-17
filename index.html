@@ -529,7 +529,7 @@
     $('p-note').textContent = (building ? 'Incidents reported since this log began on ' + fd(start) + '; from ' + fd(new Date(LOG_START + 28 * 864e5)) + ' it shows a rolling 28 days.' : 'Incidents reported in the 28 days up to the last update.') + ' Updated every morning by about 06:30 UK time.';
     $('fl').append(...[...new Set(rows.map((r) => r.location))].sort().map((x) => new Option(short(x), x)));
     $('ft').append(...[...new Set(rows.flatMap((r) => r.types))].sort().map((x) => new Option(x)));
-    const subC = d3.rollups(rows.filter((r) => r.subregion), (v) => new Set(v.map((r) => r.subregion)).size, (r) => r.location).filter((x) => x[1] > 1).map((x) => x[0]).sort((a, b) => rows.filter((r) => r.location === b).length - rows.filter((r) => r.location === a).length);
+    const subC = d3.rollups(rows.filter((r) => r.location && r.location !== 'Unlocated'), (v) => v.length, (r) => r.location).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map((x) => x[0]);
     $('fsub').append(...subC.map((x) => new Option(short(x), x)));
     fetch('feeds/index.json').then((r) => r.ok ? r.json() : null).then((j) => { feeds = j; rssLink(); }).catch(() => {});
     $('fsub').addEventListener('input', () => drawSub(filtered()));
