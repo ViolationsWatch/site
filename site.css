@@ -191,3 +191,11 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
 .chip.share { border-style: dashed; }
 
 @media (max-width: 359px) { .sysbar nav { flex-wrap: wrap; } }
+
+/* Follow buttons in the masthead */
+.follow-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.follow-row .k { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: 2px; }
+.fbtn { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--panel); color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 500; line-height: 1.2; }
+.fbtn svg { width: 15px; height: 15px; fill: currentColor; flex: none; }
+.fbtn:hover { border-color: var(--accent); background: var(--accent-soft); }
+@media (max-width: 420px) { .follow-row { gap: 6px; } .follow-row .k { font-size: 11px; } .fbtn { padding: 5px 10px; font-size: 13px; gap: 6px; } .fbtn svg { width: 14px; height: 14px; } }
