@@ -6,7 +6,17 @@
 <description>New incidents reported in Ukraine. Most entries are unverified leads, not findings.</description>
 <language>en-gb</language>
 <atom:link href="https://violationswatch.org/feeds/ukraine.xml" rel="self" type="application/rss+xml"/>
-<pubDate>Mon, 16 Nov 2026 03:49:38 GMT</pubDate>
+<pubDate>Mon, 16 Nov 2026 09:32:54 GMT</pubDate>
+<item>
+<title>Russian strikes across Ukraine over 15–16 Nov kill six and injure 45, including a woman killed by a drone in Zaporizhzhia; Kyiv bridges hit (Ukrainian officials)</title>
+<link>https://violationswatch.org/#VW-2026-0918</link>
+<guid isPermaLink="false">VW-2026-0918</guid>
+<pubDate>Mon, 16 Nov 2026 09:32:54 GMT</pubDate>
+<category>Ukraine</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (High priority). Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian armed forces. Reported casualties: 6 killed, 45 injured. 5 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0918</description>
+</item>
 <item>
 <title>Russian drone strikes a children's educational facility in Kharkiv (Ukrinform)</title>
 <link>https://violationswatch.org/#VW-2026-0757</link>
@@ -194,7 +204,7 @@
 <description>Unverified lead (High priority). Kyiv, Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian armed forces. Reported casualties: 1 killed, 5-7 injured. 6 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0117</description>
 </item>
 <item>
-<title>Russian strike on an aid distribution point in a school in Komyshuvakha, Zaporizhzhia: death toll reported at 53</title>
+<title>Russian strike on an aid distribution point in a school in Komyshuvakha, Zaporizhzhia (2 Nov): final toll 72 killed, 4 missing as search ends (Ukrainian officials)</title>
 <link>https://violationswatch.org/#VW-2026-0041</link>
 <guid isPermaLink="false">VW-2026-0041</guid>
 <pubDate>Fri, 06 Nov 2026 21:48:00 GMT</pubDate>
@@ -202,7 +212,7 @@
 <category>Killing of civilians</category>
 <category>Air / drone / artillery strike</category>
 <category>Attacks on healthcare &amp; aid</category>
-<description>Unverified lead (Critical priority). Komyshuvakha, Zaporizhzhia Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike, Attacks on healthcare &amp; aid. Alleged perpetrator: Russian armed forces. Reported casualties: 53 killed. Grave violations against children: Attacks on schools and hospitals. Disputed or caveats: Toll per Ukrainian authorities; recovery site reportedly struck again. 11 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0041</description>
+<description>Unverified lead (Critical priority). Komyshuvakha, Zaporizhzhia Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike, Attacks on healthcare &amp; aid. Alleged perpetrator: Russian armed forces. Reported casualties: 72 killed. Grave violations against children: Attacks on schools and hospitals. Disputed or caveats: Toll per Ukrainian authorities; recovery site reportedly struck again. 11 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0041</description>
 </item>
 <item>
 <title>Russian strikes on residential areas of Sumy: 1 killed, 13 civilians injured in 24 hours</title>
