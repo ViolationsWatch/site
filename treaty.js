@@ -15,7 +15,9 @@ window.VWTreaty = (() => {
   const load = () => fetch('/treaty_status.json').then((r) => r.ok ? r.json() : null).then((j) => { D = j; }).catch(() => { D = null; });
   const section = (r) => {
     if (!D) return null;
-    const hit = D.perpetrators[(r.perpetrator || '') + '|' + (r.actor_type || '')] || {};
+    let hit = D.perpetrators[(r.perpetrator || '') + '|' + (r.actor_type || '')];
+    if (!hit && r.actor_type === 'state' && r.perpetrator) { const p = (D.state_patterns || []).find(([x]) => new RegExp(x, 'i').test(r.perpetrator)); hit = p ? {m: 'named', s: p[1]} : null; }
+    hit = hit || {};
     const alleged = hit.s && D.states[hit.s] ? hit.s : null, place = D.locations[r.location] || null;
     if (!alleged && !place) return null;
     const g = node('div', 'legal treaty'); g.append(node('div', 'sub', 'Treaty status (not a legal finding)'));
