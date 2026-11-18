@@ -4,3 +4,6 @@ README.md
 .git
 scripts
 blog/posts/_template.md
+node_modules
+package.json
+package-lock.json

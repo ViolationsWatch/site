@@ -455,7 +455,7 @@
     const ul = el('ul', 'links'); const arch = new Map((r.archives || []).map((a) => [a.url, a]));
     r.links.forEach((u) => { const li = el('li'); li.append(link(u)); const a = arch.get(u); if (a) { li.append(document.createTextNode(' · ')); li.append(link(a.archived_url, 'archived ' + fd(a.at))); } ul.append(li); });
     const w = el('div'); w.append(el('div', 'sub', 'Original reports'), ul); b.append(w);
-    const pl = el('div', 'permalink'); pl.append(document.createTextNode('Cite as: '), link(location.origin + location.pathname + '#' + r.id, 'violationswatch.org/#' + r.id)); b.append(pl);
+    const pl = el('div', 'permalink'); pl.append(document.createTextNode('Cite as: '), link(location.origin + location.pathname + '#' + r.id, 'violationswatch.org/#' + r.id), document.createTextNode(' · Share: '), link(location.origin + '/i/' + r.id + '/', 'violationswatch.org/i/' + r.id)); b.append(pl);
     return b;
   }
   function drawLog(fr) {

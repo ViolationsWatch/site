@@ -5,8 +5,9 @@
   // Only serve the site on violationswatch.org, not on workers.dev or preview addresses
   "workers_dev": false,
   "preview_urls": false,
-  // builds blog/posts.json from the Markdown posts before each deploy
-  "build": { "command": "node scripts/build-blog.js" },
+  // before each deploy: builds blog/posts.json, then the incident share pages and preview images.
+  // If the previews fail, the site still deploys without them.
+  "build": { "command": "node scripts/build-blog.js && (npm ci --no-audit --no-fund && node scripts/build-previews.mjs || echo 'Preview build failed; deploying without previews')" },
   "assets": {
     "directory": ".",
     "not_found_handling": "404-page"
