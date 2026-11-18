@@ -202,7 +202,11 @@
   const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
   const fd = (s) => { if (!s) return ''; const d = new Date(s); return isNaN(d) ? s : d.toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'}); };
   const fds = (s) => new Date(s).toLocaleDateString('en-GB', {day: 'numeric', month: 'short', timeZone: 'UTC'});
-  const rng = (r) => r[0] == null && r[1] == null ? '' : r[0] === r[1] || r[1] == null ? String(r[0]) + (r[1] == null && r[0] != null && r[0] > 0 ? '+' : '') : (r[0] ?? '?') + '–' + r[1];
+  const rng = (r) => { r = r || []; return r[0] == null && r[1] == null ? '' : r[0] === r[1] || r[1] == null ? String(r[0]) + (r[1] == null && r[0] != null && r[0] > 0 ? '+' : '') : (r[0] ?? '?') + '–' + r[1]; };
+  // incomplete records still load and open: missing fields get safe values, and nothing is invented for casualties or dates of the incident
+  const clean = (r, updated) => { const num = (v) => typeof v === 'number' && isFinite(v) ? v : null, lat = num(r.lat), lon = num(r.lon), both = lat != null && lon != null, links = Array.isArray(r.links) ? r.links : [];
+    return {...r, headline: r.headline || r.id, location: r.location || 'Unlocated', priority: PRI[r.priority] != null ? r.priority : 'Low', status: STL[r.status] ? r.status : 'lead', types: Array.isArray(r.types) ? r.types : [], links, archives: Array.isArray(r.archives) ? r.archives : [],
+      sources: r.sources ?? links.length, first_reported: r.first_reported || r.last_reported || updated, last_reported: r.last_reported || r.first_reported || updated, lat: both ? lat : null, lon: both ? lon : null}; };
   const statusOf = (r) => r.verification === 'verified' ? 'verified' : r.status;
   const actorOf = (r) => r.actor_type === 'state' || r.actor_type === 'non-state' ? r.actor_type : 'unknown';
   const txt = (v) => Array.isArray(v) ? v.join(', ') : (v || '');
@@ -427,7 +431,7 @@
     body.append(el('span', 'hl', r.headline), m);
     const stripe = el('span', 'stripe'); stripe.style.background = PCOL[r.priority];
     s.append(stripe, body); d.append(s);
-    d.addEventListener('toggle', () => { if (d.open && !d.dataset.built) { d.dataset.built = 1; d.append(details(r)); } if (d.open) history.replaceState(null, '', '#' + r.id); });
+    d.addEventListener('toggle', () => { if (d.open && !d.dataset.built) { d.dataset.built = 1; try { d.append(details(r)); } catch (e) { d.append(el('div', 'body', 'The details of this incident could not be displayed.')); } } if (d.open) history.replaceState(null, '', '#' + r.id); });
     return d;
   }
   function details(r) {
@@ -507,7 +511,7 @@
     try { [data, world, lt, lc] = await Promise.all([fetch('data.json').then((r) => r.json()), fetch('world.json').then((r) => r.json()).catch(() => null),
       fetch('legal_types.json').then((r) => r.json()).catch(() => null), fetch('legal_contexts.json').then((r) => r.json()).catch(() => null)]); }
     catch (e) { $('loading').textContent = 'The incident log could not be loaded. Reload the page to try again.'; return; }
-    rows = data.incidents || [];
+    rows = (data.incidents || []).filter((r) => r && r.id).map((r) => clean(r, data.updated));
     // an incident that has aged out of the 28-day log lives in the archive: send old links there
     { const h0 = decodeURIComponent(location.hash.slice(1)); if (/^VW-/.test(h0) && !rows.some((x) => x.id === h0)) { location.replace('/archive#' + h0); return; } }
     // indicative legal frameworks are worked out here from the lookup tables (legal.js), unless the data already carries them
