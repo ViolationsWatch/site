@@ -14,7 +14,7 @@ Most entries are **unverified leads, not findings**. Each one records what was r
 | `world.json` | Country outlines for the map (Natural Earth via world-atlas, public domain) |
 | `_headers` | Security and caching headers for Cloudflare Pages |
 
-There is no build step: Cloudflare Pages serves the files as they are.
+Most files are served as they are. Each deploy also builds the blog list and, with `scripts/build-previews.mjs`, a share page (`/i/VW-YYYY-NNNN/`) and link-preview image for every incident in the current log. Those generated files are not committed.
 
 ## How the data is updated
 
