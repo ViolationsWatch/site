@@ -143,6 +143,8 @@ details.inc[open] > summary { background: var(--accent-soft); }
 .legal b { font-weight: 600; }
 .legal ul.refs { margin: 2px 0 0; padding-left: 18px; }
 .legal ul.refs li { margin: 1px 0; }
+.legal.treaty { margin-top: 0; }
+.legal .treaty-note { text-transform: none; letter-spacing: 0; font-family: var(--sans); font-size: 12px; line-height: 1.45; }
 .legal .why p { margin: 2px 0 0; max-width: 75ch; line-height: 1.55; }
 .links { margin: 4px 0 0; padding-left: 18px; font-size: 13px; overflow-wrap: anywhere; }
 .links li { margin: 2px 0; }
