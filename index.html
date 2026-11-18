@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<base href="/">
 <title>Violations Watch</title>
 <meta name="description" content="An open log of reported violations of international humanitarian and human rights law, shared as leads for investigators, journalists and researchers.">
 <link rel="canonical" href="https://violationswatch.org/">
@@ -227,7 +228,7 @@
   function setFilter(id, v) { const s = $(id); s.value = s.value === v ? '' : v; shown = 50; update(); }
   // filters live in the page address, so a filtered view can be bookmarked and shared
   function syncUrl() { const u = new URLSearchParams(); F.forEach((id) => { const v = $(id).value.trim(); if (v) u.set(QP[id], v); }); const qs = u.toString();
-    try { history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); } catch (e) { /* address stays as it was */ } }
+    try { history.replaceState(null, '', '/' + (qs ? '?' + qs : '') + location.hash); } catch (e) { /* address stays as it was */ } }
   function readUrl() { const u = new URLSearchParams(location.search); F.forEach((id) => { const v = u.get(QP[id]); if (v != null) $(id).value = v; }); }
   function copyLink(b) { const done = () => { b.textContent = 'Link copied'; setTimeout(() => { b.textContent = 'Copy link to this view'; }, 2000); };
     const fallback = () => { const t = document.createElement('textarea'); t.value = location.href; document.body.append(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) { b.textContent = 'Copy the address from your browser'; } t.remove(); };
@@ -431,7 +432,8 @@
     body.append(el('span', 'hl', r.headline), m);
     const stripe = el('span', 'stripe'); stripe.style.background = PCOL[r.priority];
     s.append(stripe, body); d.append(s);
-    d.addEventListener('toggle', () => { if (d.open && !d.dataset.built) { d.dataset.built = 1; try { d.append(details(r)); } catch (e) { d.append(el('div', 'body', 'The details of this incident could not be displayed.')); } } if (d.open) history.replaceState(null, '', '#' + r.id); });
+    d.addEventListener('toggle', () => { if (d.open && !d.dataset.built) { d.dataset.built = 1; try { d.append(details(r)); } catch (e) { d.append(el('div', 'body', 'The details of this incident could not be displayed.')); } } // the address bar shows the share link, so copying it keeps the incident's own preview
+      const own = '/i/' + r.id + '/'; if (d.open) history.replaceState(null, '', own); else if (location.pathname === own) history.replaceState(null, '', '/' + location.search); });
     return d;
   }
   function details(r) {
@@ -459,7 +461,7 @@
     const ul = el('ul', 'links'); const arch = new Map((r.archives || []).map((a) => [a.url, a]));
     r.links.forEach((u) => { const li = el('li'); li.append(link(u)); const a = arch.get(u); if (a) { li.append(document.createTextNode(' · ')); li.append(link(a.archived_url, 'archived ' + fd(a.at))); } ul.append(li); });
     const w = el('div'); w.append(el('div', 'sub', 'Original reports'), ul); b.append(w);
-    const pl = el('div', 'permalink'); pl.append(document.createTextNode('Cite as: '), link(location.origin + location.pathname + '#' + r.id, 'violationswatch.org/#' + r.id), document.createTextNode(' · Share: '), link(location.origin + '/i/' + r.id + '/', 'violationswatch.org/i/' + r.id)); b.append(pl);
+    const pl = el('div', 'permalink'); pl.append(document.createTextNode('Cite as: '), link(location.origin + '/#' + r.id, 'violationswatch.org/#' + r.id), document.createTextNode(' · Share: '), link(location.origin + '/i/' + r.id + '/', 'violationswatch.org/i/' + r.id)); b.append(pl);
     return b;
   }
   function drawLog(fr) {
@@ -504,6 +506,9 @@
     drawSub(fr);
     drawLog(fr);
   }
+
+  // links within the page keep working when the address shows an incident
+  document.addEventListener('click', (ev) => { const a = ev.target.closest && ev.target.closest('a[href^="#"]'); const t = a && document.getElementById(a.getAttribute('href').slice(1)); if (t) { ev.preventDefault(); t.scrollIntoView(); } });
 
   async function init() {
     let data;
