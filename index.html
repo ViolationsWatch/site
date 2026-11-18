@@ -70,6 +70,8 @@
       <select id="fg" aria-label="Grave violations against children"><option value="">All incidents</option><option value="any">Grave violations against children (any)</option><option value="killing_maiming">Children: killing and maiming</option><option value="recruitment_use">Children: recruitment and use</option><option value="sexual_violence">Children: rape and sexual violence</option><option value="attacks_schools_hospitals">Children: attacks on schools and hospitals</option><option value="abduction">Children: abduction</option><option value="denial_access">Children: denial of humanitarian access</option></select>
       <select id="fa" aria-label="Alleged perpetrator"><option value="">All perpetrators</option><option value="state">State actors</option><option value="non-state">Non-state actors</option><option value="unknown">Unidentified</option></select>
       <select id="fs" aria-label="Status"><option value="">All statuses</option><option value="lead">Leads</option><option value="confirmed">Confirmed</option><option value="verified">Verified</option></select>
+      <select id="fd" aria-label="Date first reported"><option value="">All report dates</option><option value="24h">Reported in last 24 hours</option><option value="7d">Reported in last 7 days</option><option value="custom">Custom report dates</option></select>
+      <span class="dates" id="drange" hidden><label>From <input type="date" id="df" aria-label="First reported from"></label><label>to <input type="date" id="dt" aria-label="First reported to"></label></span>
       <span class="count" id="count"></span>
     </div>
     <div class="chips" id="chips" aria-live="polite"></div>
@@ -90,7 +92,7 @@
     </section>
     <section class="panel w8" aria-labelledby="h-day">
       <div class="ph"><span class="no">03</span><h2 id="h-day">Incidents by day and priority</h2></div>
-      <p class="cap">By the day an incident was first reported (UTC). Hover over or tap a day for its incidents.</p>
+      <p class="cap">By the day an incident was first reported (UTC). Hover over or tap a day for its incidents; click a day to show only that day.</p>
       <div class="legend"><span><i class="sw Critical"></i>Critical</span><span><i class="sw High"></i>High</span><span><i class="sw Medium"></i>Medium</span><span><i class="sw Low"></i>Low</span></div>
       <div id="c-day" class="chart"></div>
     </section>
@@ -122,6 +124,7 @@
   <div class="band" id="log"><span class="no">07</span><h2>Incident log</h2></div>
   <div class="loghead">
     <span class="count" id="count2" style="margin-left:0"></span>
+    <label class="sortby">Sort by <select id="so" aria-label="Sort incidents"><option value="">Priority</option><option value="new">Newest reported</option><option value="old">Oldest reported</option><option value="updated">Recently updated</option></select></label>
     <a class="btn" href="incidents.csv" download="violations-watch-incidents.csv">Download CSV</a>
     <a class="btn ghost" href="data.json" target="_blank" rel="noopener">Open as JSON</a>
     <a class="btn ghost" id="rss" href="/feed.xml" target="_blank" rel="noopener">RSS feed</a>
@@ -214,22 +217,29 @@
   const GV = {killing_maiming: 'Killing and maiming', recruitment_use: 'Recruitment and use', sexual_violence: 'Rape and other sexual violence', attacks_schools_hospitals: 'Attacks on schools and hospitals', abduction: 'Abduction', denial_access: 'Denial of humanitarian access'};
   const gvOf = (r) => Array.isArray(r.grave_violations) ? r.grave_violations.filter((g) => GV[g]) : [];
   const short = (s) => String(s).replace(/^Palestine \((.+)\)$/, 'Palestine: $1');
-  let rows = [], shown = 50, world = null;
-  const F = ['q', 'fl', 'fp', 'ft', 'fg', 'fa', 'fs'];
-  const QP = {q: 'q', fm: 'month', fl: 'country', fp: 'priority', ft: 'type', fg: 'children', fa: 'actor', fs: 'status'};
-  const FL = {fg: 'Children', fl: 'Country', fp: 'Priority', ft: 'Type', fa: 'Perpetrator', fs: 'Status', q: 'Search'};
+  let rows = [], shown = 50, world = null, latest = Date.now();
+  const F = ['q', 'fl', 'fp', 'ft', 'fg', 'fa', 'fs', 'fd', 'df', 'dt'];
+  const DR = {'24h': 'Last 24 hours', '7d': 'Last 7 days'};
+  const QP = {q: 'q', fm: 'month', fl: 'country', fp: 'priority', ft: 'type', fg: 'children', fa: 'actor', fs: 'status', fd: 'reported', df: 'from', dt: 'to'};
+  const FL = {fg: 'Children', fl: 'Country', fp: 'Priority', ft: 'Type', fa: 'Perpetrator', fs: 'Status', q: 'Search', fd: 'Reported', df: 'Reported from', dt: 'Reported to'};
 
   /* ---------- filtering ---------- */
+  function reportedOk(r) {
+    const m = $('fd').value, day = String(r.first_reported || '').slice(0, 10), from = $('df').value, to = $('dt').value;
+    if (m === '24h' || m === '7d') return Date.parse(r.first_reported) >= latest - (m === '24h' ? 1 : 7) * 864e5;
+    return (!from || day >= from) && (!to || day <= to);
+  }
+  function setDay(k) { const same = $('df').value === k && $('dt').value === k; $('fd').value = same ? '' : 'custom'; $('df').value = $('dt').value = same ? '' : k; shown = 50; update(); }
   function filtered() {
     const q = $('q').value.trim().toLowerCase(), g = $('fg').value, s = $('fs').value, p = $('fp').value, l = $('fl').value, t = $('ft').value, a = $('fa').value;
-    return rows.filter((r) => (!g || (g === 'any' ? gvOf(r).length > 0 : gvOf(r).includes(g))) && (!s || statusOf(r) === s) && (!p || r.priority === p) && (!l || r.location === l) && (!t || r.types.includes(t)) && (!a || actorOf(r) === a) &&
+    return rows.filter((r) => reportedOk(r) && (!g || (g === 'any' ? gvOf(r).length > 0 : gvOf(r).includes(g))) && (!s || statusOf(r) === s) && (!p || r.priority === p) && (!l || r.location === l) && (!t || r.types.includes(t)) && (!a || actorOf(r) === a) &&
       (!q || [r.id, r.headline, r.location, r.subregion, r.place, r.perpetrator, txt(r.victims), r.types.join(' ')].join(' ').toLowerCase().includes(q)));
   }
   function setFilter(id, v) { const s = $(id); s.value = s.value === v ? '' : v; shown = 50; update(); }
   // filters live in the page address, so a filtered view can be bookmarked and shared
-  function syncUrl() { const u = new URLSearchParams(); F.forEach((id) => { const v = $(id).value.trim(); if (v) u.set(QP[id], v); }); const qs = u.toString();
+  function syncUrl() { const u = new URLSearchParams(); F.forEach((id) => { const v = $(id).value.trim(); if (v) u.set(QP[id], v); }); if ($('so').value) u.set('sort', $('so').value); const qs = u.toString();
     try { history.replaceState(null, '', '/' + (qs ? '?' + qs : '') + location.hash); } catch (e) { /* address stays as it was */ } }
-  function readUrl() { const u = new URLSearchParams(location.search); F.forEach((id) => { const v = u.get(QP[id]); if (v != null) $(id).value = v; }); }
+  function readUrl() { const u = new URLSearchParams(location.search); F.forEach((id) => { const v = u.get(QP[id]); if (v != null) $(id).value = v; }); $('so').value = u.get('sort') || ''; if ($('so').selectedIndex < 0) $('so').value = ''; if ($('df').value || $('dt').value) $('fd').value = 'custom'; }
   function copyLink(b) { const done = () => { b.textContent = 'Link copied'; setTimeout(() => { b.textContent = 'Copy link to this view'; }, 2000); };
     const fallback = () => { const t = document.createElement('textarea'); t.value = location.href; document.body.append(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) { b.textContent = 'Copy the address from your browser'; } t.remove(); };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(location.href).then(done, fallback); else fallback(); }
@@ -238,11 +248,11 @@
     if (l && c) { a.href = c; a.textContent = 'RSS feed: ' + short(l); } else if (g) { a.href = '/feeds/children.xml'; a.textContent = 'RSS feed: children'; } else { a.href = '/feed.xml'; a.textContent = 'RSS feed'; } }
   function chips() {
     const c = $('chips'); c.replaceChildren();
-    F.forEach((id) => { const v = $(id).value.trim(); if (!v) return; const label = id === 'fa' ? ACT[v] : id === 'fs' ? STL[v] : id === 'fg' ? (v === 'any' ? 'Any grave violation' : GV[v]) : v;
+    F.forEach((id) => { const v = $(id).value.trim(); if (!v || (id === 'fd' && v === 'custom')) return; const label = id === 'fd' ? DR[v] : id === 'df' || id === 'dt' ? fd(v) : id === 'fa' ? ACT[v] : id === 'fs' ? STL[v] : id === 'fg' ? (v === 'any' ? 'Any grave violation' : GV[v]) : v;
       const b = el('button', 'chip'); b.type = 'button'; b.setAttribute('aria-label', 'Remove filter ' + FL[id] + ': ' + label);
       b.append(el('span', null, FL[id]), document.createTextNode(label + ' ✕')); b.onclick = () => { $(id).value = ''; shown = 50; update(); }; c.append(b); });
     if (c.children.length > 1) { const b = el('button', 'chip', 'Clear all'); b.type = 'button'; b.onclick = () => { F.forEach((id) => { $(id).value = ''; }); shown = 50; update(); }; c.append(b); }
-    if (c.children.length) { const b = el('button', 'chip share', 'Copy link to this view'); b.type = 'button'; b.onclick = () => copyLink(b); c.append(b); }
+    if (c.children.length || $('so').value) { const b = el('button', 'chip share', 'Copy link to this view'); b.type = 'button'; b.onclick = () => copyLink(b); c.append(b); }
   }
 
   /* ---------- tooltip ---------- */
@@ -348,7 +358,8 @@
         sel.append('path').attr('d', top ? colBar(x(d.k), yy, x.bandwidth(), Math.max(1, hh), 3) : 'M' + x(d.k) + ',' + yy + 'h' + x.bandwidth() + 'v' + Math.max(1, hh) + 'h' + (-x.bandwidth()) + 'Z').attr('fill', PCOL[s.p]); y0 = y1; });
     });
     g.append('rect').attr('class', 'hit').attr('x', (d) => x(d.k) - x.step() * x.paddingInner() / 2).attr('width', x.step()).attr('y', m.t).attr('height', H - m.t - m.b)
-    ; bindTip(g.selectAll('rect.hit'), (t, d, p) => { t.append(el('b', null, fd(d.d))); t.append(el('div', 'm', d.items.length + (d.items.length === 1 ? ' incident' : ' incidents') + (d.items.length ? ' · ' + PRIS.map((q) => [q, d.items.filter((r) => r.priority === q).length]).filter((x) => x[1]).map((x) => x[1] + ' ' + x[0]).join(', ') : ''))); incList(t, d.items, p ? 6 : 5, p); }, null);
+    ; bindTip(g.selectAll('rect.hit'), (t, d, p) => { t.append(el('b', null, fd(d.d))); t.append(el('div', 'm', d.items.length + (d.items.length === 1 ? ' incident' : ' incidents') + (d.items.length ? ' · ' + PRIS.map((q) => [q, d.items.filter((r) => r.priority === q).length]).filter((x) => x[1]).map((x) => x[1] + ' ' + x[0]).join(', ') : ''))); incList(t, d.items, p ? 6 : 5, p); }, (d) => ({label: ($('df').value === d.k && $('dt').value === d.k ? 'Show all dates' : 'Show ' + fd(d.d)), fn: () => setDay(d.k)}));
+    g.selectAll('rect.hit').style('cursor', 'pointer');
     box.append(svg.node());
   }
   function colBar(x, y, w, h, r) { r = Math.min(r, w / 2, h); return 'M' + x + ',' + (y + h) + 'v' + (r - h) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + (-r) + 'h' + (w - 2 * r) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + r + 'v' + (h - r) + 'Z'; }
@@ -428,7 +439,7 @@
   function card(r) {
     const d = el('details', 'inc'); d.id = r.id;
     const s = el('summary'); const body = el('span'); const m = el('span', 'meta'); const st = statusOf(r);
-    m.append(el('span', 'mono', r.id), el('span', 'st st-' + st, STL[st]), el('span', 'pr ' + r.priority, r.priority), ...(gvOf(r).length ? [el('span', 'cv', 'Children')] : []), el('span', null, [r.place, short(r.location)].filter(Boolean).join(', ')), el('span', null, 'first reported ' + fd(r.first_reported)));
+    m.append(el('span', 'mono', r.id), el('span', 'st st-' + st, STL[st]), el('span', 'pr ' + r.priority, r.priority), ...(gvOf(r).length ? [el('span', 'cv', 'Children')] : []), el('span', null, [r.place, short(r.location)].filter(Boolean).join(', ')), el('span', null, $('so').value === 'updated' ? 'last reported ' + fd(r.last_reported) : 'first reported ' + fd(r.first_reported)));
     body.append(el('span', 'hl', r.headline), m);
     const stripe = el('span', 'stripe'); stripe.style.background = PCOL[r.priority];
     s.append(stripe, body); d.append(s);
@@ -465,7 +476,8 @@
     return b;
   }
   function drawLog(fr) {
-    const sorted = fr.slice().sort((a, b) => PRI[a.priority] - PRI[b.priority] || b.last_reported.localeCompare(a.last_reported));
+    const so = $('so').value, pri = (a, b) => PRI[a.priority] - PRI[b.priority];
+    const sorted = fr.slice().sort((a, b) => so === 'new' ? b.first_reported.localeCompare(a.first_reported) || pri(a, b) : so === 'old' ? a.first_reported.localeCompare(b.first_reported) || pri(a, b) : so === 'updated' ? b.last_reported.localeCompare(a.last_reported) || pri(a, b) : pri(a, b) || b.last_reported.localeCompare(a.last_reported));
     const L = $('ledger');
     if (!sorted.length) { L.replaceChildren(el('div', 'empty', 'No incidents match these filters.')); return; }
     const frag = document.createDocumentFragment(); sorted.slice(0, shown).forEach((r) => frag.append(card(r)));
@@ -475,7 +487,7 @@
 
   /* ---------- update everything ---------- */
   function update() {
-    syncUrl(); rssLink();
+    $('drange').hidden = $('fd').value !== 'custom'; syncUrl(); rssLink();
     const fr = filtered(); chips();
     const lab = fr.length + (fr.length === 1 ? ' incident' : ' incidents') + (fr.length !== rows.length ? ' of ' + rows.length : '');
     $('count').textContent = lab; $('count2').textContent = lab.toUpperCase();
@@ -516,7 +528,7 @@
     try { [data, world, lt, lc] = await Promise.all([fetch('data.json').then((r) => r.json()), fetch('world.json').then((r) => r.json()).catch(() => null),
       fetch('legal_types.json').then((r) => r.json()).catch(() => null), fetch('legal_contexts.json').then((r) => r.json()).catch(() => null)]); }
     catch (e) { $('loading').textContent = 'The incident log could not be loaded. Reload the page to try again.'; return; }
-    rows = (data.incidents || []).filter((r) => r && r.id).map((r) => clean(r, data.updated));
+    rows = (data.incidents || []).filter((r) => r && r.id).map((r) => clean(r, data.updated)); latest = Date.parse(data.updated) || latest;
     // an incident that has aged out of the 28-day log lives in the archive: send old links there
     { const h0 = decodeURIComponent(location.hash.slice(1)); if (/^VW-/.test(h0) && !rows.some((x) => x.id === h0)) { location.replace('/archive#' + h0); return; } }
     // indicative legal frameworks are worked out here from the lookup tables (legal.js), unless the data already carries them
@@ -544,7 +556,10 @@
     $('fsub').append(...subC.map((x) => new Option(short(x), x)));
     fetch('feeds/index.json').then((r) => r.ok ? r.json() : null).then((j) => { feeds = j; rssLink(); }).catch(() => {});
     $('fsub').addEventListener('input', () => drawSub(filtered()));
+    $('fd').addEventListener('input', () => { if ($('fd').value !== 'custom') $('df').value = $('dt').value = ''; });
+    ['df', 'dt'].forEach((id) => $(id).addEventListener('input', () => { $('fd').value = 'custom'; }));
     F.forEach((id) => $(id).addEventListener('input', () => { shown = 50; update(); }));
+    $('so').addEventListener('input', () => { shown = 50; update(); });
     readUrl();
     update();
     let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(update, 200); });
