@@ -482,10 +482,12 @@
     const so = $('so').value, pri = (a, b) => PRI[a.priority] - PRI[b.priority];
     const sorted = fr.slice().sort((a, b) => so === 'new' ? b.first_reported.localeCompare(a.first_reported) || pri(a, b) : so === 'old' ? a.first_reported.localeCompare(b.first_reported) || pri(a, b) : so === 'updated' ? b.last_reported.localeCompare(a.last_reported) || pri(a, b) : pri(a, b) || b.last_reported.localeCompare(a.last_reported));
     const L = $('ledger');
+    const wasOpen = new Set([...L.querySelectorAll('details.inc[open]')].map((d) => d.id)); // keep open cards open when the log is redrawn
     if (!sorted.length) { L.replaceChildren(el('div', 'empty', 'No incidents match these filters.')); return; }
     const frag = document.createDocumentFragment(); sorted.slice(0, shown).forEach((r) => frag.append(card(r)));
     if (sorted.length > shown) { const m = el('div', 'more'); const btn = el('button', 'btn ghost', 'Show ' + Math.min(50, sorted.length - shown) + ' more'); btn.type = 'button'; btn.onclick = () => { shown += 50; drawLog(filtered()); }; m.append(btn); frag.append(m); }
     L.replaceChildren(frag);
+    wasOpen.forEach((id) => { const d = document.getElementById(id); if (d && d.tagName === 'DETAILS') d.open = true; });
   }
 
   /* ---------- update everything ---------- */
@@ -565,7 +567,7 @@
     $('so').addEventListener('input', () => { shown = 50; update(); });
     readUrl();
     update();
-    let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(update, 200); });
+    let t, lastW = innerWidth; addEventListener('resize', () => { if (innerWidth === lastW) return; lastW = innerWidth; clearTimeout(t); t = setTimeout(update, 200); }); // phones fire resize when the address bar hides on scroll: only redraw when the width changes
     const h = decodeURIComponent(location.hash.slice(1));
     if (/^VW-/.test(h)) { const r = rows.find((x) => x.id === h); if (r) { if (!filtered().includes(r)) { F.forEach((id) => { $(id).value = ''; }); update(); } /* a linked incident always shows, even if the link's filters exclude it */ if (!document.getElementById(h)) { shown = rows.length; drawLog(filtered()); } const d = document.getElementById(h); if (d) { d.open = true; d.scrollIntoView({block: 'start'}); } } }
   }
