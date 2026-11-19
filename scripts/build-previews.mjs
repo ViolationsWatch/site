@@ -36,6 +36,9 @@ const TYPES = [['Mass atrocity / genocide', 'Mass atrocity'], ['Sexual & gender-
 function violation(r) {
   const g = Array.isArray(r.grave_violations) ? r.grave_violations : [], t = Array.isArray(r.types) ? r.types : [];
   for (const [k, label] of GRAVE) if (g.includes(k)) return {label, grave: true};
+  // a journalist killed or attacked in a small incident: say so, rather than the broader 'Killing of civilians'
+  const kill = Array.isArray(r.killed) ? r.killed : [], most = kill[1] != null ? kill[1] : kill[0];
+  if (t.includes('Attacks on journalists') && !t.includes('Mass atrocity / genocide') && !(most > 2)) return {label: most >= 1 ? 'Killing of a journalist' : 'Attack on journalists', grave: false};
   for (const [k, label] of TYPES) if (t.includes(k)) return {label, grave: false};
   return {label: 'Reported violation', grave: false};
 }
