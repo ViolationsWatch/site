@@ -4,8 +4,10 @@
  "countries": {
   "Afghanistan": "/feeds/afghanistan.xml",
   "Bahrain": "/feeds/bahrain.xml",
+  "Bangladesh": "/feeds/bangladesh.xml",
   "Chad": "/feeds/chad.xml",
   "China": "/feeds/china.xml",
+  "Costa Rica": "/feeds/costa-rica.xml",
   "DR Congo": "/feeds/dr-congo.xml",
   "Ecuador": "/feeds/ecuador.xml",
   "Ethiopia": "/feeds/ethiopia.xml",
@@ -13,9 +15,12 @@
   "Haiti": "/feeds/haiti.xml",
   "India": "/feeds/india.xml",
   "Iran": "/feeds/iran.xml",
+  "Iraq": "/feeds/iraq.xml",
   "Israel": "/feeds/israel.xml",
+  "Jordan": "/feeds/jordan.xml",
   "Mexico": "/feeds/mexico.xml",
   "Myanmar": "/feeds/myanmar.xml",
+  "Nepal": "/feeds/nepal.xml",
   "Niger": "/feeds/niger.xml",
   "Nigeria": "/feeds/nigeria.xml",
   "Pakistan": "/feeds/pakistan.xml",
@@ -29,6 +34,7 @@
   "Sudan": "/feeds/sudan.xml",
   "Syria": "/feeds/syria.xml",
   "Thailand": "/feeds/thailand.xml",
+  "Turkey": "/feeds/turkey.xml",
   "Ukraine": "/feeds/ukraine.xml",
   "Yemen": "/feeds/yemen.xml"
  }

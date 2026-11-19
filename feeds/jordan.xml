@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Violations Watch: Jordan</title>
+<link>https://violationswatch.org/?country=Jordan</link>
+<description>New incidents reported in Jordan. Most entries are unverified leads, not findings.</description>
+<language>en-gb</language>
+<atom:link href="https://violationswatch.org/feeds/jordan.xml" rel="self" type="application/rss+xml"/>
+<pubDate>Thu, 19 Nov 2026 08:30:00 GMT</pubDate>
+<item>
+<title>NetBlocks confirms Telegram is restricted on multiple internet providers in Jordan, with authorities citing extremist content and national security (NetBlocks)</title>
+<link>https://violationswatch.org/#VW-2026-1298</link>
+<guid isPermaLink="false">VW-2026-1298</guid>
+<pubDate>Thu, 19 Nov 2026 08:30:00 GMT</pubDate>
+<category>Jordan</category>
+<category>Persecution &amp; repression</category>
+<description>Unverified lead (Medium priority). Jordan. Types: Persecution &amp; repression. Alleged perpetrator: Jordanian authorities (per NetBlocks). 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1298</description>
+</item>
+</channel>
+</rss>
