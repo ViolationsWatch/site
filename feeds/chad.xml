@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Violations Watch: Chad</title>
+<link>https://violationswatch.org/?country=Chad</link>
+<description>New incidents reported in Chad. Most entries are unverified leads, not findings.</description>
+<language>en-gb</language>
+<atom:link href="https://violationswatch.org/feeds/chad.xml" rel="self" type="application/rss+xml"/>
+<pubDate>Wed, 18 Nov 2026 08:23:22 GMT</pubDate>
+<item>
+<title>Drone strike in a contested gold-mining area of northwest Chad on 17 Nov kills at least one civilian; a local militia blames the strike on a government-aligned force (African Insider)</title>
+<link>https://violationswatch.org/#VW-2026-1178</link>
+<guid isPermaLink="false">VW-2026-1178</guid>
+<pubDate>Wed, 18 Nov 2026 08:23:22 GMT</pubDate>
+<category>Chad</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (Medium priority). Chad. Types: Killing of civilians, Air / drone / artillery strike. Reported casualties: 1+ killed. Disputed or caveats: Attribution comes from a local militia, a party to the dispute; not independently verified. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1178</description>
+</item>
+</channel>
+</rss>

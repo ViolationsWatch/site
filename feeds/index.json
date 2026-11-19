@@ -4,6 +4,7 @@
  "countries": {
   "Afghanistan": "/feeds/afghanistan.xml",
   "Bahrain": "/feeds/bahrain.xml",
+  "Chad": "/feeds/chad.xml",
   "China": "/feeds/china.xml",
   "DR Congo": "/feeds/dr-congo.xml",
   "Ecuador": "/feeds/ecuador.xml",
