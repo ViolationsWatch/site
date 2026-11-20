@@ -1,0 +1,2 @@
+# Old iPhones and some bots ask for this name; send them to the real icon instead of a 404
+/apple-touch-icon-precomposed.png /apple-touch-icon.png 301
