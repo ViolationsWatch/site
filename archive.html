@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Archive · Violations Watch</title>
-<meta name="description" content="Every confirmed incident that has passed out of Violations Watch's rolling 28-day log: searchable and downloadable.">
+<meta name="description" content="Every incident that has passed out of Violations Watch's rolling 28-day log: searchable and downloadable.">
 <link rel="canonical" href="https://violationswatch.org/archive">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -61,6 +61,7 @@
     <div class="row" role="search">
       <span class="lab">Filter</span>
       <input type="search" id="q" placeholder="Search place, perpetrator, VW number or keyword" aria-label="Search incidents">
+      <select id="fy" aria-label="Year in the VW number" hidden></select>
       <select id="fm" aria-label="Month last reported"><option value="">All months</option></select>
       <select id="fl" aria-label="Country or territory"><option value="">All countries</option></select>
       <select id="fp" aria-label="Priority"><option value="">All priorities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
@@ -95,6 +96,7 @@
 
 <script src="legal.js"></script>
 <script src="/treaty.js"></script>
+<script src="/sources.js"></script>
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -126,7 +128,7 @@
       (!q || [r.id, r.headline, r.location, r.subregion, r.place, r.perpetrator, txt(r.victims), r.types.join(' ')].join(' ').toLowerCase().includes(q)));
   }
   // filters live in the page address, so a filtered view can be bookmarked and shared
-  function syncUrl() { const u = new URLSearchParams(); F.forEach((id) => { const v = $(id).value.trim(); if (v) u.set(QP[id], v); }); if ($('so').value) u.set('sort', $('so').value); const qs = u.toString();
+  function syncUrl() { const u = new URLSearchParams(); F.forEach((id) => { const v = $(id).value.trim(); if (v) u.set(QP[id], v); }); if ($('so').value) u.set('sort', $('so').value); if (!$('fy').hidden && $('fy').value && $('fy').selectedIndex > 0) u.set('year', $('fy').value); const qs = u.toString();
     try { history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); } catch (e) { /* address stays as it was */ } }
   function readUrl() { const u = new URLSearchParams(location.search); F.forEach((id) => { const v = u.get(QP[id]); if (v != null) $(id).value = v; }); $('so').value = u.get('sort') || ''; if ($('so').selectedIndex < 0) $('so').value = ''; }
   function copyLink(b) { const done = () => { b.textContent = 'Link copied'; setTimeout(() => { b.textContent = 'Copy link to this view'; }, 2000); };
@@ -172,9 +174,9 @@
     if (L.ihl || L.ihrl || L.regional || L.icl) { try { b.append(window.VWLegalView(r, L)); } catch (e) { /* the card still opens without the legal panel */ } }
     try { const t = window.VWTreaty && VWTreaty.section(r); if (t) b.append(t); } catch (e) { /* the card still opens without treaty status */ }
     const ul = el('ul', 'links'); const arch = new Map((r.archives || []).map((a) => [a.url, a]));
-    (r.links || []).forEach((u) => { const li = el('li'); li.append(link(u)); const a = arch.get(u); if (a) { li.append(document.createTextNode(' · ')); li.append(link(a.archived_url, 'archived ' + fd(a.at))); } ul.append(li); });
+    (r.links || []).forEach((u) => { const li = el('li'); li.append(link(u)); const st = window.VWSources && VWSources.tag(u); if (st) li.append(document.createTextNode(' '), st); const a = arch.get(u); if (a) { li.append(document.createTextNode(' · ')); li.append(link(a.archived_url, 'archived ' + fd(a.at))); } ul.append(li); });
     const w = el('div'); w.append(el('div', 'sub', 'Original reports'), ul); b.append(w);
-    const pl = el('div', 'permalink'); pl.append(document.createTextNode('Cite as: '), link('https://violationswatch.org/#' + r.id, 'violationswatch.org/#' + r.id)); b.append(pl);
+    const pl = el('div', 'permalink'); pl.append(document.createTextNode('Permanent page (cite or share): '), link('https://violationswatch.org/i/' + r.id + '/', 'violationswatch.org/i/' + r.id + '/')); b.append(pl);
     return b;
   }
   function drawLog(fr) {
@@ -193,7 +195,7 @@
     const lab = fr.length + (fr.length === 1 ? ' incident' : ' incidents') + (fr.length !== rows.length ? ' of ' + rows.length : '');
     $('count').textContent = lab; $('count2').textContent = lab.toUpperCase();
     const named = fr.filter((r) => actorOf(r) !== 'unknown');
-    $('k-n').textContent = fr.length; $('k-n-note').textContent = fr.length !== rows.length ? 'matching the filters' : 'in the archive';
+    $('k-n').textContent = fr.length; $('k-n-note').textContent = fr.length !== rows.length ? 'matching the filters' : !$('fy').hidden ? 'with ' + $('fy').value + ' VW numbers' : 'in the archive';
     $('k-loc').textContent = new Set(fr.filter((r) => r.location !== 'Unlocated').map((r) => r.location)).size;
     $('k-ch').textContent = fr.filter((r) => r.priority === 'Critical' || r.priority === 'High').length;
     $('k-state').textContent = named.length ? Math.round(100 * named.filter((r) => r.actor_type === 'state').length / named.length) + '%' : '—';
@@ -203,34 +205,65 @@
     drawLog(fr);
   }
 
-  async function init() {
-    let data = {incidents: []}, lt = null, lc = null;
-    try { [data, lt, lc] = await Promise.all([
-      fetch('archive.json', {cache: 'no-cache'}).then((r) => r.ok ? r.json() : {incidents: []}),
-      fetch('legal_types.json').then((r) => r.json()).catch(() => null), fetch('legal_contexts.json').then((r) => r.json()).catch(() => null), window.VWTreaty ? VWTreaty.load() : null]); }
-    catch (e) { $('loading').textContent = 'The archive could not be loaded. Reload the page to try again.'; return; }
-    rows = (data.incidents || []).map((r) => ({types: [], links: [], archives: [], ...r}));
-    if (window.VWLegal && lt && lc && rows.length) { try {
-      const out = window.VWLegal(rows.map((r) => ({...r, types: (r.types || []).join('; '), category: 'violation', killed_min: (r.killed || [])[0], killed_max: (r.killed || [])[1],
-        injured_min: (r.injured || [])[0], injured_max: (r.injured || [])[1], contested: r.disputed, town: r.place})), lt.rows || lt, lc.rows || lc);
-      const m = new Map(out.map((o) => [o.id, o]));
-      rows.forEach((r) => { const o = m.get(r.id); if (o) r.legal = {context: o.context_note || null, code: o.context, why: o.why, ihl: o.ihl, icl: o.icl, ihrl: o.ihrl, regional: o.regional}; });
+  // the archive is split into one file per year (archive-data/, built on deploy from archive.json); archive.json is the fallback
+  let years = [], legal = {lt: null, lc: null};
+  const fetchJson = (u) => fetch(u, {cache: 'no-cache'}).then((r) => r.ok ? r.json() : null).catch(() => null);
+  async function loadYear(y) {
+    const pick = years.find((x) => String(x.year) === String(y));
+    const data = (pick && await fetchJson(pick.file)) || (years.length ? null : await fetchJson('archive.json'));
+    if (!data) return null;
+    const out = (data.incidents || []).map((r) => ({types: [], links: [], archives: [], ...r}));
+    if (window.VWLegal && legal.lt && legal.lc && out.length) { try {
+      const res = window.VWLegal(out.map((r) => ({...r, types: (r.types || []).join('; '), category: 'violation', killed_min: (r.killed || [])[0], killed_max: (r.killed || [])[1],
+        injured_min: (r.injured || [])[0], injured_max: (r.injured || [])[1], contested: r.disputed, town: r.place})), legal.lt.rows || legal.lt, legal.lc.rows || legal.lc);
+      const m = new Map(res.map((o) => [o.id, o]));
+      out.forEach((r) => { const o = m.get(r.id); if (o) r.legal = {context: o.context_note || null, code: o.context, why: o.why, ihl: o.ihl, icl: o.icl, ihrl: o.ihrl, regional: o.regional}; });
     } catch (e) { /* legal panel stays empty */ } }
-    $('s-upd').textContent = data.updated ? fd(data.updated).toUpperCase() : '—'; $('s-n').textContent = rows.length;
+    return {updated: data.updated, rows: out};
+  }
+  function fillOptions() {
+    const keep = (id, opts) => { const s = $(id), v = s.value; s.replaceChildren(s.options[0], ...opts); s.value = v; if (s.selectedIndex < 0) s.value = ''; };
+    keep('fm', [...new Set(rows.map(month).filter(Boolean))].sort().reverse().map((x) => new Option(fmo(x), x)));
+    keep('fl', [...new Set(rows.map((r) => r.location))].sort().map((x) => new Option(short(x), x)));
+    keep('ft', [...new Set(rows.flatMap((r) => r.types))].sort().map((x) => new Option(x)));
+  }
+  function summary(updated) {
+    $('s-upd').textContent = updated ? fd(updated).toUpperCase() : '—'; $('s-n').textContent = years.length ? years.reduce((n, y) => n + y.count, 0) : rows.length;
     const firsts = rows.map((r) => r.first_reported).filter(Boolean).sort(), lasts = rows.map((r) => r.last_reported).filter(Boolean).sort();
     const win = rows.length ? fd(firsts[0]) + ' – ' + fd(lasts[lasts.length - 1]) : 'No archived incidents yet';
     $('p-win').textContent = win;
-    $('foot').textContent = rows.length ? 'Archive covers incidents reported ' + win + '.' : 'The log began on ' + fd(LOG_START) + '.';
-    $('fm').append(...[...new Set(rows.map(month).filter(Boolean))].sort().reverse().map((x) => new Option(fmo(x), x)));
-    $('fl').append(...[...new Set(rows.map((r) => r.location))].sort().map((x) => new Option(short(x), x)));
-    $('ft').append(...[...new Set(rows.flatMap((r) => r.types))].sort().map((x) => new Option(x)));
-    F.forEach((id) => $(id).addEventListener('input', () => { shown = 50; update(); }));
-    $('so').addEventListener('input', () => { shown = 50; update(); });
-    readUrl();
-    update();
+    $('foot').textContent = rows.length ? 'Archive covers incidents reported ' + win + (years.length > 1 ? ' (VW numbers from ' + $('fy').value + ')' : '') + '.' : 'The log began on ' + fd(LOG_START) + '.';
+  }
+  function openHash() {
     const h = decodeURIComponent(location.hash.slice(1));
     if (/^VW-/.test(h)) { if (rows.some((x) => x.id === h)) { if (!filtered().some((x) => x.id === h)) { F.forEach((id) => { $(id).value = ''; }); update(); } if (!document.getElementById(h)) { shown = rows.length; drawLog(filtered()); } const d = document.getElementById(h); if (d) { d.open = true; d.scrollIntoView({block: 'start'}); } }
       else $('ledger').prepend(el('div', 'empty', h + ' is not in the archive. It may still be in the main log, or it was withdrawn after review.')); }
+  }
+
+  async function init() {
+    let idx = null;
+    [idx, legal.lt, legal.lc] = await Promise.all([fetchJson('/archive-data/index.json'), fetchJson('legal_types.json'), fetchJson('legal_contexts.json'),
+      window.VWTreaty ? VWTreaty.load() : null, window.VWSources ? VWSources.load() : null]);
+    years = idx && Array.isArray(idx.years) ? idx.years : [];
+    // which year to open: ?year=, else the year in a linked VW number, else the most recent
+    const hy = (/^#VW-(\d{4})-/.exec(decodeURIComponent(location.hash)) || [])[1], qy = new URLSearchParams(location.search).get('year');
+    const fy = $('fy'); fy.append(...years.map((y) => new Option(y.year + ' (' + y.count + ')', String(y.year))));
+    fy.value = [qy, hy].find((y) => years.some((x) => String(x.year) === y)) || (years[0] ? String(years[0].year) : '');
+    fy.hidden = years.length < 2;
+    const first = await loadYear(fy.value);
+    if (!first) { $('loading').textContent = 'The archive could not be loaded. Reload the page to try again.'; return; }
+    rows = first.rows; summary(first.updated); fillOptions();
+    F.forEach((id) => $(id).addEventListener('input', () => { shown = 50; update(); }));
+    $('so').addEventListener('input', () => { shown = 50; update(); });
+    fy.addEventListener('input', async () => {
+      const got = await loadYear(fy.value); if (!got) return;
+      rows = got.rows; shown = 50; summary(got.updated); fillOptions();
+      if (location.hash) try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* keeps the old hash */ }
+      update();
+    });
+    readUrl();
+    update();
+    openHash();
   }
   init();
 })();
