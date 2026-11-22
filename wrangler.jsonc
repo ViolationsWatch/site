@@ -1,15 +1,20 @@
 {
-  // Static site served by Cloudflare Workers (static assets only, no code)
+  // Static site served by Cloudflare Workers. Almost everything is a static file; src/worker.js renders the
+  // incident pages (/i/VW-YYYY-NNNN/) and the incident sitemap from the deployed data files.
   "name": "violationswatch",
   "compatibility_date": "2026-11-01",
+  "main": "src/worker.js",
   // Only serve the site on violationswatch.org, not on workers.dev or preview addresses
   "workers_dev": false,
   "preview_urls": false,
-  // before each deploy: builds blog/posts.json, then the incident share pages and preview images.
-  // If the previews fail, the site still deploys without them.
-  "build": { "command": "node scripts/build-blog.js && (npm ci --no-audit --no-fund && node scripts/build-previews.mjs || echo 'Preview build failed; deploying without previews')" },
+  // before each deploy: builds blog/posts.json, splits the archive into one file per year (archive-data/),
+  // then the incident preview images. If the previews fail, the site still deploys without them.
+  "build": { "command": "node scripts/build-blog.js && node scripts/build-archive.mjs && (npm ci --no-audit --no-fund && node scripts/build-previews.mjs || echo 'Preview build failed; deploying without previews')" },
   "assets": {
     "directory": ".",
-    "not_found_handling": "404-page"
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    // only these paths run the Worker; every other request is served straight from the files (no Worker cost)
+    "run_worker_first": ["/i/*", "/sitemap-incidents.xml"]
   }
 }

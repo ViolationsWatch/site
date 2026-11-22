@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://violationswatch.org/sitemap.xml
+Sitemap: https://violationswatch.org/sitemap-incidents.xml

@@ -180,7 +180,7 @@
     <section id="corrections">
       <h2>Using and correcting the data</h2>
       <ul>
-        <li>Cite incidents by their VW number, for example <span class="mono">violationswatch.org/#VW-2026-0041</span>. The CSV and JSON downloads carry every field shown here.</li>
+        <li>Cite incidents by their VW number, for example <span class="mono">violationswatch.org/i/VW-2026-0041/</span>: each incident has its own permanent page, which keeps working after it moves to the archive. Each source link is labelled with the type of outlet (news agency, state media, rights group, social media and so on); the label describes the outlet, not the accuracy of one report. The CSV and JSON downloads carry every field shown here.</li>
         <li>Where a source page has been archived, the archived copy is linked beside the original.</li>
         <li>When an incident is later confirmed, verified, corrected or found to be unfounded, its entry is updated rather than removed silently. Every change is public in the <a href="https://github.com/ViolationsWatch/site/commits/main" target="_blank" rel="noopener">version history</a>.</li>
       </ul>
@@ -197,6 +197,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <script src="legal.js"></script>
 <script src="/treaty.js"></script>
+<script src="/sources.js"></script>
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -468,9 +469,9 @@
     if (L.ihl || L.ihrl || L.regional || L.icl) { try { b.append(window.VWLegalView(r, L)); } catch (e) { /* the card still opens without the legal panel */ } }
     try { const t = window.VWTreaty && VWTreaty.section(r); if (t) b.append(t); } catch (e) { /* the card still opens without treaty status */ }
     const ul = el('ul', 'links'); const arch = new Map((r.archives || []).map((a) => [a.url, a]));
-    r.links.forEach((u) => { const li = el('li'); li.append(link(u)); const a = arch.get(u); if (a) { li.append(document.createTextNode(' · ')); li.append(link(a.archived_url, 'archived ' + fd(a.at))); } ul.append(li); });
+    r.links.forEach((u) => { const li = el('li'); li.append(link(u)); const st = window.VWSources && VWSources.tag(u); if (st) li.append(document.createTextNode(' '), st); const a = arch.get(u); if (a) { li.append(document.createTextNode(' · ')); li.append(link(a.archived_url, 'archived ' + fd(a.at))); } ul.append(li); });
     const w = el('div'); w.append(el('div', 'sub', 'Original reports'), ul); b.append(w);
-    const pl = el('div', 'permalink'); pl.append(document.createTextNode('Cite as: '), link(location.origin + '/#' + r.id, 'violationswatch.org/#' + r.id), document.createTextNode(' · Share: '), link(location.origin + '/i/' + r.id + '/', 'violationswatch.org/i/' + r.id)); b.append(pl);
+    const pl = el('div', 'permalink'); pl.append(document.createTextNode('Permanent page (cite or share): '), link(location.origin + '/i/' + r.id + '/', 'violationswatch.org/i/' + r.id + '/')); b.append(pl);
     return b;
   }
   function drawLog(fr) {
@@ -526,7 +527,7 @@
     let data;
     let lt = null, lc = null;
     try { [data, world, lt, lc] = await Promise.all([fetch('data.json').then((r) => r.json()), fetch('world.json').then((r) => r.json()).catch(() => null),
-      fetch('legal_types.json').then((r) => r.json()).catch(() => null), fetch('legal_contexts.json').then((r) => r.json()).catch(() => null), window.VWTreaty ? VWTreaty.load() : null]); }
+      fetch('legal_types.json').then((r) => r.json()).catch(() => null), fetch('legal_contexts.json').then((r) => r.json()).catch(() => null), window.VWTreaty ? VWTreaty.load() : null, window.VWSources ? VWSources.load() : null]); }
     catch (e) { $('loading').textContent = 'The incident log could not be loaded. Reload the page to try again.'; return; }
     rows = (data.incidents || []).filter((r) => r && r.id).map((r) => clean(r, data.updated)); latest = Date.parse(data.updated) || latest;
     // an incident that has aged out of the 28-day log lives in the archive: send old links there

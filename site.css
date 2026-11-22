@@ -155,6 +155,10 @@ details.inc[open] > summary { background: var(--accent-soft); }
 .legal .why p { margin: 2px 0 0; max-width: 75ch; line-height: 1.55; }
 .links { margin: 4px 0 0; padding-left: 18px; font-size: 13px; overflow-wrap: anywhere; }
 .links li { margin: 2px 0; }
+/* source-type labels next to each original report (sources.js / sources.json) */
+.srct { display: inline-block; font-size: 10.5px; font-weight: 600; line-height: 16px; padding: 0 6px; border-radius: 999px; background: var(--tint); color: var(--muted); border: 1px solid var(--line); white-space: nowrap; vertical-align: 1px; cursor: help; }
+.srct-state, .srct-party { background: var(--lead-bg); color: var(--lead); border-color: transparent; }
+.srct-unclassified { font-weight: 500; font-style: italic; }
 .more { padding: 14px; text-align: center; border-top: 1px solid var(--line); }
 .permalink { font-family: var(--mono); font-size: 12px; }
 
@@ -211,3 +215,14 @@ footer { margin-top: 28px; border-top: 1px solid var(--line); padding-block: 16p
 .fbtn svg { width: 15px; height: 15px; fill: currentColor; flex: none; }
 .fbtn:hover { border-color: var(--accent); background: var(--accent-soft); }
 @media (max-width: 420px) { .follow-row { gap: 6px; } .follow-row .k { font-size: 11px; } .fbtn { padding: 5px 10px; font-size: 13px; gap: 6px; } .fbtn svg { width: 14px; height: 14px; } }
+
+/* Incident pages (/i/VW-YYYY-NNNN/, rendered by src/worker.js) */
+.mast.incident h1 { font-size: clamp(22px, 3vw, 32px); line-height: 1.15; max-width: 40ch; }
+.mast.incident .period { align-items: center; gap: 6px 10px; }
+.incident-page { display: grid; gap: 22px; padding-block: 22px 8px; max-width: 980px; }
+.incident-page .facts { margin: 0; }
+.incident-page section > p { margin: 4px 0 0; max-width: 75ch; line-height: 1.55; }
+.incident-page .note { font-size: 13px; color: var(--muted); }
+.incident-page .links { font-size: 14px; }
+.incident-page .links li { margin: 6px 0; }
+.incident-page .permalink { font-family: var(--sans); font-size: 14px; border-top: 1px solid var(--line); padding-top: 14px; }

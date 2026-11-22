@@ -1,7 +1,7 @@
-// Builds a shareable page (/i/VW-YYYY-NNNN/) and a link-preview image (/og/...) for each incident.
-// Runs on every deploy. The output is not committed. Social networks ignore everything after "#" in a
-// link, so each incident needs its own address to get its own preview.
-// Images are made only for the current log; archived incidents get a page with the standard site image.
+// Builds a link-preview image (/og/...) for each incident in the current log, plus og/index.json, which tells
+// the Worker (src/worker.js) which image belongs to which incident. The Worker renders the incident pages
+// themselves (/i/VW-YYYY-NNNN/) on request, so no page files are written here.
+// Runs on every deploy. The output is not committed. Archived incidents use the standard site image.
 // Deliberately left off the images: photos, country borders, alleged perpetrators and legal citations.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -16,7 +16,6 @@ const {feature} = require('topojson-client');
 const {Resvg} = require('@resvg/resvg-js');
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SITE = 'https://violationswatch.org';
 const W = 1200, H = 630, LEFT = 56, TEXT_W = 584;
 const read = (f, fallback) => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8')); } catch (e) { return fallback; } };
 const font = (p) => opentype.loadSync(path.join(ROOT, 'node_modules/@expo-google-fonts', p));
@@ -110,34 +109,19 @@ ${text(F.brand, 'VIOLATIONS WATCH', LEFT + 44, 65, 20, '#fff', 0.07)}
 ${o.join('')}<rect x="${LEFT}" y="560" width="${TEXT_W}" height="1" fill="#38547a"/>${text(F.mono, foot, LEFT, 590, 14, '#b6c8db')}${text(F.mono, site, LEFT + TEXT_W - siteW, 590, 14, '#fff')}</svg>`;
 }
 
-/* ---------- pages ---------- */
-const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-function page(r, image, target) {
-  const v = violation(r), title = 'Possible violation: ' + v.label + ', ' + placeOf(r), url = `${SITE}/i/${r.id}/`;
-  const status = r.status === 'confirmed' || r.verification === 'verified' ? 'Reviewed by an analyst.' : 'Unverified lead, not a finding.';
-  const lead = String(r.headline || '').trim(), desc = (lead ? lead.replace(/[.;:,]?$/, '.') + ' ' : '') + status, img = image ? `${SITE}/og/${image}` : `${SITE}/og.png`;
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)} · Violations Watch</title>
-<meta name="robots" content="noindex"><link rel="canonical" href="${url}"><meta name="description" content="${esc(desc)}">
-<meta property="og:type" content="article"><meta property="og:site_name" content="Violations Watch"><meta property="og:url" content="${url}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}">
-<meta property="og:image" content="${img}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="${esc(title + '. ' + status)}">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(desc)}"><meta name="twitter:image" content="${img}">
-<script>location.replace(${JSON.stringify(target)});</script></head><body><p><a href="${target}">Open ${esc(r.id)} on Violations Watch</a></p></body></html>`;
-}
-
 /* ---------- build ---------- */
 const VALID = /^VW-\d{4}-\d{4}$/;
-for (const d of ['i', 'og']) { fs.rmSync(path.join(ROOT, d), {recursive: true, force: true}); fs.mkdirSync(path.join(ROOT, d), {recursive: true}); }
-const live = (read('data.json', {}).incidents || []).filter((r) => r && VALID.test(r.id)), archived = (read('archive.json', {}).incidents || []).filter((r) => r && VALID.test(r.id));
-const put = (r, html) => { const d = path.join(ROOT, 'i', r.id); fs.mkdirSync(d, {recursive: true}); fs.writeFileSync(path.join(d, 'index.html'), html); };
+for (const d of ['i', 'og']) fs.rmSync(path.join(ROOT, d), {recursive: true, force: true}); // i/ held the old static share pages
+fs.mkdirSync(path.join(ROOT, 'og'), {recursive: true});
+const live = (read('data.json', {}).incidents || []).filter((r) => r && VALID.test(r.id));
+const manifest = {};
 let ok = 0, failed = 0; const t0 = Date.now();
 for (const r of live) {
-  let image = null;
   try {
     const svg = svgFor(r);
-    image = `${r.id}-${crypto.createHash('sha1').update(svg).digest('hex').slice(0, 8)}.png`; // a new name whenever the image changes, so networks fetch the new one
-    fs.writeFileSync(path.join(ROOT, 'og', image), new Resvg(svg, {fitTo: {mode: 'original'}}).render().asPng()); ok++;
-  } catch (e) { image = null; failed++; console.warn('preview image failed for', r.id, e.message); }
-  put(r, page(r, image, '/#' + r.id));
+    const image = `${r.id}-${crypto.createHash('sha1').update(svg).digest('hex').slice(0, 8)}.png`; // a new name whenever the image changes, so networks fetch the new one
+    fs.writeFileSync(path.join(ROOT, 'og', image), new Resvg(svg, {fitTo: {mode: 'original'}}).render().asPng()); manifest[r.id] = image; ok++;
+  } catch (e) { failed++; console.warn('preview image failed for', r.id, e.message); }
 }
-for (const r of archived) put(r, page(r, null, '/archive#' + r.id));
-console.log(`Previews: ${ok} images, ${failed} failed, ${live.length + archived.length} pages, ${((Date.now() - t0) / 1000).toFixed(1)}s`);
+fs.writeFileSync(path.join(ROOT, 'og', 'index.json'), JSON.stringify(manifest));
+console.log(`Previews: ${ok} images, ${failed} failed, ${((Date.now() - t0) / 1000).toFixed(1)}s`);
