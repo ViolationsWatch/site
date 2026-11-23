@@ -146,7 +146,9 @@ function incidentPage(found, sources, ogIndex) {
   const where = archived ? `/archive#${r.id}` : `/#${r.id}`;
   // structured data: a plain description of the page, with no claims beyond what the page shows
   const ld = {'@context': 'https://schema.org', '@type': 'WebPage', name: cut, url, description: desc, datePublished: r.first_reported, dateModified: r.last_reported || r.first_reported,
-    isPartOf: {'@type': 'Dataset', name: 'Violations Watch', url: SITE + '/'}, identifier: r.id};
+    isPartOf: {'@type': 'Dataset', name: 'Violations Watch', url: SITE + '/',
+      description: 'An open log of reported violations of international humanitarian and human rights law, shared as leads for investigators, journalists and researchers.'},
+    identifier: r.id};
   const body = `<div class="wrap">
   <header class="mast incident">
     <p class="period"><span class="k">${esc(r.id)}</span> <span class="st ${stClass}">${esc(stLabel)}</span>${r.priority ? ` <span class="pr ${esc(r.priority)}">${esc(r.priority)}</span>` : ''}${gv.length ? ' <span class="cv">Children</span>' : ''}${archived ? ' <span class="k">In the archive</span>' : ''}</p>
