@@ -6,7 +6,17 @@
 <description>New incidents reported in Ukraine. Most entries are unverified leads, not findings.</description>
 <language>en-gb</language>
 <atom:link href="https://violationswatch.org/feeds/ukraine.xml" rel="self" type="application/rss+xml"/>
-<pubDate>Mon, 23 Nov 2026 14:07:02 GMT</pubDate>
+<pubDate>Tue, 24 Nov 2026 04:19:44 GMT</pubDate>
+<item>
+<title>Russian attack on a residential building in Zaporizhzhia kills two and injures 22 (Kyiv Independent)</title>
+<link>https://violationswatch.org/#VW-2026-1901</link>
+<guid isPermaLink="false">VW-2026-1901</guid>
+<pubDate>Tue, 24 Nov 2026 04:19:44 GMT</pubDate>
+<category>Ukraine</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (High priority). Zaporizhzhia, Zaporizhzhia Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian forces. Reported casualties: 2 killed, 22 injured. 3 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1901</description>
+</item>
 <item>
 <title>Russian drone attack on Kyiv sparks a fire in a residential building (Kyiv Post)</title>
 <link>https://violationswatch.org/#VW-2026-1903</link>
@@ -15,6 +25,27 @@
 <category>Ukraine</category>
 <category>Air / drone / artillery strike</category>
 <description>Unverified lead (High priority). Kyiv, Ukraine. Types: Air / drone / artillery strike. Alleged perpetrator: Russian forces. 3 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1903</description>
+</item>
+<item>
+<title>Russian drone strike hits a private clinic in Zaporizhzhia on 23 Nov, killing three (Kyiv Post, NV)</title>
+<link>https://violationswatch.org/#VW-2026-1902</link>
+<guid isPermaLink="false">VW-2026-1902</guid>
+<pubDate>Mon, 23 Nov 2026 12:26:45 GMT</pubDate>
+<category>Ukraine</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<category>Attacks on healthcare &amp; aid</category>
+<description>Unverified lead (High priority). Zaporizhzhia, Zaporizhzhia Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike, Attacks on healthcare &amp; aid. Alleged perpetrator: Russian forces. Reported casualties: 3 killed. Grave violations against children: Attacks on schools and hospitals. 2 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1902</description>
+</item>
+<item>
+<title>Russian attacks across Ukraine over the past day kill at least four, including a 15-year-old boy, and injure 19 (Kyiv Independent, Al Jazeera)</title>
+<link>https://violationswatch.org/#VW-2026-1904</link>
+<guid isPermaLink="false">VW-2026-1904</guid>
+<pubDate>Mon, 23 Nov 2026 09:42:30 GMT</pubDate>
+<category>Ukraine</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (High priority). Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian forces. Reported casualties: 3-4 killed, 19+ injured. Grave violations against children: Killing and maiming. 4 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1904</description>
 </item>
 <item>
 <title>Russian strikes on Zaporizhzhia overnight into 22 Nov kill one and injure three, including a child, and damage apartment buildings</title>
@@ -164,7 +195,7 @@
 <category>Killing of civilians</category>
 <category>Air / drone / artillery strike</category>
 <category>Attacks on journalists</category>
-<description>Unverified lead (High priority). Odesa, Odesa Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike, Attacks on journalists. Alleged perpetrator: Russian forces. Reported casualties: 3-4 killed, 7-13 injured. Disputed or caveats: Early reports said three killed and seven injured; later four killed and 9–13 injured. 3 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1170</description>
+<description>Unverified lead (High priority). Odesa, Odesa Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike, Attacks on journalists. Alleged perpetrator: Russian forces. Reported casualties: 3-4 killed, 7-13 injured. Disputed or caveats: Early reports said three killed and seven injured; later four killed and 9–13 injured. 4 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1170</description>
 </item>
 <item>
 <title>Russian attacks across Ukraine over 17–18 Nov kill five and injure 15; 141 long-range drones launched overnight, energy infrastructure targeted (Kyiv Independent)</title>
