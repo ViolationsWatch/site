@@ -6,7 +6,17 @@
 <description>New incidents reported in Colombia. Most entries are unverified leads, not findings.</description>
 <language>en-gb</language>
 <atom:link href="https://violationswatch.org/feeds/colombia.xml" rel="self" type="application/rss+xml"/>
-<pubDate>Mon, 23 Nov 2026 16:59:35 GMT</pubDate>
+<pubDate>Tue, 24 Nov 2026 03:58:56 GMT</pubDate>
+<item>
+<title>Car bomb outside the Meta Governor's Office in Villavicencio, Colombia, injures more than 20 people and damages buildings; President blames ex-FARC dissidents</title>
+<link>https://violationswatch.org/#VW-2026-2033</link>
+<guid isPermaLink="false">VW-2026-2033</guid>
+<pubDate>Tue, 24 Nov 2026 03:58:56 GMT</pubDate>
+<category>Colombia</category>
+<category>Killing of civilians</category>
+<category>Destruction of property</category>
+<description>Unverified lead (High priority). Villavicencio, Colombia. Types: Killing of civilians, Destruction of property. Alleged perpetrator: Ex-FARC dissidents (according to the president). Reported casualties: 20-23 injured. Disputed or caveats: Attribution to ex-FARC dissidents by President; no claim reported. 6 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2033</description>
+</item>
 <item>
 <title>Drone attack on a police facility in Cúcuta injures three civilians, including an infant, and damages homes (Al Jazeera, AP)</title>
 <link>https://violationswatch.org/#VW-2026-1912</link>
@@ -14,7 +24,7 @@
 <pubDate>Mon, 23 Nov 2026 16:59:35 GMT</pubDate>
 <category>Colombia</category>
 <category>Air / drone / artillery strike</category>
-<description>Unverified lead (High priority). Cúcuta, Norte de Santander, Colombia. Types: Air / drone / artillery strike. Alleged perpetrator: Unidentified armed group. Reported casualties: 3 injured. Grave violations against children: Killing and maiming. 4 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1912</description>
+<description>Unverified lead (High priority). Cúcuta, Norte de Santander, Colombia. Types: Air / drone / artillery strike. Alleged perpetrator: Unidentified armed group. Reported casualties: 3 injured. Grave violations against children: Killing and maiming. 6 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1912</description>
 </item>
 </channel>
 </rss>

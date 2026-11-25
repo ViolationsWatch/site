@@ -6,7 +6,27 @@
 <description>New incidents tagged with one of the six grave violations against children (UN Security Council resolution 1612). Open-source leads, not UN-verified cases.</description>
 <language>en-gb</language>
 <atom:link href="https://violationswatch.org/feeds/children.xml" rel="self" type="application/rss+xml"/>
-<pubDate>Tue, 24 Nov 2026 04:19:44 GMT</pubDate>
+<pubDate>Tue, 24 Nov 2026 11:16:28 GMT</pubDate>
+<item>
+<title>Russian strikes on Odesa Oblast late on 24 Nov kill two people, including a teenage boy, and injure a 12-year-old girl; a strike on a residential courtyard in Kyiv injures two</title>
+<link>https://violationswatch.org/#VW-2026-2016</link>
+<guid isPermaLink="false">VW-2026-2016</guid>
+<pubDate>Tue, 24 Nov 2026 11:16:28 GMT</pubDate>
+<category>Ukraine</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (High priority). Odesa Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian forces. Reported casualties: 2 killed, 3-4 injured. Grave violations against children: Killing and maiming. 5 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2016</description>
+</item>
+<item>
+<title>Houthi-run health ministry says Saudi-led coalition attacks on Sanaa, Hodeidah, Hajjah, Taiz and Saada killed 41 civilians and injured 35, including women and children, over 48 hours (22–24 Nov)</title>
+<link>https://violationswatch.org/#VW-2026-2032</link>
+<guid isPermaLink="false">VW-2026-2032</guid>
+<pubDate>Tue, 24 Nov 2026 07:19:00 GMT</pubDate>
+<category>Yemen</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (High priority). Yemen. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Saudi-led coalition. Reported casualties: 41 killed, 35 injured. Grave violations against children: Killing and maiming. Disputed or caveats: Figures from the Houthi-run health ministry, relayed by Saba, Press TV and Houthi/Iranian-aligned channels; not independently verified. 9 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2032</description>
+</item>
 <item>
 <title>Russian attack on a residential building in Zaporizhzhia kills two and injures 22 (Kyiv Independent)</title>
 <link>https://violationswatch.org/#VW-2026-1901</link>
@@ -15,7 +35,27 @@
 <category>Ukraine</category>
 <category>Killing of civilians</category>
 <category>Air / drone / artillery strike</category>
-<description>Unverified lead (High priority). Zaporizhzhia, Zaporizhzhia Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian forces. Reported casualties: 2 killed, 22 injured. Grave violations against children: Killing and maiming. Disputed or caveats: Attack late on 23 Nov; toll may rise as the search under rubble continues; weapon not yet clear (Kyiv Independent). 3 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1901</description>
+<description>Unverified lead (High priority). Zaporizhzhia, Zaporizhzhia Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian forces. Reported casualties: 2 killed, 22-48 injured. Grave violations against children: Killing and maiming. Disputed or caveats: Attack late on 23 Nov; toll may rise as the search under rubble continues; weapon not yet clear (Kyiv Independent). 17 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1901</description>
+</item>
+<item>
+<title>Israeli strikes across Gaza on 24 Nov kill at least seven to nine Palestinians, including two children and a pregnant woman in Nuseirat, and the head of Gaza's internal security, Naim Abu Nahl</title>
+<link>https://violationswatch.org/#VW-2026-2031</link>
+<guid isPermaLink="false">VW-2026-2031</guid>
+<pubDate>Tue, 24 Nov 2026 04:04:07 GMT</pubDate>
+<category>Palestine (Gaza)</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (High priority). Palestine (Gaza). Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Israeli forces. Reported casualties: 7-9 killed, 5+ injured. Grave violations against children: Killing and maiming. Disputed or caveats: Tolls from Gaza hospital and civil defence sources; Israel says it targeted a senior Hamas security official. 27 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2031</description>
+</item>
+<item>
+<title>Suspected Irigwe militia attack in Miango, Bassa LGA, Plateau State, kills a 17-year-old herder; 26 cows slaughtered and more than 100 rustled</title>
+<link>https://violationswatch.org/#VW-2026-2015</link>
+<guid isPermaLink="false">VW-2026-2015</guid>
+<pubDate>Tue, 24 Nov 2026 03:33:18 GMT</pubDate>
+<category>Nigeria</category>
+<category>Killing of civilians</category>
+<category>Destruction of property</category>
+<description>Unverified lead (Medium priority). Miango, Plateau, Nigeria. Types: Killing of civilians, Destruction of property. Alleged perpetrator: Suspected Irigwe militia. Reported casualties: 1 killed. Grave violations against children: Killing and maiming. Disputed or caveats: Attribution by herders' sources (Zagazola, Daily Post). 7 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2015</description>
 </item>
 <item>
 <title>Cluster munition remnant kills a child in Daraa, Syria (Arab News)</title>
@@ -27,13 +67,23 @@
 <description>Unverified lead (Medium priority). Daraa, Syria. Types: Killing of civilians. Alleged perpetrator: Explosive remnants of war (party not identified). Reported casualties: 1 killed. Grave violations against children: Killing and maiming. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1910</description>
 </item>
 <item>
+<title>Houthi attack on civilian transport vehicles in Heijat al-Abd, Lahj, kills a child and injures three (Lahj authorities, Yemen Monitor)</title>
+<link>https://violationswatch.org/#VW-2026-1870</link>
+<guid isPermaLink="false">VW-2026-1870</guid>
+<pubDate>Mon, 23 Nov 2026 18:25:57 GMT</pubDate>
+<category>Yemen</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (High priority). Heijat al-Abd, Lahj, Yemen. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Houthis (Ansar Allah). Reported casualties: 1 killed, 3 injured. Grave violations against children: Killing and maiming. Disputed or caveats: Accounts from Lahj authorities and outlets close to the Yemeni government (a party to the conflict). 5 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1870</description>
+</item>
+<item>
 <title>Drone attack on a police facility in Cúcuta injures three civilians, including an infant, and damages homes (Al Jazeera, AP)</title>
 <link>https://violationswatch.org/#VW-2026-1912</link>
 <guid isPermaLink="false">VW-2026-1912</guid>
 <pubDate>Mon, 23 Nov 2026 16:59:35 GMT</pubDate>
 <category>Colombia</category>
 <category>Air / drone / artillery strike</category>
-<description>Unverified lead (High priority). Cúcuta, Norte de Santander, Colombia. Types: Air / drone / artillery strike. Alleged perpetrator: Unidentified armed group. Reported casualties: 3 injured. Grave violations against children: Killing and maiming. 4 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1912</description>
+<description>Unverified lead (High priority). Cúcuta, Norte de Santander, Colombia. Types: Air / drone / artillery strike. Alleged perpetrator: Unidentified armed group. Reported casualties: 3 injured. Grave violations against children: Killing and maiming. 6 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1912</description>
 </item>
 <item>
 <title>SIHA reports RSF fighters and allied militia abducted 28 underage girls and women while fleeing Blue Nile fighting, and conflict-related sexual violence against girls</title>
@@ -43,7 +93,7 @@
 <category>Sudan</category>
 <category>Sexual &amp; gender-based violence</category>
 <category>Abduction &amp; hostage-taking</category>
-<description>Unverified lead (High priority). Blue Nile, Sudan. Types: Sexual &amp; gender-based violence, Abduction &amp; hostage-taking. Alleged perpetrator: RSF and allied militia. Grave violations against children: Rape and other sexual violence, Abduction. Disputed or caveats: Reports received by SIHA; numbers not broken down by age. 3 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1886</description>
+<description>Unverified lead (High priority). Blue Nile, Sudan. Types: Sexual &amp; gender-based violence, Abduction &amp; hostage-taking. Alleged perpetrator: RSF and allied militia. Grave violations against children: Abduction, Rape and other sexual violence. Disputed or caveats: Reports received by SIHA; numbers not broken down by age. 3 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1886</description>
 </item>
 <item>
 <title>Russian drone strike hits a private clinic in Zaporizhzhia on 23 Nov, killing three (Kyiv Post, NV)</title>
@@ -546,53 +596,6 @@
 <category>Air / drone / artillery strike</category>
 <category>Killing of civilians</category>
 <description>Unverified lead (High priority). Al-Misrakh and Saber Al-Mawadim districts, south of Taiz, Yemen. Types: Air / drone / artillery strike, Killing of civilians. Alleged perpetrator: Houthis (Ansar Allah) (attributed). Reported casualties: 1-2 killed, 1-7 injured. Grave violations against children: Killing and maiming. Disputed or caveats: Single pro-government outlet (Yemen Online); its two reports give different figures. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0618</description>
-</item>
-<item>
-<title>Car bomb in Jaramana, Rif Dimashq: two killed, including a child, and up to two injured; no claim of responsibility</title>
-<link>https://violationswatch.org/#VW-2026-0614</link>
-<guid isPermaLink="false">VW-2026-0614</guid>
-<pubDate>Sat, 14 Nov 2026 16:54:02 GMT</pubDate>
-<category>Syria</category>
-<category>Killing of civilians</category>
-<description>Unverified lead (High priority). Jaramana, Rif Dimashq, Syria. Types: Killing of civilians. Alleged perpetrator: Unknown; no claim of responsibility. Reported casualties: 1-2 killed, 1-2 injured. Grave violations against children: Killing and maiming. Disputed or caveats: Figures differ (1–2 killed, 1–2 injured); perpetrator unknown; some reports from party-affiliated channels. 5 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0614</description>
-</item>
-<item>
-<title>Houthi attacks on Taiz kill 51 civilians and injure 85 over 12 days in early November, per a rights group</title>
-<link>https://violationswatch.org/#VW-2026-0647</link>
-<guid isPermaLink="false">VW-2026-0647</guid>
-<pubDate>Sat, 14 Nov 2026 16:38:09 GMT</pubDate>
-<category>Yemen</category>
-<category>Air / drone / artillery strike</category>
-<category>Killing of civilians</category>
-<description>Unverified lead (High priority). Al-Misrakh, Haifan and Al-Wazi'iyah districts (Taiz), Yemen. Types: Air / drone / artillery strike, Killing of civilians. Alleged perpetrator: Houthis (Ansar Allah). Reported casualties: 51 killed, 85 injured. Grave violations against children: Killing and maiming. Disputed or caveats: Figures from a rights group relayed by Saudi media; not independently verified. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0647</description>
-</item>
-<item>
-<title>Clan militia attack on Waba village, Somali region / Dawa Zone near the Kenyan border: eight killed, including a father, mother and children</title>
-<link>https://violationswatch.org/#VW-2026-0743</link>
-<guid isPermaLink="false">VW-2026-0743</guid>
-<pubDate>Sat, 14 Nov 2026 12:06:42 GMT</pubDate>
-<category>Ethiopia</category>
-<category>Killing of civilians</category>
-<description>Unverified lead (High priority). Waba village, Dawa Zone, Somali, Ethiopia. Types: Killing of civilians. Alleged perpetrator: Clan militia. Reported casualties: 8 killed. Grave violations against children: Killing and maiming. Disputed or caveats: Social-media and regional outlet reports; attackers not named. 2 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0743</description>
-</item>
-<item>
-<title>Russian attacks across Ukraine on 14 Nov kill at least seven and injure 80; in Zaporizhzhia Oblast three killed including a child, 62 injured including eight children (governor)</title>
-<link>https://violationswatch.org/#VW-2026-0756</link>
-<guid isPermaLink="false">VW-2026-0756</guid>
-<pubDate>Sat, 14 Nov 2026 10:43:28 GMT</pubDate>
-<category>Ukraine</category>
-<category>Air / drone / artillery strike</category>
-<category>Killing of civilians</category>
-<description>Unverified lead (Medium priority). Zaporizhzhia (city), Ukraine. Types: Air / drone / artillery strike, Killing of civilians. Alleged perpetrator: Russian forces. Reported casualties: 7+ killed, 80+ injured. Grave violations against children: Killing and maiming. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0756</description>
-</item>
-<item>
-<title>Russian artillery strike on Malynivka, Chuhuiv district, Kharkiv Oblast: seven injured, including two children</title>
-<link>https://violationswatch.org/#VW-2026-0633</link>
-<guid isPermaLink="false">VW-2026-0633</guid>
-<pubDate>Fri, 13 Nov 2026 22:11:12 GMT</pubDate>
-<category>Ukraine</category>
-<category>Air / drone / artillery strike</category>
-<description>Unverified lead (Medium priority). Malynivka, Chuhuiv district, Kharkiv, Ukraine. Types: Air / drone / artillery strike. Alleged perpetrator: Russian Armed Forces. Reported casualties: 7 injured. Grave violations against children: Killing and maiming. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0633</description>
 </item>
 </channel>
 </rss>
