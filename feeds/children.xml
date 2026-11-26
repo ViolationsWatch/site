@@ -6,7 +6,16 @@
 <description>New incidents tagged with one of the six grave violations against children (UN Security Council resolution 1612). Open-source leads, not UN-verified cases.</description>
 <language>en-gb</language>
 <atom:link href="https://violationswatch.org/feeds/children.xml" rel="self" type="application/rss+xml"/>
-<pubDate>Wed, 25 Nov 2026 16:16:06 GMT</pubDate>
+<pubDate>Wed, 25 Nov 2026 21:14:12 GMT</pubDate>
+<item>
+<title>Attack in Plateau State leaves a teenager with a severed hand; a reprisal attack kills a herder and seven cows (Zagazola Makama)</title>
+<link>https://violationswatch.org/#VW-2026-2243</link>
+<guid isPermaLink="false">VW-2026-2243</guid>
+<pubDate>Wed, 25 Nov 2026 21:14:12 GMT</pubDate>
+<category>Nigeria</category>
+<category>Killing of civilians</category>
+<description>Unverified lead (Medium priority). Plateau State, Nigeria. Types: Killing of civilians. Alleged perpetrator: Unidentified armed attackers. Reported casualties: 1 killed, 1 injured. Grave violations against children: Killing and maiming. Disputed or caveats: Single security-focused outlet. 2 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2243</description>
+</item>
 <item>
 <title>Houthi gunfire in Sabir al-Mawadim district, Taiz, kills a girl and injures a 12-year-old boy, Yemeni government media report</title>
 <link>https://violationswatch.org/#VW-2026-2233</link>
@@ -25,6 +34,16 @@
 <category>Attacks on healthcare &amp; aid</category>
 <category>Abduction &amp; hostage-taking</category>
 <description>Unverified lead (Medium priority). Morobo, South Sudan. Types: Attacks on healthcare &amp; aid, Abduction &amp; hostage-taking. Alleged perpetrator: Unidentified gunmen. Grave violations against children: Attacks on schools and hospitals. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2266</description>
+</item>
+<item>
+<title>Drone strike on a family home in Omdurman, Sudan, on 22 Nov kills a 10-year-old boy as he prepared for school and injures his infant cousin, NRC says</title>
+<link>https://violationswatch.org/#VW-2026-2222</link>
+<guid isPermaLink="false">VW-2026-2222</guid>
+<pubDate>Wed, 25 Nov 2026 07:35:02 GMT</pubDate>
+<category>Sudan</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (High priority). Omdurman, Sudan. Types: Killing of civilians, Air / drone / artillery strike. Reported casualties: 1 killed, 1 injured. Grave violations against children: Killing and maiming. Disputed or caveats: No party named as responsible. 3 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2222</description>
 </item>
 <item>
 <title>Israeli strike on an apartment in al-Shati camp, Gaza City, on 25 Nov kills four, including two girls; Israel said it targeted the head of Hamas internal security</title>
@@ -579,24 +598,6 @@
 <category>Ukraine</category>
 <category>Air / drone / artillery strike</category>
 <description>Unverified lead (Medium priority). Kharkiv, Ukraine. Types: Air / drone / artillery strike. Alleged perpetrator: Russian forces. Grave violations against children: Attacks on schools and hospitals. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0757</description>
-</item>
-<item>
-<title>Russian 'mass attack' on Odesa Oblast; strikes across Ukraine over the past day kill 4 and injure 69, including two men killed in Chernihiv Oblast</title>
-<link>https://violationswatch.org/#VW-2026-0713</link>
-<guid isPermaLink="false">VW-2026-0713</guid>
-<pubDate>Sun, 15 Nov 2026 09:33:15 GMT</pubDate>
-<category>Ukraine</category>
-<category>Killing of civilians</category>
-<description>Unverified lead (Medium priority). Mena (Chernihiv Oblast), Ukraine. Types: Killing of civilians. Alleged perpetrator: Russian forces. Reported casualties: 4 killed, 69 injured. Grave violations against children: Killing and maiming. Disputed or caveats: Daily nationwide figures from Ukrainian authorities. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0713</description>
-</item>
-<item>
-<title>Russian double-tap drone strike wounds civilians and a police officer who shielded a 9-year-old boy, Ukraine (video report)</title>
-<link>https://violationswatch.org/#VW-2026-0715</link>
-<guid isPermaLink="false">VW-2026-0715</guid>
-<pubDate>Sun, 15 Nov 2026 07:37:53 GMT</pubDate>
-<category>Ukraine</category>
-<category>Air / drone / artillery strike</category>
-<description>Unverified lead (Medium priority). Hlukhiv, Sumy region, Ukraine. Types: Air / drone / artillery strike. Alleged perpetrator: Russian forces. Reported casualties: 0 killed, 3 injured. Grave violations against children: Killing and maiming. Disputed or caveats: Single Ukrainian media report; location and figures not stated in the post. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0715</description>
 </item>
 </channel>
 </rss>
