@@ -6,7 +6,55 @@
 <description>New incidents reported in Ukraine. Most entries are unverified leads, not findings.</description>
 <language>en-gb</language>
 <atom:link href="https://violationswatch.org/feeds/ukraine.xml" rel="self" type="application/rss+xml"/>
-<pubDate>Wed, 25 Nov 2026 01:16:37 GMT</pubDate>
+<pubDate>Wed, 25 Nov 2026 21:42:35 GMT</pubDate>
+<item>
+<title>Russian ballistic missile attack on Kyiv late on 25 Nov hits a shopping centre and injures seven people</title>
+<link>https://violationswatch.org/#VW-2026-2255</link>
+<guid isPermaLink="false">VW-2026-2255</guid>
+<pubDate>Wed, 25 Nov 2026 21:42:35 GMT</pubDate>
+<category>Ukraine</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (Medium priority). Kyiv, Ukraine. Types: Air / drone / artillery strike. Alleged perpetrator: Russian armed forces. Reported casualties: 7 injured. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2255</description>
+</item>
+<item>
+<title>Russian drone attack on Odesa and its suburbs targets energy and civilian infrastructure; no casualty figures reported</title>
+<link>https://violationswatch.org/#VW-2026-2264</link>
+<guid isPermaLink="false">VW-2026-2264</guid>
+<pubDate>Wed, 25 Nov 2026 17:35:51 GMT</pubDate>
+<category>Ukraine</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (Medium priority). Odesa, Ukraine. Types: Air / drone / artillery strike. Alleged perpetrator: Russian armed forces. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2264</description>
+</item>
+<item>
+<title>Russian attacks across Ukraine over the past day (to 25 Nov) kill nine and injure 59; 112 drones launched overnight and a thermal power plant halted (Kyiv Independent)</title>
+<link>https://violationswatch.org/#VW-2026-2234</link>
+<guid isPermaLink="false">VW-2026-2234</guid>
+<pubDate>Wed, 25 Nov 2026 11:59:20 GMT</pubDate>
+<category>Ukraine</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (Medium priority). Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian armed forces. Reported casualties: 9 killed, 59 injured. 2 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2234</description>
+</item>
+<item>
+<title>Russian drone attacks in Sumy region kill two; a man injured on 23 Nov in Seredyna-Buda dies in hospital</title>
+<link>https://violationswatch.org/#VW-2026-2251</link>
+<guid isPermaLink="false">VW-2026-2251</guid>
+<pubDate>Wed, 25 Nov 2026 07:33:34 GMT</pubDate>
+<category>Ukraine</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (Medium priority). Sumy Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian armed forces. Reported casualties: 2-3 killed. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2251</description>
+</item>
+<item>
+<title>Russian attack on Bila Tserkva, Kyiv Oblast, overnight into 25 Nov kills one person and damages an Epicentr store, a Nova Poshta branch and other civilian businesses (Kyiv Independent, Kyiv Post)</title>
+<link>https://violationswatch.org/#VW-2026-2357</link>
+<guid isPermaLink="false">VW-2026-2357</guid>
+<pubDate>Wed, 25 Nov 2026 05:15:20 GMT</pubDate>
+<category>Ukraine</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (Medium priority). Bila Tserkva, Kyiv Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian armed forces. Reported casualties: 1 killed. 3 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2357</description>
+</item>
 <item>
 <title>Court in Russian-occupied Donetsk gives a taxi driver a long prison sentence for condemning Russia's bombing of a Kryvyi Rih playground and other war crimes (KHPG)</title>
 <link>https://violationswatch.org/#VW-2026-2037</link>
@@ -37,14 +85,14 @@
 <description>Unverified lead (Medium priority). Donetsk, Ukraine. Types: Air / drone / artillery strike. Alleged perpetrator: Ukrainian forces (according to Russian-installed authorities). Reported casualties: 7 injured. Disputed or caveats: Account and attribution from the Russian-installed mayor of occupied Donetsk. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2034</description>
 </item>
 <item>
-<title>Russian attack on a residential building in Zaporizhzhia kills two and injures 22 (Kyiv Independent)</title>
+<title>Russian attack on Zaporizhzhia on 24 Nov kills two and injures 22–48 people, including four children (Kyiv Independent, upday)</title>
 <link>https://violationswatch.org/#VW-2026-1901</link>
 <guid isPermaLink="false">VW-2026-1901</guid>
 <pubDate>Tue, 24 Nov 2026 04:19:44 GMT</pubDate>
 <category>Ukraine</category>
 <category>Killing of civilians</category>
 <category>Air / drone / artillery strike</category>
-<description>Unverified lead (High priority). Zaporizhzhia, Zaporizhzhia Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian forces. Reported casualties: 2 killed, 22-48 injured. Grave violations against children: Killing and maiming. Disputed or caveats: Attack late on 23 Nov; toll may rise as the search under rubble continues; weapon not yet clear (Kyiv Independent). 17 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1901</description>
+<description>Unverified lead (High priority). Zaporizhzhia, Zaporizhzhia Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian forces. Reported casualties: 2 killed, 22-48 injured. Grave violations against children: Killing and maiming. Disputed or caveats: Injury figures rose from 22 to 48 in later reports. 17 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1901</description>
 </item>
 <item>
 <title>Russian drone attack on Kyiv sparks a fire in a residential building (Kyiv Post)</title>
@@ -135,7 +183,7 @@
 <category>Air / drone / artillery strike</category>
 <category>Killing of civilians</category>
 <category>Attacks on healthcare &amp; aid</category>
-<description>Unverified lead (High priority). Kryvyi Rih, Dnipropetrovsk Oblast, Ukraine. Types: Air / drone / artillery strike, Killing of civilians, Attacks on healthcare &amp; aid. Alleged perpetrator: Russian armed forces. Reported casualties: 2 killed, 52 injured. Grave violations against children: Killing and maiming, Attacks on schools and hospitals. Disputed or caveats: Injury figures vary between reports (42-47). 3 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1407</description>
+<description>Unverified lead (High priority). Kryvyi Rih, Dnipropetrovsk Oblast, Ukraine. Types: Air / drone / artillery strike, Killing of civilians, Attacks on healthcare &amp; aid. Alleged perpetrator: Russian armed forces. Reported casualties: 2 killed, 52 injured. Grave violations against children: Killing and maiming, Attacks on schools and hospitals. Disputed or caveats: Injury figures vary between reports (42-47); some reports are from X accounts, not verified. 3 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-1407</description>
 </item>
 <item>
 <title>Russian drone strikes a hospital in Kharkiv, injuring four people and damaging an MRI unit and more than 100 windows</title>
