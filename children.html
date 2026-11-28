@@ -83,7 +83,7 @@
   <div class="grid">
     <section class="panel w8" aria-labelledby="h-where">
       <div class="ph"><span class="no">01</span><h2 id="h-where">Where</h2></div>
-      <p class="cap">Incidents involving children by country or territory. Bubble size shows the number of incidents; hover for the count.</p>
+      <p class="cap">Incidents involving children by country or territory. Bubble size shows the number of incidents. Hover over a bubble (or tap it) to see its incidents; click to list them all.</p>
       <div class="mapwrap cmap" id="map"><div class="empty">Loading the map…</div></div>
     </section>
     <section class="panel w4" aria-labelledby="h-which">
@@ -131,6 +131,7 @@
   <footer><span id="foot">Grave violations against children in the Violations Watch log.</span><span>Violations Watch links to third-party reporting and does not endorse the sources it lists. Method, status labels and corrections: <a href="/#method">see the main page</a>.</span><span class="follow">Follow: <a href="https://bsky.app/profile/violationswatch.bsky.social" target="_blank" rel="noopener me">Bluesky</a> · <a href="https://www.linkedin.com/company/violations-watch-osint-for-human-rights/" target="_blank" rel="noopener me">LinkedIn</a> · <a href="/feeds/children.xml">RSS</a></span></footer>
 </div>
 
+<div class="tip" id="tip" hidden></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <script>
@@ -210,18 +211,75 @@
     svg.append('path').attr('d', path(land)).attr('fill', 'var(--land)').attr('stroke', 'var(--land-line)').attr('stroke-width', 0.6);
     // one bubble per country or territory (Gaza and the West Bank share one, as they sit too close to tell apart), placed at the median of its incidents' coordinates (country centre when no place is given)
     const med = (a) => { a = a.slice().sort((x, y) => x - y); return a[Math.floor(a.length / 2)]; };
-    const groups = d3.rollups(rows.filter((r) => r.lat != null && r.lon != null), (v) => ({n: v.length, lat: med(v.map((r) => r.lat)), lon: med(v.map((r) => r.lon))}), (r) => /^Palestine /.test(r.location) ? 'Palestine (Gaza and West Bank)' : r.location)
+    const PAL = 'Palestine (Gaza and West Bank)';
+    const groups = d3.rollups(rows.filter((r) => r.lat != null && r.lon != null), (v) => ({n: v.length, lat: med(v.map((r) => r.lat)), lon: med(v.map((r) => r.lon)), items: v}), (r) => /^Palestine /.test(r.location) ? PAL : r.location)
       .sort((a, b) => b[1].n - a[1].n);
     const rad = d3.scaleSqrt().domain([1, d3.max(groups, (g) => g[1].n) || 1]).range([5, Math.max(14, W / 30)]);
-    const g = svg.append('g'), labels = svg.append('g').attr('pointer-events', 'none');
-    for (const [loc, v] of groups) {
-      const [x, y] = proj([v.lon, v.lat]); if (!isFinite(x)) continue;
-      const c = g.append('circle').attr('cx', x).attr('cy', y).attr('r', rad(v.n)).attr('fill', 'var(--cv)').attr('fill-opacity', 0.8).attr('stroke', '#fff').attr('stroke-width', 1.5);
-      c.append('title').text(short(loc) + ': ' + v.n + (v.n === 1 ? ' incident' : ' incidents'));
-      // numbers go in a layer above every bubble, so a neighbouring bubble never covers them
-      if (rad(v.n) >= 12) labels.append('text').attr('x', x).attr('y', y + 4).attr('text-anchor', 'middle').style('font', '600 12px var(--sans)').style('fill', '#fff').text(v.n);
-    }
+    const bub = groups.map(([loc, v]) => { const [x, y] = proj([v.lon, v.lat]); return {loc, v, x, y}; }).filter((d) => isFinite(d.x));
+    const dots = svg.append('g').selectAll('circle').data(bub).join('circle')
+      .attr('cx', (d) => d.x).attr('cy', (d) => d.y).attr('r', (d) => rad(d.v.n))
+      .attr('fill', 'var(--cv)').attr('fill-opacity', 0.8).attr('stroke', '#fff').attr('stroke-width', 1.5).style('cursor', 'pointer')
+      .attr('tabindex', 0).attr('role', 'button').attr('aria-label', (d) => short(d.loc) + ': ' + d.v.n + (d.v.n === 1 ? ' incident' : ' incidents') + '. Show them in the list');
+    // numbers go in a layer above every bubble, so a neighbouring bubble never covers them
+    svg.append('g').attr('pointer-events', 'none').selectAll('text').data(bub.filter((d) => rad(d.v.n) >= 12)).join('text')
+      .attr('x', (d) => d.x).attr('y', (d) => d.y + 4).attr('text-anchor', 'middle').style('font', '600 12px var(--sans)').style('fill', '#fff').text((d) => d.v.n);
+    const act = (d) => ({label: 'Show all ' + d.v.n + ' in the list', fn: () => showCountry(d.loc === PAL ? null : d.loc, d.loc === PAL ? 'Palestine' : '')});
+    bindTip(dots, (tp, d, p) => countryCard(tp, d.loc, d.v.items, p), act,
+      (ev, d) => d3.select(ev.currentTarget).attr('stroke', 'var(--ink)').attr('stroke-width', 2.5),
+      (ev, d) => d3.select(ev.currentTarget).attr('stroke', '#fff').attr('stroke-width', 1.5));
+    dots.on('keydown', (ev, d) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); act(d).fn(); } });
     box.replaceChildren(svg.node());
+  }
+
+  /* ---------- map tooltip: hover shows a country's incidents; click filters the list; a tap opens a card ---------- */
+  const tip = $('tip'), TOUCH = matchMedia('(hover: none)').matches;
+  let pinned = false, lastPointer = TOUCH ? 'touch' : 'mouse';
+  addEventListener('pointerdown', (ev) => { lastPointer = ev.pointerType || 'mouse'; }, true);
+  function place(ev) {
+    const w = tip.offsetWidth, hgt = tip.offsetHeight;
+    let x = ev.pageX + 14, y = ev.pageY + 14;
+    if (pinned) { x = Math.max(scrollX + 12, Math.min(ev.pageX - w / 2, scrollX + innerWidth - w - 12)); y = ev.pageY + 16; }
+    tip.style.left = Math.max(scrollX + 8, Math.min(x, scrollX + innerWidth - w - 12)) + 'px';
+    tip.style.top = (y + hgt > scrollY + innerHeight - 8 ? Math.max(scrollY + 8, ev.pageY - hgt - 12) : y) + 'px';
+  }
+  function showTip(ev, build) { if (pinned) return; tip.classList.remove('pinned'); tip.replaceChildren(); build(tip, false); tip.hidden = false; place(ev); }
+  function pinTip(ev, build, a) {
+    pinned = true; tip.classList.add('pinned'); tip.replaceChildren(); build(tip, true);
+    const acts = el('div', 'acts');
+    if (a) { const b = el('button', 'btn', a.label); b.type = 'button'; b.onclick = () => { closeTip(); a.fn(); }; acts.append(b); }
+    const c = el('button', 'btn ghost', 'Close'); c.type = 'button'; c.onclick = closeTip; acts.append(c); tip.append(acts);
+    const x = el('button', 'tipx', '×'); x.type = 'button'; x.setAttribute('aria-label', 'Close'); x.onclick = closeTip; tip.append(x);
+    tip.hidden = false; place(ev); ev.stopPropagation();
+  }
+  function closeTip() { pinned = false; tip.hidden = true; tip.classList.remove('pinned'); }
+  const hideTip = () => { if (!pinned) tip.hidden = true; };
+  document.addEventListener('click', (ev) => { if (pinned && !tip.contains(ev.target)) closeTip(); });
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeTip(); });
+  function bindTip(sel, build, action, onEnter, onLeave) {
+    sel.on('pointermove', (ev, d) => { if (ev.pointerType !== 'mouse') return; onEnter && onEnter(ev, d); showTip(ev, (t, p) => build(t, d, p)); })
+      .on('pointerleave', (ev, d) => { if (ev.pointerType !== 'mouse') return; onLeave && onLeave(ev, d); hideTip(); })
+      .on('click', (ev, d) => { const a = action ? action(d) : null;
+        if (lastPointer !== 'mouse') { pinTip(ev, (t, p) => build(t, d, p), a); return; }
+        if (a) { closeTip(); a.fn(); } else pinTip(ev, (t, p) => build(t, d, p), null); });
+  }
+  // the card: country, count, violations, then the latest incidents (buttons that open them in the list when the card is pinned)
+  function countryCard(t, loc, items, p) {
+    t.append(el('b', null, short(loc)));
+    t.append(el('div', 'm', items.length + (items.length === 1 ? ' incident' : ' incidents') + ' involving children'));
+    const by = SIX.map(([k, label]) => [label, items.filter((r) => gvOf(r).includes(k)).length]).filter((x) => x[1]);
+    t.append(el('div', 'm', by.map(([label, n]) => label + ' ' + n).join(' · ')));
+    const list = items.slice().sort((a, b) => String(b.last_reported).localeCompare(String(a.last_reported))), N = 5;
+    list.slice(0, N).forEach((x) => {
+      const d = el(p ? 'button' : 'div', 'li'); if (p) { d.type = 'button'; d.onclick = () => { closeTip(); openIncident(x.id); }; }
+      d.append(el('span', 'mono', x.id + ' '), document.createTextNode(x.headline && x.headline.length > 90 ? x.headline.slice(0, 88) + '…' : (x.headline || ''))); t.append(d); });
+    if (list.length > N) t.append(el('div', 'm', '+ ' + (list.length - N) + ' more'));
+    if (!p && !TOUCH) t.append(el('div', 'mono', 'Click to show them all in the list'));
+  }
+  function showCountry(loc, q) { $('fl').value = loc || ''; $('fg').value = ''; $('q').value = q || ''; shown = 50; update(); $('log').scrollIntoView({behavior: 'smooth'}); }
+  function openIncident(id) {
+    let d = document.getElementById(id);
+    if (!d) { ['q', 'fg', 'fl'].forEach((k) => { $(k).value = ''; }); shown = rows.length; update(); d = document.getElementById(id); }
+    if (d) { d.open = true; d.scrollIntoView({behavior: 'smooth', block: 'start'}); }
   }
 
   function filtered() {
