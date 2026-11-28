@@ -88,10 +88,10 @@
     </section>
     <section class="panel w4" aria-labelledby="h-which">
       <div class="ph"><span class="no">02</span><h2 id="h-which">Which violations</h2></div>
-      <p class="cap">Incidents per violation. One incident can carry more than one tag.</p>
+      <p class="cap">Incidents per violation. One incident can carry more than one tag. Hover over a violation (or tap it) to see its incidents.</p>
       <div id="bars"></div>
       <div class="ph" style="margin-top:16px"><span class="no">03</span><h2>Most affected</h2></div>
-      <p class="cap">Select a country to filter the list below.</p>
+      <p class="cap">Hover over a country (or tap it) to see its incidents; click to filter the list below.</p>
       <div id="ctry"></div>
     </section>
     <section class="panel w12" aria-labelledby="h-mon">
@@ -184,7 +184,12 @@
     // countries
     const byLoc = d3.rollups(rows, (v) => v.length, (r) => r.location).sort((a, b) => b[1] - a[1]);
     $('ctry').replaceChildren(...byLoc.slice(0, 10).map(([loc, n]) => { const d = el('div', 'cr'), b = el('button', null, short(loc)); b.type = 'button';
-      b.onclick = () => { $('fl').value = loc; shown = 50; update(); $('log').scrollIntoView({behavior: 'smooth'}); }; d.append(b, el('b', null, n)); return d; }));
+      d.append(b, el('b', null, n)); return d; }));
+    // hover (or tap) a violation bar or a country to see its incidents; click to filter the list
+    d3.selectAll('#bars .vb').data(counts).style('cursor', 'pointer')
+      .call((s) => bindTip(s, (tp, d, p) => violationCard(tp, d[0], d[1], p), (d) => d[2] ? {label: 'Show all ' + d[2] + ' in the list', fn: () => showViolation(d[0])} : null));
+    d3.selectAll('#ctry .cr button').data(byLoc.slice(0, 10))
+      .call((s) => bindTip(s, (tp, d, p) => countryCard(tp, d[0], rows.filter((r) => r.location === d[0]), p), (d) => ({label: 'Show all ' + d[1] + ' in the list', fn: () => showCountry(d[0], '')})));
     // definitions with counts
     $('defs').replaceChildren(...counts.map(([k, label, n]) => { const d = el('div', 'def'); d.append(el('span', 'n', n + (n === 1 ? ' incident' : ' incidents')), el('span', 'cv', label), el('p', null, SIX.find((x) => x[0] === k)[2])); return d; }));
     // filter options
@@ -275,6 +280,21 @@
     if (list.length > N) t.append(el('div', 'm', '+ ' + (list.length - N) + ' more'));
     if (!p && !TOUCH) t.append(el('div', 'mono', 'Click to show them all in the list'));
   }
+  function violationCard(t, k, label, p) {
+    const items = rows.filter((r) => gvOf(r).includes(k));
+    t.append(el('b', null, label));
+    t.append(el('div', 'm', items.length + (items.length === 1 ? ' incident' : ' incidents')));
+    if (!items.length) return;
+    const by = d3.rollups(items, (v) => v.length, (r) => r.location).sort((a, b) => b[1] - a[1]);
+    t.append(el('div', 'm', by.slice(0, 4).map(([l, n]) => short(l) + ' ' + n).join(' · ') + (by.length > 4 ? ' · +' + (by.length - 4) + ' more' : '')));
+    const list = items.slice().sort((a, b) => String(b.last_reported).localeCompare(String(a.last_reported))), N = 5;
+    list.slice(0, N).forEach((x) => {
+      const d = el(p ? 'button' : 'div', 'li'); if (p) { d.type = 'button'; d.onclick = () => { closeTip(); openIncident(x.id); }; }
+      d.append(el('span', 'mono', x.id + ' '), document.createTextNode(x.headline && x.headline.length > 90 ? x.headline.slice(0, 88) + '…' : (x.headline || ''))); t.append(d); });
+    if (list.length > N) t.append(el('div', 'm', '+ ' + (list.length - N) + ' more'));
+    if (!p && !TOUCH) t.append(el('div', 'mono', 'Click to show them all in the list'));
+  }
+  function showViolation(k) { $('fg').value = k; $('fl').value = ''; $('q').value = ''; shown = 50; update(); $('log').scrollIntoView({behavior: 'smooth'}); }
   function showCountry(loc, q) { $('fl').value = loc || ''; $('fg').value = ''; $('q').value = q || ''; shown = 50; update(); $('log').scrollIntoView({behavior: 'smooth'}); }
   function openIncident(id) {
     let d = document.getElementById(id);
