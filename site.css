@@ -60,6 +60,13 @@ a:hover { text-decoration-thickness: 2px; }
 .filters .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .filters .lab { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: 2px; }
 input[type=search], input[type=date], select { font: inherit; font-size: 14px; color: var(--ink); background: var(--panel); border: 1px solid var(--line-strong); border-radius: var(--r); padding: 6px 10px; min-width: 0; }
+/* filter and sort controls: solid dark fields with white text everywhere, so they and their drop-down lists stay legible on light and dark sections */
+input[type=search], input[type=date], select { color-scheme: dark; color: #ffffff; background-color: #13233a; border-color: #13233a; }
+select option, select optgroup { color: #ffffff; background-color: #13233a; }
+input[type=search]::placeholder { color: #b8c8da; opacity: 1; }
+.dark input[type=search], .dark input[type=date], .dark select { background-color: #1d3557; border-color: rgba(255, 255, 255, .45); }
+.dark select option, .dark select optgroup { background-color: #1d3557; }
+input[type=search]:hover, input[type=date]:hover, select:hover { border-color: #8cc4f2; }
 input[type=search] { flex: 1 1 220px; }
 select { flex: 0 1 auto; max-width: 100%; }
 .dates { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 13px; color: var(--muted); }
