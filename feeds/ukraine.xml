@@ -6,7 +6,36 @@
 <description>New incidents reported in Ukraine. Most entries are unverified leads, not findings.</description>
 <language>en-gb</language>
 <atom:link href="https://violationswatch.org/feeds/ukraine.xml" rel="self" type="application/rss+xml"/>
-<pubDate>Thu, 26 Nov 2026 09:18:38 GMT</pubDate>
+<pubDate>Fri, 27 Nov 2026 21:00:47 GMT</pubDate>
+<item>
+<title>Russian drone attack on central Kremenchuk, Poltava Oblast, injures four, including three children (Kyiv Independent)</title>
+<link>https://violationswatch.org/#VW-2026-2535</link>
+<guid isPermaLink="false">VW-2026-2535</guid>
+<pubDate>Fri, 27 Nov 2026 21:00:47 GMT</pubDate>
+<category>Ukraine</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (High priority). Kremenchuk, Poltava Oblast, Ukraine. Types: Air / drone / artillery strike. Alleged perpetrator: Russian forces. Reported casualties: 4 injured. Grave violations against children: Killing and maiming. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2535</description>
+</item>
+<item>
+<title>Russian strike on an enterprise in Nizhyn, Chernihiv Oblast, kills three and injures seven</title>
+<link>https://violationswatch.org/#VW-2026-2534</link>
+<guid isPermaLink="false">VW-2026-2534</guid>
+<pubDate>Fri, 27 Nov 2026 15:18:26 GMT</pubDate>
+<category>Ukraine</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (Medium priority). Nizhyn, Chernihiv Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian forces. Reported casualties: 3 killed, 7 injured. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2534</description>
+</item>
+<item>
+<title>Russian attacks kill six and injure 25 across Ukraine over the past day (to 27 Nov), including a strike on Izium killing one; a man injured in a drone attack on Chernihiv died in hospital (Kyiv Independent, NV, Interfax-Ukraine)</title>
+<link>https://violationswatch.org/#VW-2026-2533</link>
+<guid isPermaLink="false">VW-2026-2533</guid>
+<pubDate>Fri, 27 Nov 2026 09:30:25 GMT</pubDate>
+<category>Ukraine</category>
+<category>Killing of civilians</category>
+<category>Air / drone / artillery strike</category>
+<description>Unverified lead (Medium priority). Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian forces. Reported casualties: 6-7 killed, 25 injured. 3 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2533</description>
+</item>
 <item>
 <title>Russian attacks in Kherson Oblast on 26 Nov kill a man and wound six others; a resident of Komyshany is killed in a drone attack (Kherson regional administration via UA.NEWS and Mezha)</title>
 <link>https://violationswatch.org/#VW-2026-2378</link>
@@ -26,6 +55,16 @@
 <category>Air / drone / artillery strike</category>
 <category>Attacks on healthcare &amp; aid</category>
 <description>Unverified lead (Medium priority). Horodnia, Chernihiv Oblast, Ukraine. Types: Air / drone / artillery strike, Attacks on healthcare &amp; aid. Alleged perpetrator: Russian forces. Reported casualties: 4 injured. Grave violations against children: Attacks on schools and hospitals. 2 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2372</description>
+</item>
+<item>
+<title>Drone strike on a parking lot in Vesioloye, occupied Zaporizhzhia region, kills five and wounds three, Russian-installed governor says (AFP)</title>
+<link>https://violationswatch.org/#VW-2026-2377</link>
+<guid isPermaLink="false">VW-2026-2377</guid>
+<pubDate>Thu, 26 Nov 2026 07:47:26 GMT</pubDate>
+<category>Ukraine</category>
+<category>Air / drone / artillery strike</category>
+<category>Killing of civilians</category>
+<description>Unverified lead (Medium priority). Vesioloye, Russian-occupied Zaporizhzhia region, Zaporizhzhia Oblast (occupied), Ukraine. Types: Air / drone / artillery strike, Killing of civilians. Alleged perpetrator: Ukrainian forces (per Russian-installed governor). Reported casualties: 5 killed, 3 injured. Disputed or caveats: Claim by the Russian-installed governor of occupied Zaporizhzhia region; not independently verified AFP relays Balitsky's Telegram claim. This is a party claim with no independent verification. Published 26 Nov, and the exact strike date is not established. 2 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2377</description>
 </item>
 <item>
 <title>Russian drone attacks on Kharkiv on 26 Nov kill a married couple in a 16-storey apartment building and a woman at a university building, injure four staff of the Kharkiv Aviation Institute and damage a hospital building (NV, Censor.net)</title>
@@ -557,46 +596,6 @@
 <category>Attacks on healthcare &amp; aid</category>
 <category>Killing of civilians</category>
 <description>Unverified lead (Medium priority). Kyiv, Ukraine. Types: Air / drone / artillery strike, Attacks on healthcare &amp; aid, Killing of civilians. Alleged perpetrator: Russian forces. Reported casualties: 1+ killed. Grave violations against children: Killing and maiming, Attacks on schools and hospitals. 3 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0755</description>
-</item>
-<item>
-<title>82-year-old woman killed in Russian attack on a residential building in Vyshhorod district, Kyiv region</title>
-<link>https://violationswatch.org/#VW-2026-0294</link>
-<guid isPermaLink="false">VW-2026-0294</guid>
-<pubDate>Mon, 09 Nov 2026 14:47:00 GMT</pubDate>
-<category>Ukraine</category>
-<category>Killing of civilians</category>
-<category>Air / drone / artillery strike</category>
-<category>Destruction of property</category>
-<description>Unverified lead (High priority). Vyshhorod district, Kyiv Oblast, Ukraine. Types: Killing of civilians, Air / drone / artillery strike, Destruction of property. Alleged perpetrator: Russian armed forces. Reported casualties: 1 killed, 2 injured. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0294</description>
-</item>
-<item>
-<title>Russian strike on a food warehouse in Odesa: three killed, three injured</title>
-<link>https://violationswatch.org/#VW-2026-0284</link>
-<guid isPermaLink="false">VW-2026-0284</guid>
-<pubDate>Mon, 09 Nov 2026 12:27:40 GMT</pubDate>
-<category>Ukraine</category>
-<category>Killing of civilians</category>
-<category>Air / drone / artillery strike</category>
-<description>Unverified lead (Medium priority). Food warehouse, Odesa, Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian armed forces. Reported casualties: 3 killed, 1-3 injured. 2 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0284</description>
-</item>
-<item>
-<title>Russian strike on a critical infrastructure facility in Dnipro: three killed, four injured</title>
-<link>https://violationswatch.org/#VW-2026-0208</link>
-<guid isPermaLink="false">VW-2026-0208</guid>
-<pubDate>Sun, 08 Nov 2026 17:01:00 GMT</pubDate>
-<category>Ukraine</category>
-<category>Killing of civilians</category>
-<category>Air / drone / artillery strike</category>
-<description>Unverified lead (Medium priority). Dnipro, Ukraine. Types: Killing of civilians, Air / drone / artillery strike. Alleged perpetrator: Russian armed forces. Reported casualties: 3 killed, 4 injured. 2 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0208</description>
-</item>
-<item>
-<title>Russian drone strike in Kharkiv puts a 2-year-old child in intensive care</title>
-<link>https://violationswatch.org/#VW-2026-0175</link>
-<guid isPermaLink="false">VW-2026-0175</guid>
-<pubDate>Sun, 08 Nov 2026 08:47:00 GMT</pubDate>
-<category>Ukraine</category>
-<category>Air / drone / artillery strike</category>
-<description>Unverified lead (Medium priority). Kharkiv, Ukraine. Types: Air / drone / artillery strike. Alleged perpetrator: Russian armed forces. Reported casualties: 0 killed, 1 injured. Grave violations against children: Killing and maiming. 3 sources. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-0175</description>
 </item>
 </channel>
 </rss>

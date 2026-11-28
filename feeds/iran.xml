@@ -6,9 +6,18 @@
 <description>New incidents reported in Iran. Most entries are unverified leads, not findings.</description>
 <language>en-gb</language>
 <atom:link href="https://violationswatch.org/feeds/iran.xml" rel="self" type="application/rss+xml"/>
-<pubDate>Thu, 26 Nov 2026 14:00:52 GMT</pubDate>
+<pubDate>Fri, 27 Nov 2026 09:05:13 GMT</pubDate>
 <item>
-<title>Iranian authorities arrest a journalist in Tehran on 25 Nov after he published a court document showing two political prisoners had been sentenced to death; RSF says he was reportedly beaten in detention and calls for his release</title>
+<title>Iran executes a prisoner sentenced to death on a murder charge in Zahedan Prison on 24 Nov (HRANA)</title>
+<link>https://violationswatch.org/#VW-2026-2542</link>
+<guid isPermaLink="false">VW-2026-2542</guid>
+<pubDate>Fri, 27 Nov 2026 09:05:13 GMT</pubDate>
+<category>Iran</category>
+<category>Executions</category>
+<description>Unverified lead (Medium priority). Zahedan, Sistan and Baluchestan, Iran. Types: Executions. Alleged perpetrator: Iranian authorities. Reported casualties: 1 killed. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2542</description>
+</item>
+<item>
+<title>Iranian authorities arrest and reportedly torture a journalist who revealed the imminent execution of two political prisoners; RSF calls for his release</title>
 <link>https://violationswatch.org/#VW-2026-2384</link>
 <guid isPermaLink="false">VW-2026-2384</guid>
 <pubDate>Thu, 26 Nov 2026 14:00:52 GMT</pubDate>
@@ -16,7 +25,7 @@
 <category>Attacks on journalists</category>
 <category>Torture &amp; ill-treatment</category>
 <category>Arbitrary detention &amp; disappearance</category>
-<description>Unverified lead (Medium priority). Tehran, Iran. Types: Attacks on journalists, Torture &amp; ill-treatment, Arbitrary detention &amp; disappearance. Alleged perpetrator: Iranian authorities. Disputed or caveats: A lawyer for one prisoner believes the death sentence was likely suspended; the authorities say the sentences have not been quashed. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2384</description>
+<description>Unverified lead (Medium priority). Iran. Types: Attacks on journalists, Torture &amp; ill-treatment, Arbitrary detention &amp; disappearance. Alleged perpetrator: Iranian authorities. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2384</description>
 </item>
 <item>
 <title>Iran arrests and sentences journalists and suspends five news outlets; CPJ calls for their release</title>
@@ -45,7 +54,8 @@
 <category>Iran</category>
 <category>Arbitrary detention &amp; disappearance</category>
 <category>Persecution &amp; repression</category>
-<description>Unverified lead (Medium priority). Iran. Types: Arbitrary detention &amp; disappearance, Persecution &amp; repression. Alleged perpetrator: Iranian security forces. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2386</description>
+<category>Torture &amp; ill-treatment</category>
+<description>Unverified lead (Medium priority). Iran. Types: Arbitrary detention &amp; disappearance, Persecution &amp; repression, Torture &amp; ill-treatment. Alleged perpetrator: Iranian security forces. 1 source. Original reports and legal frameworks: https://violationswatch.org/#VW-2026-2386</description>
 </item>
 <item>
 <title>Iranian journalist Ali Pourdarab sentenced to one year in prison and additional punishments (HRANA)</title>
