@@ -83,7 +83,7 @@
   <div class="grid">
     <section class="panel w8" aria-labelledby="h-where">
       <div class="ph"><span class="no">01</span><h2 id="h-where">Where</h2></div>
-      <p class="cap">Incidents involving children by country or territory. Bubble size shows the number of incidents. Hover over a bubble (or tap it) to see its incidents; click to list them all.</p>
+      <p class="cap">Incidents involving children by country or territory. Bubble size shows the number of incidents. Hover over a bubble (or tap it) to see its incidents; click to list them all. The report-date filter above the incident list also narrows this map and the figures.</p>
       <div class="mapwrap cmap" id="map"><div class="empty">Loading the map…</div></div>
     </section>
     <section class="panel w4" aria-labelledby="h-which">
@@ -120,6 +120,8 @@
       <input type="search" id="q" placeholder="Search place, perpetrator, VW number or keyword" aria-label="Search incidents">
       <select id="fg" aria-label="Grave violation"><option value="">All six violations</option></select>
       <select id="fl" aria-label="Country or territory"><option value="">All countries</option></select>
+      <select id="fd" aria-label="Date first reported"><option value="">All report dates</option><option value="24h">Reported in last 24 hours</option><option value="7d">Reported in last 7 days</option><option value="28d">Reported in last 28 days</option><option value="custom">Custom report dates</option></select>
+      <span class="dates" id="drange" hidden><label>From <input type="date" id="df" aria-label="First reported from"></label><label>to <input type="date" id="dt" aria-label="First reported to"></label></span>
       <span class="count" id="count"></span>
     </div>
   </div>
@@ -154,7 +156,7 @@
     ['denial_access', 'Denial of humanitarian access', 'Blocking, obstructing or attacking humanitarian assistance, including aid workers, convoys and sieges that cut off aid, where children are among those affected.']];
   const GV = Object.fromEntries(SIX.map((x) => [x[0], x[1]]));
   const gvOf = (r) => Array.isArray(r.grave_violations) ? r.grave_violations.filter((g) => GV[g]) : [];
-  let rows = [], shown = 50, updated = null;
+  let all = [], rows = [], shown = 50, updated = null, worldCache = null;
 
   const fetchJson = (u) => fetch(u, {cache: 'no-cache'}).then((r) => r.ok ? r.json() : null).catch(() => null);
   async function load() {
@@ -176,7 +178,7 @@
     $('k-conf').textContent = rows.filter((r) => statusOf(r) !== 'lead').length;
     const f = rows.map((r) => r.first_reported).filter(Boolean).sort(), l = rows.map((r) => r.last_reported).filter(Boolean).sort();
     const win = rows.length ? fd(f[0]) + ' – ' + fd(l[l.length - 1]) : 'No incidents yet';
-    $('p-win').textContent = win; $('foot').textContent = rows.length ? 'Covers incidents reported ' + win + '.' : 'No incidents involving children yet.';
+    $('p-win').textContent = win; $('foot').textContent = rows.length ? 'Covers incidents reported ' + win + '.' : (all.length ? 'No incidents involving children in this date range.' : 'No incidents involving children yet.');
     // bars
     const counts = SIX.map(([k, label]) => [k, label, c(k)]), max = Math.max(1, ...counts.map((x) => x[2]));
     $('bars').replaceChildren(...counts.map(([k, label, n]) => { const d = el('div', 'vb'), vl = el('div', 'vl'), tr = el('div', 'tr'), f = el('div', 'f');
@@ -193,12 +195,23 @@
     // definitions with counts
     $('defs').replaceChildren(...counts.map(([k, label, n]) => { const d = el('div', 'def'); d.append(el('span', 'n', n + (n === 1 ? ' incident' : ' incidents')), el('span', 'cv', label), el('p', null, SIX.find((x) => x[0] === k)[2])); return d; }));
     // filter options
-    $('fg').append(...SIX.map(([k, label]) => new Option(label, k)));
-    $('fl').append(...byLoc.map(([loc]) => loc).sort().map((x) => new Option(short(x), x)));
+  }
+  // the date filter (same as the main page) narrows the whole page: figures, map, charts, list and downloads
+  function reportedOk(r) {
+    const m = $('fd').value, day = String(r.first_reported || '').slice(0, 10), from = $('df').value, to = $('dt').value;
+    const latest = Date.parse(updated) || Date.now();
+    if (m === '24h' || m === '7d' || m === '28d') return Date.parse(r.first_reported) >= latest - ({'24h': 1, '7d': 7, '28d': 28})[m] * 864e5;
+    return (!from || day >= from) && (!to || day <= to);
+  }
+  function dlLabel() { $('dl-csv').textContent = 'Download CSV (' + rows.length + ' incidents)'; $('dl-csv').disabled = $('dl-json').disabled = !rows.length; }
+  function dateChanged() {
+    $('drange').hidden = $('fd').value !== 'custom';
+    rows = all.filter(reportedOk); shown = 50; closeTip();
+    summary(); drawMap(); update(); dlLabel();
   }
 
   async function drawMap() {
-    const box = $('map'), world = await fetchJson('/world.json');
+    const box = $('map'), world = worldCache || (worldCache = await fetchJson('/world.json'));
     if (!world || !window.topojson || !window.d3) { box.replaceChildren(el('div', 'empty', 'The map could not be drawn.')); return; }
     const land = topojson.feature(world, world.objects.countries); land.features = land.features.filter((x) => x.id !== '010');
     const W = box.clientWidth || 800, H = Math.round(W * (W < 600 ? 0.75 : 0.72));
@@ -298,7 +311,7 @@
   function showCountry(loc, q) { $('fl').value = loc || ''; $('fg').value = ''; $('q').value = q || ''; shown = 50; update(); $('log').scrollIntoView({behavior: 'smooth'}); }
   function openIncident(id) {
     let d = document.getElementById(id);
-    if (!d) { ['q', 'fg', 'fl'].forEach((k) => { $(k).value = ''; }); shown = rows.length; update(); d = document.getElementById(id); }
+    if (!d) { ['q', 'fg', 'fl'].forEach((k) => { $(k).value = ''; }); if (!rows.some((r) => r.id === id)) { ['fd', 'df', 'dt'].forEach((k) => { $(k).value = ''; }); dateChanged(); } shown = rows.length; update(); d = document.getElementById(id); }
     if (d) { d.open = true; d.scrollIntoView({behavior: 'smooth', block: 'start'}); }
   }
 
@@ -316,7 +329,7 @@
     if (r.priority) { const p = el('span', 'pr ' + r.priority, r.priority); m.append(p); }
     gvOf(r).forEach((k) => m.append(el('span', 'cv', GV[k])));
     const ck = rng(r.children_killed), cj = rng(r.children_injured);
-    if (ck || cj) m.append(el('span', 'kidcount', [ck && ck + ' children killed', cj && cj + ' injured'].filter(Boolean).join(', ')));
+    if (ck || cj) m.append(el('span', 'kidcount', [ck && ck + (ck === '1' ? ' child killed' : ' children killed'), cj && cj + (ck ? ' injured' : (cj === '1' ? ' child injured' : ' children injured'))].filter(Boolean).join(', ')));
     body.append(m); s.append(st, body); d.append(s);
     // details: perpetrator, dispute note and sources, loaded when opened
     d.addEventListener('toggle', () => { if (!d.open || d.dataset.f) return; d.dataset.f = 1; const b = el('div', 'body'); const dl = el('dl', 'facts');
@@ -352,12 +365,16 @@
   const stamp = () => (updated ? String(updated).slice(0, 10) : new Date().toISOString().slice(0, 10));
 
   async function init() {
-    try { rows = await load(); } catch (e) { rows = []; }
+    try { all = await load(); } catch (e) { all = []; }
+    rows = all;
     if (!rows.length) { $('loading').textContent = 'The incidents could not be loaded. Reload the page to try again.'; }
+    $('fg').append(...SIX.map(([k, label]) => new Option(label, k)));
+    $('fl').append(...[...new Set(all.map((r) => r.location))].sort().map((x) => new Option(short(x), x)));
     summary(); update(); drawMap();
     ['q', 'fg', 'fl'].forEach((id) => $(id).addEventListener('input', () => { shown = 50; update(); }));
-    $('dl-csv').disabled = $('dl-json').disabled = !rows.length;
-    $('dl-csv').textContent = 'Download CSV (' + rows.length + ' incidents)';
+    $('fd').addEventListener('input', () => { if ($('fd').value !== 'custom') $('df').value = $('dt').value = ''; dateChanged(); });
+    ['df', 'dt'].forEach((id) => $(id).addEventListener('input', () => { $('fd').value = 'custom'; dateChanged(); }));
+    dlLabel();
     $('dl-csv').onclick = () => save('violations-watch-children-' + stamp() + '.csv', 'text/csv;charset=utf-8',
       '﻿' + [COLS.join(','), ...rows.map((r) => COLS.map((k) => csvCell(val(r, k))).join(','))].join('\r\n'));
     $('dl-json').onclick = () => save('violations-watch-children-' + stamp() + '.json', 'application/json',
