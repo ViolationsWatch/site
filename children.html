@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grave violations against children · Violations Watch</title>
+<meta name="description" content="Open-source leads on the six grave violations against children in armed conflict, from the Violations Watch incident log: map, figures, definitions and downloads for monitors and investigators.">
+<link rel="canonical" href="https://violationswatch.org/children">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="alternate" type="application/rss+xml" title="Violations Watch: new incidents" href="/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="Violations Watch: grave violations against children" href="/feeds/children.xml">
+<meta property="og:title" content="Grave violations against children · Violations Watch">
+<meta property="og:description" content="Open-source leads on the six grave violations against children in armed conflict, updated every morning.">
+<meta property="og:url" content="https://violationswatch.org/children">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Violations Watch">
+<meta property="og:image" content="https://violationswatch.org/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Violations Watch: OSINT for Human Rights. An open log of reported violations of international humanitarian and human rights law.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://violationswatch.org/og.png">
+<meta name="theme-color" content="#0b1d33">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,600..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/site.css">
+<style>
+  /* page-specific additions; colours come from the tokens in site.css */
+  .vb { margin: 10px 0; }
+  .vb .vl { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; }
+  .vb .vl b { font-family: var(--mono); font-weight: 500; }
+  .vb .tr { height: 10px; background: var(--cv-bg); border-radius: 3px; margin-top: 4px; }
+  .vb .f { height: 10px; background: var(--cv); border-radius: 3px; }
+  .cr { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; padding: 6px 0; border-top: 1px solid var(--line); }
+  .cr:first-of-type { border-top: 0; }
+  .cr b { font-family: var(--mono); font-weight: 500; }
+  .cr button { font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; }
+  .defs { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 12px; }
+  .def { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; }
+  .def p { font-size: 13.5px; margin: 8px 0 0; color: var(--muted); }
+  .def .n { font-family: var(--mono); font-size: 12px; color: var(--muted); float: right; }
+  .dl { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .prose { font-size: 14.5px; margin: 8px 0 0; max-width: 78ch; }
+  .prose + .prose { margin-top: 8px; }
+  .cmap svg { display: block; width: 100%; height: auto; }
+  .cmap circle { cursor: default; }
+  .sysbar nav a[aria-current="page"] { color: var(--ink); font-weight: 600; }
+  .kidcount { font-size: 12px; color: var(--cv); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="dark top">
+<div class="sysbar">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#1f5e8c"/><circle cx="16" cy="16" r="8.5" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="16" cy="16" r="2.8" fill="#fff"/></svg>VIOLATIONS WATCH</a>
+    <div class="meta"><span><i class="dot" aria-hidden="true"></i>UPDATED <b id="s-upd">—</b></span><span>INCIDENTS <b id="s-n">—</b></span></div>
+    <nav aria-label="Sections"><a href="/">Latest 28 days</a><a href="/archive">Archive</a><a href="/children" aria-current="page">Children</a><a href="/mechanisms">Mechanisms</a><a href="/blog/">Blog</a><a class="opt" href="/#method">Method</a></nav>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="mast">
+    <h1>Grave violations against children</h1>
+    <p class="period"><span class="k">Time period</span> <b id="p-win">Loading…</b> <span class="d">Every incident in the log tagged with one of the six grave violations, from the latest 28 days and the archive. Updated every morning.</span></p>
+    <p class="tag">Open-source leads on the six grave violations against children in armed conflict that the United Nations monitors under Security Council resolution 1612 (2005), taken from the Violations Watch incident log.</p>
+    <div class="warn" role="note"><b>Leads, not verified findings.</b> Each entry records what was reported, by whom and when, with links to the sources. We share them as alerts for verification by monitors and investigators. We never publish names, photos or other details that could identify a child.</div>
+  </header>
+
+  <section class="kpis" aria-label="Summary figures">
+    <div class="kpi"><span class="lab">Incidents involving children</span><span class="num" id="k-n">—</span><span class="note">tagged with a grave violation</span></div>
+    <div class="kpi"><span class="lab">Killing and maiming</span><span class="num" id="k-km">—</span><span class="note">incidents</span></div>
+    <div class="kpi"><span class="lab">Attacks on schools and hospitals</span><span class="num" id="k-sh">—</span><span class="note">incidents</span></div>
+    <div class="kpi"><span class="lab">Abduction</span><span class="num" id="k-ab">—</span><span class="note">incidents</span></div>
+    <div class="kpi"><span class="lab">Countries &amp; territories</span><span class="num" id="k-loc">—</span><span class="note">with at least one incident</span></div>
+    <div class="kpi"><span class="lab">Confirmed by an analyst</span><span class="num" id="k-conf">—</span><span class="note">the rest are leads</span></div>
+  </section>
+</div>
+</div>
+
+<div class="wrap" style="padding-top:18px">
+  <div class="grid">
+    <section class="panel w8" aria-labelledby="h-where">
+      <div class="ph"><span class="no">01</span><h2 id="h-where">Where</h2></div>
+      <p class="cap">Incidents involving children by country or territory. Bubble size shows the number of incidents; hover for the count.</p>
+      <div class="mapwrap cmap" id="map"><div class="empty">Loading the map…</div></div>
+    </section>
+    <section class="panel w4" aria-labelledby="h-which">
+      <div class="ph"><span class="no">02</span><h2 id="h-which">Which violations</h2></div>
+      <p class="cap">Incidents per violation. One incident can carry more than one tag.</p>
+      <div id="bars"></div>
+      <div class="ph" style="margin-top:16px"><span class="no">03</span><h2>Most affected</h2></div>
+      <p class="cap">Select a country to filter the list below.</p>
+      <div id="ctry"></div>
+    </section>
+    <section class="panel w12" aria-labelledby="h-mon">
+      <div class="ph"><span class="no">04</span><h2 id="h-mon">For UN monitors and investigators</h2></div>
+      <p class="prose">These leads come from news outlets, UN bodies, rights groups and local media, read every day in eight languages. Each is checked for when and where it happened and how it is sourced, and claims from parties to a conflict are flagged. They have not been verified on the ground: the UN verifies cases through its <a href="https://childrenandarmedconflict.un.org/en/tools-for-action/monitoring-and-reporting" target="_blank" rel="noopener noreferrer">Monitoring and Reporting Mechanism</a>.</p>
+      <p class="prose">Please cite incidents by VW number, for example <span class="mono">VW-2026-0001</span>. Each has its own page with the sources and archived copies. For corrections or questions, write to <a href="mailto:violationswatch@proton.me">violationswatch@proton.me</a>. <a href="/mechanisms#global">Where else to send information.</a></p>
+      <div class="dl">
+        <button class="btn" type="button" id="dl-csv" disabled>Download CSV</button>
+        <button class="btn ghost" type="button" id="dl-json" disabled>Download JSON</button>
+        <a class="btn ghost" href="/feeds/children.xml" target="_blank" rel="noopener">RSS: new incidents involving children</a>
+      </div>
+    </section>
+  </div>
+
+  <div class="band" id="six"><span class="no">05</span><h2>The six grave violations</h2></div>
+  <p class="cap" style="margin:6px 0 0">As defined by the UN for the Monitoring and Reporting Mechanism. A child is anyone under 18.</p>
+  <div class="defs" id="defs"></div>
+</div>
+
+<div class="dark logband" style="margin-top:28px">
+<div class="wrap">
+  <div class="band" id="log"><span class="no">06</span><h2>Incidents</h2></div>
+  <div class="filters" style="background:transparent;border:0;position:static;padding-top:0">
+    <div class="row" role="search">
+      <span class="lab">Filter</span>
+      <input type="search" id="q" placeholder="Search place, perpetrator, VW number or keyword" aria-label="Search incidents">
+      <select id="fg" aria-label="Grave violation"><option value="">All six violations</option></select>
+      <select id="fl" aria-label="Country or territory"><option value="">All countries</option></select>
+      <span class="count" id="count"></span>
+    </div>
+  </div>
+  <div class="ledger" id="ledger"><div class="empty" id="loading">Loading incidents…</div></div>
+</div>
+</div>
+
+<div class="wrap">
+  <footer><span id="foot">Grave violations against children in the Violations Watch log.</span><span>Violations Watch links to third-party reporting and does not endorse the sources it lists. Method, status labels and corrections: <a href="/#method">see the main page</a>.</span><span class="follow">Follow: <a href="https://bsky.app/profile/violationswatch.bsky.social" target="_blank" rel="noopener me">Bluesky</a> · <a href="https://www.linkedin.com/company/violations-watch-osint-for-human-rights/" target="_blank" rel="noopener me">LinkedIn</a> · <a href="/feeds/children.xml">RSS</a></span></footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+  const fd = (s) => { if (!s) return ''; const d = new Date(s); return isNaN(d) ? s : d.toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'}); };
+  const rng = (r) => { r = r || []; return r[0] == null && r[1] == null ? '' : r[0] === r[1] || r[1] == null ? String(r[0]) + (r[1] == null && r[0] != null && r[0] > 0 ? '+' : '') : (r[0] ?? '?') + '–' + r[1]; };
+  const short = (s) => String(s).replace(/^Palestine \((.+)\)$/, 'Palestine: $1');
+  const PRI = {Critical: 0, High: 1, Medium: 2, Low: 3};
+  const STL = {lead: 'Lead', confirmed: 'Confirmed', verified: 'Verified'};
+  const statusOf = (r) => r.verification === 'verified' ? 'verified' : r.status;
+  // the six grave violations, in the UN's order, with plain-language definitions
+  const SIX = [
+    ['killing_maiming', 'Killing and maiming', 'Children killed or injured by any act of a party to a conflict: strikes, shelling, shooting, mines and explosive remnants, crossfire or executions.'],
+    ['recruitment_use', 'Recruitment and use', 'Children recruited, voluntarily or by force, into armed forces or armed groups, or used by them in any role: fighters, spies, messengers, porters, cooks, at checkpoints, for sexual purposes or as human shields.'],
+    ['sexual_violence', 'Rape and other sexual violence', 'Rape or any other form of sexual violence against children.'],
+    ['attacks_schools_hospitals', 'Attacks on schools and hospitals', 'Attacks damaging schools or health facilities, attacks or threats against teachers, students, medical staff or patients, and the military use of schools or hospitals, whether or not children were harmed.'],
+    ['abduction', 'Abduction', 'The unlawful removal, seizure, capture or enforced disappearance of children.'],
+    ['denial_access', 'Denial of humanitarian access', 'Blocking, obstructing or attacking humanitarian assistance, including aid workers, convoys and sieges that cut off aid, where children are among those affected.']];
+  const GV = Object.fromEntries(SIX.map((x) => [x[0], x[1]]));
+  const gvOf = (r) => Array.isArray(r.grave_violations) ? r.grave_violations.filter((g) => GV[g]) : [];
+  let rows = [], shown = 50, updated = null;
+
+  const fetchJson = (u) => fetch(u, {cache: 'no-cache'}).then((r) => r.ok ? r.json() : null).catch(() => null);
+  async function load() {
+    const [live, idx] = await Promise.all([fetchJson('/data.json'), fetchJson('/archive-data/index.json')]);
+    const years = idx && Array.isArray(idx.years) ? idx.years : [];
+    const arch = years.length ? await Promise.all(years.map((y) => fetchJson(y.file))) : [await fetchJson('/archive.json')];
+    const byId = new Map();
+    // archive first, then the live log, so an incident brought back to the live log shows its latest record
+    for (const d of [...arch, live]) for (const r of ((d && d.incidents) || [])) if (r && r.id) byId.set(r.id, r);
+    updated = (live && live.updated) || (idx && idx.updated) || null;
+    return [...byId.values()].filter((r) => gvOf(r).length).sort((a, b) => String(b.last_reported).localeCompare(String(a.last_reported)));
+  }
+
+  function summary() {
+    const c = (k) => rows.filter((r) => gvOf(r).includes(k)).length;
+    $('s-upd').textContent = updated ? fd(updated).toUpperCase() : '—'; $('s-n').textContent = rows.length;
+    $('k-n').textContent = rows.length; $('k-km').textContent = c('killing_maiming'); $('k-sh').textContent = c('attacks_schools_hospitals'); $('k-ab').textContent = c('abduction');
+    $('k-loc').textContent = new Set(rows.map((r) => r.location)).size;
+    $('k-conf').textContent = rows.filter((r) => statusOf(r) !== 'lead').length;
+    const f = rows.map((r) => r.first_reported).filter(Boolean).sort(), l = rows.map((r) => r.last_reported).filter(Boolean).sort();
+    const win = rows.length ? fd(f[0]) + ' – ' + fd(l[l.length - 1]) : 'No incidents yet';
+    $('p-win').textContent = win; $('foot').textContent = rows.length ? 'Covers incidents reported ' + win + '.' : 'No incidents involving children yet.';
+    // bars
+    const counts = SIX.map(([k, label]) => [k, label, c(k)]), max = Math.max(1, ...counts.map((x) => x[2]));
+    $('bars').replaceChildren(...counts.map(([k, label, n]) => { const d = el('div', 'vb'), vl = el('div', 'vl'), tr = el('div', 'tr'), f = el('div', 'f');
+      vl.append(el('span', null, label), el('b', null, n)); f.style.width = (n ? Math.max(1.5, n / max * 100) : 0) + '%'; tr.append(f); d.append(vl, tr); return d; }));
+    // countries
+    const byLoc = d3.rollups(rows, (v) => v.length, (r) => r.location).sort((a, b) => b[1] - a[1]);
+    $('ctry').replaceChildren(...byLoc.slice(0, 10).map(([loc, n]) => { const d = el('div', 'cr'), b = el('button', null, short(loc)); b.type = 'button';
+      b.onclick = () => { $('fl').value = loc; shown = 50; update(); $('log').scrollIntoView({behavior: 'smooth'}); }; d.append(b, el('b', null, n)); return d; }));
+    // definitions with counts
+    $('defs').replaceChildren(...counts.map(([k, label, n]) => { const d = el('div', 'def'); d.append(el('span', 'n', n + (n === 1 ? ' incident' : ' incidents')), el('span', 'cv', label), el('p', null, SIX.find((x) => x[0] === k)[2])); return d; }));
+    // filter options
+    $('fg').append(...SIX.map(([k, label]) => new Option(label, k)));
+    $('fl').append(...byLoc.map(([loc]) => loc).sort().map((x) => new Option(short(x), x)));
+  }
+
+  async function drawMap() {
+    const box = $('map'), world = await fetchJson('/world.json');
+    if (!world || !window.topojson || !window.d3) { box.replaceChildren(el('div', 'empty', 'The map could not be drawn.')); return; }
+    const land = topojson.feature(world, world.objects.countries); land.features = land.features.filter((x) => x.id !== '010');
+    const W = box.clientWidth || 800, H = Math.round(W * (W < 600 ? 0.75 : 0.72));
+    // zoom to where the incidents are (with a margin), so the bubbles are not lost in a whole-world view
+    const pts = rows.filter((r) => r.lat != null && r.lon != null).map((r) => [r.lon, r.lat]);
+    const lons = pts.map((p) => p[0]), lats = pts.map((p) => p[1]);
+    let ext = land;
+    if (pts.length) { // trace the padded box's edges, not just its corners, because the projection's meridians curve
+      const x0 = Math.max(-170, Math.min(...lons) - 12), x1 = Math.min(175, Math.max(...lons) + 12), y0 = Math.max(-50, Math.min(...lats) - 10), y1 = Math.min(75, Math.max(...lats) + 10), edge = [];
+      for (let i = 0; i <= 10; i++) { const y = y0 + (y1 - y0) * i / 10, x = x0 + (x1 - x0) * i / 10; edge.push([x0, y], [x1, y], [x, y0], [x, y1]); }
+      ext = {type: 'MultiPoint', coordinates: edge}; }
+    const proj = d3.geoNaturalEarth1().fitExtent([[2, 4], [W - 2, H - 4]], ext), path = d3.geoPath(proj);
+    const svg = d3.create('svg').attr('viewBox', [0, 0, W, H]).style('overflow', 'hidden').attr('role', 'img').attr('aria-label', 'Map of incidents involving children by country');
+    svg.append('path').attr('d', path(d3.geoGraticule10())).attr('fill', 'none').attr('stroke', 'var(--grat)').attr('stroke-width', 0.6);
+    svg.append('path').attr('d', path(land)).attr('fill', 'var(--land)').attr('stroke', 'var(--land-line)').attr('stroke-width', 0.6);
+    // one bubble per country or territory (Gaza and the West Bank share one, as they sit too close to tell apart), placed at the median of its incidents' coordinates (country centre when no place is given)
+    const med = (a) => { a = a.slice().sort((x, y) => x - y); return a[Math.floor(a.length / 2)]; };
+    const groups = d3.rollups(rows.filter((r) => r.lat != null && r.lon != null), (v) => ({n: v.length, lat: med(v.map((r) => r.lat)), lon: med(v.map((r) => r.lon))}), (r) => /^Palestine /.test(r.location) ? 'Palestine (Gaza and West Bank)' : r.location)
+      .sort((a, b) => b[1].n - a[1].n);
+    const rad = d3.scaleSqrt().domain([1, d3.max(groups, (g) => g[1].n) || 1]).range([5, Math.max(14, W / 30)]);
+    const g = svg.append('g'), labels = svg.append('g').attr('pointer-events', 'none');
+    for (const [loc, v] of groups) {
+      const [x, y] = proj([v.lon, v.lat]); if (!isFinite(x)) continue;
+      const c = g.append('circle').attr('cx', x).attr('cy', y).attr('r', rad(v.n)).attr('fill', 'var(--cv)').attr('fill-opacity', 0.8).attr('stroke', '#fff').attr('stroke-width', 1.5);
+      c.append('title').text(short(loc) + ': ' + v.n + (v.n === 1 ? ' incident' : ' incidents'));
+      // numbers go in a layer above every bubble, so a neighbouring bubble never covers them
+      if (rad(v.n) >= 12) labels.append('text').attr('x', x).attr('y', y + 4).attr('text-anchor', 'middle').style('font', '600 12px var(--sans)').style('fill', '#fff').text(v.n);
+    }
+    box.replaceChildren(svg.node());
+  }
+
+  function filtered() {
+    const q = $('q').value.trim().toLowerCase(), fg = $('fg').value, fl = $('fl').value;
+    return rows.filter((r) => (!fg || gvOf(r).includes(fg)) && (!fl || r.location === fl) &&
+      (!q || [r.id, r.headline, r.location, r.subregion, r.place, r.perpetrator, ...(r.types || [])].join(' ').toLowerCase().includes(q)));
+  }
+  function item(r) {
+    const d = el('details', 'inc'); d.id = r.id; const s = el('summary'); const st = el('span', 'stripe bg-' + (r.priority || 'Low'));
+    const body = el('span'); body.append(el('span', 'hl', r.headline || r.id));
+    const m = el('span', 'meta'); const a = el('a', 'mono permalink', r.id); a.href = '/i/' + r.id + '/'; a.onclick = (e) => e.stopPropagation();
+    m.append(a, el('span', null, short(r.location) + (r.place ? ' · ' + r.place : '')), el('span', null, fd(r.incident_date && r.incident_date.length === 10 ? r.incident_date : r.last_reported)));
+    const sl = statusOf(r); m.append(el('span', 'st st-' + sl, STL[sl] || sl));
+    if (r.priority) { const p = el('span', 'pr ' + r.priority, r.priority); m.append(p); }
+    gvOf(r).forEach((k) => m.append(el('span', 'cv', GV[k])));
+    const ck = rng(r.children_killed), cj = rng(r.children_injured);
+    if (ck || cj) m.append(el('span', 'kidcount', [ck && ck + ' children killed', cj && cj + ' injured'].filter(Boolean).join(', ')));
+    body.append(m); s.append(st, body); d.append(s);
+    // details: perpetrator, dispute note and sources, loaded when opened
+    d.addEventListener('toggle', () => { if (!d.open || d.dataset.f) return; d.dataset.f = 1; const b = el('div', 'body'); const dl = el('dl', 'facts');
+      const fact = (k, v) => { if (v == null || v === '') return; const x = el('div'); x.append(el('dt', null, k), el('dd', null, v)); dl.append(x); };
+      fact('Alleged perpetrator', r.perpetrator); fact('Victims', Array.isArray(r.victims) ? r.victims.join(', ') : r.victims);
+      fact('Killed (all ages)', rng(r.killed)); fact('Injured (all ages)', rng(r.injured)); fact('Disputed', r.disputed);
+      fact('First reported', fd(r.first_reported)); fact('Last reported', fd(r.last_reported));
+      b.append(dl);
+      const links = (r.links || []).slice(0, 12); if (links.length) { b.append(el('span', 'sub', 'Sources')); const ul = el('ul', 'links');
+        links.forEach((u) => { const li = el('li'); const l = el('a', null, u); l.href = u; l.target = '_blank'; l.rel = 'noopener noreferrer nofollow'; li.append(l);
+          const ar = (r.archives || []).find((x) => x.url === u && x.archived_url); if (ar) { const z = el('a', null, 'archived copy'); z.href = ar.archived_url; z.target = '_blank'; z.rel = 'noopener noreferrer nofollow'; li.append(' · ', z); }
+          ul.append(li); }); b.append(ul); }
+      const p = el('a', 'permalink', 'Full incident page: ' + r.id); p.href = '/i/' + r.id + '/'; b.append(p); d.append(b); });
+    return d;
+  }
+  function update() {
+    const fr = filtered(); $('count').textContent = fr.length + ' of ' + rows.length + ' incidents';
+    const box = $('ledger');
+    if (!fr.length) { box.replaceChildren(el('div', 'empty', 'No incidents match these filters.')); return; }
+    const list = fr.slice(0, shown).map(item);
+    if (fr.length > shown) { const m = el('div', 'more'); const b = el('button', 'btn ghost', 'Show more (' + (fr.length - shown) + ' left)'); b.type = 'button'; b.onclick = () => { shown += 50; update(); }; m.append(b); list.push(m); }
+    box.replaceChildren(...list);
+  }
+
+  // downloads, built from the same records the page shows (no children's names are ever in the data)
+  const COLS = ['id', 'status', 'priority', 'grave_violations', 'children_killed', 'children_injured', 'location', 'subregion', 'place', 'incident_date', 'first_reported', 'last_reported',
+    'headline', 'types', 'perpetrator', 'actor_type', 'killed', 'injured', 'disputed', 'cumulative', 'sources', 'url', 'links', 'archives'];
+  const val = (r, k) => k === 'url' ? 'https://violationswatch.org/i/' + r.id + '/' : k === 'grave_violations' ? gvOf(r).join('; ') :
+    k === 'archives' ? (r.archives || []).map((a) => a.archived_url).filter(Boolean).join(' ') : k === 'links' ? (r.links || []).join(' ') :
+    k === 'children_killed' || k === 'children_injured' || k === 'killed' || k === 'injured' ? rng(r[k]) : Array.isArray(r[k]) ? r[k].join('; ') : r[k] == null ? '' : String(r[k]);
+  const csvCell = (s) => /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  function save(name, type, text) { const a = el('a'); a.href = URL.createObjectURL(new Blob([text], {type})); a.download = name; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000); }
+  const stamp = () => (updated ? String(updated).slice(0, 10) : new Date().toISOString().slice(0, 10));
+
+  async function init() {
+    try { rows = await load(); } catch (e) { rows = []; }
+    if (!rows.length) { $('loading').textContent = 'The incidents could not be loaded. Reload the page to try again.'; }
+    summary(); update(); drawMap();
+    ['q', 'fg', 'fl'].forEach((id) => $(id).addEventListener('input', () => { shown = 50; update(); }));
+    $('dl-csv').disabled = $('dl-json').disabled = !rows.length;
+    $('dl-csv').textContent = 'Download CSV (' + rows.length + ' incidents)';
+    $('dl-csv').onclick = () => save('violations-watch-children-' + stamp() + '.csv', 'text/csv;charset=utf-8',
+      '﻿' + [COLS.join(','), ...rows.map((r) => COLS.map((k) => csvCell(val(r, k))).join(','))].join('\r\n'));
+    $('dl-json').onclick = () => save('violations-watch-children-' + stamp() + '.json', 'application/json',
+      JSON.stringify({source: 'Violations Watch, https://violationswatch.org/children', note: 'Open-source leads, not verified findings.', updated, incidents: rows}, null, 1));
+    const h = decodeURIComponent(location.hash.slice(1)); if (/^VW-/.test(h)) { const d = document.getElementById(h); if (d) { d.open = true; d.scrollIntoView({block: 'start'}); } }
+  }
+  init();
+})();
+</script>
+</body>
+</html>

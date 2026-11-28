@@ -38,6 +38,7 @@ const urls = [
   {loc: SITE + '/', lastmod: today, changefreq: 'daily', priority: '1.0'},
   {loc: SITE + '/archive', lastmod: today, changefreq: 'daily', priority: '0.7'},
   {loc: SITE + '/mechanisms', changefreq: 'monthly', priority: '0.8'},
+  {loc: SITE + '/children', lastmod: today, changefreq: 'daily', priority: '0.8'},
   {loc: SITE + '/blog/', lastmod: published.length ? published[0].date : undefined, changefreq: 'weekly', priority: '0.6'},
   ...published.map((p) => ({loc: SITE + '/blog/post.html?p=' + encodeURIComponent(p.slug), lastmod: p.date, priority: '0.6'})),
 ];
